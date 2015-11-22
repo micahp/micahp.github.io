@@ -1,0 +1,14 @@
+@media (max-width: 480px) {
+    body {
+        margin: 0 20px;
+    }
+
+    .name-section .name {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .name-section .tagline {
+        font-size: 1.25rem;
+    }
+}
