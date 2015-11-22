@@ -180,7 +180,7 @@ header nav ul li:last-child {
 }
 
 ul.list {
-    list-style-type: disc;
+    list-style: none;
 }
 
 /*Footer*/
