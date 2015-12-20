@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Example</title>
+<meta name="viewport" content="width=device-width" />
+<meta charset="utf-8" />
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<style>
+    body {
+        margin:  0;
+        background-color   #7e7e7e;
+        font-family: arial, helvetica, sans-serif;
+        color: #ffffff;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .fixedwidth {
+        width: 1075px;
+        margin: 0 auto;
+    }
+    .feature {
+        height: 100vh;
+    }
+    p {
+        margin: 0;
+    }
+    .wrapper {
+        width: 800px;
+        margin: 0 auto;
+    }
+    .clear {
+        clear: both;
+    }
+    #header ul>li {
+        display: inline;
+        float: right;
+        padding-right: 10px;    
+    }
+    #header ul {
+        float: right;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        top: 35%;
+        font-size: 20px;
+        padding-right: 10px;
+    }
+    #header {
+        background-color: #7a7a7a;
+        box-sizing: border-box;
+        height: 30vh;
+        position: relative;
+        margin-bottom: 3vh;
+        padding: 50px 0 0 10px;
+    }
+    #logo {
+        background: #0000ff;
+        width: 70px;
+        height: 30px;
+        border: 1px solid black;
+        border-radius: 10%;
+        float: left;
+        margin-top: 75px;
+    }
+    #logo-text {
+        padding: 5px 0 0 5px;
+    }
+    .video-reel {
+        height: 67vh;
+        display: block;
+    }
+    .video {
+        display: block;
+        float: left;
+        position: relative;
+        width: 49%;
+        height: 100%;
+        max-height: 100%;
+        background: salmon;
+        margin-right: 2%;
+    }
+    .video p {
+        padding: 38px 0 20px 10px;
+        vertical-align: bottom;
+        font-size: 150%;
+        font-weight: bold;
+    }
+    .video iframe {
+        height: 80%;
+        width: 100%;
+        padding: 0;
+        position: absolute;
+        bottom: 0;
+    }
+    .video-caption {
+        display: block;
+        float: left;
+        width: 49%;
+        background: salmon;
+        height: 100%;
+    }
+    @media screen and (max-width: 800px) {
+    .video-reel {
+        display: block;
+    }
+    .video {
+        display: block;
+        float: left;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: salmon;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+    .video p {
+        padding: 28px 0 20px 10px;
+        vertical-align: bottom;
+        font-size: 150%;
+        font-weight: bold;
+    }
+    .video iframe {
+        height: 80%;
+        width: 100%;
+        padding: 0;
+    }
+    .video-caption {
+        display: block;
+        float: left;
+        width: 100%;
+        background: salmon;
+        height: 100%;
+    }
+    }
+    #content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 3vh;
+        width: 100%;
+        height: 100vh;
+        background: #7e7e7e;
+    }
+    #content p {
+        text-align: center;
+        height: 100px;
+        width: 300px;
+        font-size: 200%;
+    }
+</style>
+</head>
+<body>
+<div class="feature">
+    <div id="header">
+        <div id="logo"><div id="logo-text">Logo</div></div>
+        <ul>
+            <li>Text</li>
+            <li>Text</li>
+            <li>Text</li>
+        </ul>
+    </div>
+    <div class="video-reel">
+        <div class="video">
+        <p>Kendrick Lamar - Look Out for Detox</p>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/Z-48u_uWMHY?autoplay=0&showinfo=0&controls=0" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="video-caption"></div>
+    </div>
+</div> 
+<div class="clear"></div>
+<div class="feature" id="content">
+    <p>This text is centered horizontally and vertically</p>
+</div>
+</body>
+</html>
