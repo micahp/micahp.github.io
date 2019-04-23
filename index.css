@@ -2,7 +2,7 @@
 	font-family: AkzidenzGrotesk;
 	src: url("fonts/Berthold Akzidenz Grotesk BE Regular.otf");`
 }
-a { 
+a {
 	color: black;
 }
 /*a:hover {
@@ -32,6 +32,9 @@ span {
 	height: 600px;
 	position: relative;
 }
+.email-input {
+	max-width: 400px !important;
+}
 .grid {
 	clear: both;
 	margin: 0 auto;
@@ -47,13 +50,13 @@ span {
 	margin: 0 auto;
 	text-align: center;
 	font-size: 50px;
-	
+
 }
 .grid-item-child {
 	-webkit-clip-path: polygon(50% 50%, 100% 0, 100% 100%, 0 100%, 0 0);
 	clip-path: polygon(50% 50%, 100% 0, 100% 100%, 0 100%, 0 0);
 	background-color: black;
-	width: 100%; 
+	width: 100%;
 	height: 100%;
 	padding-right: 1px;
 }
