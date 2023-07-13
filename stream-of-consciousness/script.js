@@ -60,22 +60,26 @@ $(document).ready(function(){
   });
 
   function startCountdown() {
-      let timeLeft = selectedTime * 60;
+      let oneMinute = 60;
+      let timeLeft = selectedTime * oneMinute;
       let checkProgress = function() {
         $("#timer").html(`Time left: ${timeLeft} seconds`);
-        progressBar.css('width', ((selectedTime * 60 - timeLeft) / (selectedTime * 60) * 100) + '%');
+        progressBar.css('width', ((selectedTime * oneMinute - timeLeft) / (selectedTime * oneMinute) * 100) + '%');
         timeLeft--;
 
         if (Date.now() - lastKeypressTime >= 5000 && !timerEnded) {
             onStopTyping();
-        } else if (Date.now() - lastKeypressTime > 0) {
+        } else if (!timerEnded && Date.now() - lastKeypressTime > 0) {
           typingArea.addClass("fade-out");
+        } else if (timerEnded) {
+            typingArea.removeClass("fade-out");
         }
 
         if (timeLeft < 0) {
             clearInterval(countdownTimer);
             $("#timer").html("Time's up!");
             timerEnded = true;
+            typingArea.removeClass("fade-out");
         }
     }
     checkProgress();
