@@ -110,7 +110,9 @@ span {
 .title {
 	padding-top: 50px;
 }
-
+.table {
+	display: table;
+}
 
 .padding-top {
 	padding-top: 50px;

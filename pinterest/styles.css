@@ -1,0 +1,21 @@
+.header-video {
+    width: 500px;
+    height: 305px;
+}
+
+img {
+    width: 800px; 
+}
+
+video {
+    width: 800px;
+}
+
+@media (max-width: 1400px) {
+    img { 
+        width: 800px;
+    }
+    video {
+        width: 800px;
+    }
+} 
