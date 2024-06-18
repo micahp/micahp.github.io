@@ -11,6 +11,19 @@
     margin-bottom: 150px;
 }
 
+.home-icon-parent {
+    position: absolute;
+    margin: 5px;
+}
+
+.home-icon {
+    background-color: #000;
+	width: 35px;
+	height: 35px;
+	position: relative;
+    border-radius: 5px;
+}
+
 .fade-out {
     animation: fadeOut 10s;
 }
