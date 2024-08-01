@@ -110,7 +110,7 @@
 					<p>Cuba Trip 2017</p>
 				</div></a>
 				<a href="https://www.tumblr.com/innermonolog"><div class="grid-item">
-					<p>Stream of Conscious</p><div class="grid-item-child"></div>
+					<p>Stream of Conscious</p>
 				</div></a>
 				<a href="https://medium.com/@MicahPpls"><div class="grid-item">
 					<p>Medium</p>
@@ -126,7 +126,7 @@
 	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 	<script>
 		$(".grid-item-child").hide();
-		$('a').hover(function(e) {
+		$('.social-icons > a').hover(function(e) {
 			//$(this).css("border-bottom", "0 solid white").animate({ borderWidth: 3 }, 100);
 			$(this).css("border-bottom", "3px solid white");
 			$(this).css('cursor', 'pointer');
@@ -136,6 +136,7 @@
 			$(this).css('cursor', 'default');
 		});
 		$('.grid-item').hover(function(e) {
+			console.log(1);
 			$(this).css('background-color', "#fff");
 			$(this).css('color', "#000");
 			//$(this).css('text-decoration', 'underline');
