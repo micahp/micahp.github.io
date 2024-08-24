@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Player</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background-color: #d3d3d3;
+            position: relative;
+            cursor: pointer;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0;
+        }
+        .progress-handle {
+            width: 15px;
+            height: 15px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex justify-center mt-4">
+        <button id="playAllButton" class="px-4 py-2 bg-green-500 rounded mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="yes" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 inline mb-1 mr-1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+            </svg>Play All
+        </button>
+        <button id="shuffleAllButton" class="px-4 py-2 bg-blue-500 rounded">
+            <span style="font-size: 16px;" class="material-icons align-middle mb-1">&#xe043;</span> Shuffle All
+        </button>
+    </div>
+    <div id="imageContainer" class="flex flex-wrap justify-center p-8 pb-28"></div>
+
+    <div id="audioControls" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4">
+        <div id="nowPlaying" class="text-center mb-2"></div>
+        <div class="flex justify-center items-center mb-2">
+            <button id="prevButton" class="px-4 py-2 bg-blue-500 rounded mr-2">&lt;&lt;</button>
+            <button id="playPauseButton" class="px-4 py-2 bg-green-500 rounded mr-2">Play</button>
+            <button id="nextButton" class="px-4 py-2 bg-blue-500 rounded">&gt;&gt;</button>
+        </div>
+        <div id="progressContainer" class="flex items-center justify-center" style="display: none;">
+            <span id="currentTime" class="mr-2">0:00</span>
+            <div class="progress-container flex-grow mx-2 max-w-5xl">
+                <div class="progress-bar"></div>
+                <div class="progress-handle"></div>
+            </div>
+            <span id="duration" class="ml-2">0:00</span>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://18.217.132.183:3000';
+        let isShuffleMode = false;
+        let shuffledPlaylist = [];
+
+        function sortImagesList(arr) {
+            return arr.sort((a, b) => {
+                const imageNumberA = parseInt(a.split('.')[0], 10);
+                const imageNumberB = parseInt(b.split('.')[0], 10);
+                return imageNumberA - imageNumberB;
+            });
+        }
+
+        function sortStringsByNumber(arr) {
+            return arr.sort((a, b) => {
+                const numberA = parseInt(a.split(' ')[2]);
+                const numberB = parseInt(b.split(' ')[2]);
+                return numberA - numberB;
+            });
+        }
+
+        function filterAndDeduplicateImages(imageFiles) {
+            const uniqueImages = {};
+            imageFiles.forEach(file => {
+                const [name, ext] = file.split('.');
+                if (/^\d+$/.test(name)) {
+                    if (!uniqueImages[name] || (ext === 'jpg' && uniqueImages[name].split('.')[1] === 'png')) {
+                        uniqueImages[name] = file;
+                    }
+                }
+            });
+            return Object.values(uniqueImages);
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const imageContainer = document.getElementById('imageContainer');
+            let songs = [];
+            let songList = [];
+            let imageFiles = [];
+
+            // Fetch image files
+            const imageResponse = await fetch(`${API_BASE_URL}/image-files`);
+            imageFiles = await imageResponse.json();
+
+            // Filter and deduplicate the imageFiles
+            imageFiles = filterAndDeduplicateImages(imageFiles);
+
+            // Sort the imageFiles
+            imageFiles = sortImagesList(imageFiles);
+
+            console.log('Filtered, deduplicated, and sorted imageFiles: ', imageFiles);
+
+            // Fetch audio files
+            const audioResponse = await fetch(`${API_BASE_URL}/audio-files`);
+            songList = await audioResponse.json();
+            
+            // Sort the songList
+            songList = sortStringsByNumber(songList);
+            
+            console.log('Sorted songList: ', songList);
+
+            // Function to find corresponding song
+            function findSong(imageNumber) {
+                console.log('findSong: ', imageNumber);
+                const searchPattern = `gppls daily ${imageNumber}`;
+                const mp3Song = songList.find(s => {
+                    const match = s.match(/gppls daily (\d+)/i);
+                    return match && parseInt(match[1]) === parseInt(imageNumber) && s.endsWith('.mp3');
+                });
+                if (mp3Song) return mp3Song;
+                const wavSong = songList.find(s => {
+                    const match = s.match(/gppls daily (\d+)/i);
+                    return match && match[1] === imageNumber && s.endsWith('.wav');
+                });
+                return wavSong || null;
+            }
+
+            // Display images and song names
+            imageFiles.forEach(file => {
+                if (/^\d+$/.test(file.split('.')[0])) {
+                    const imageNumber = file.split('.')[0];
+                    console.log('imageNumber: ', imageNumber);
+                    const song = findSong(imageNumber);
+                    const songName = song ? song.replace(/\.(mp3|wav)$/, '') : 'Unknown Song';
+
+                    const imageDiv = document.createElement('div');
+                    imageDiv.className = 'm-8 text-center';
+                    imageDiv.innerHTML = `
+                        <img src="${API_BASE_URL}/images/${file}" alt="${songName}" 
+                             class="w-[250px] h-[250px] object-cover cursor-pointer hover:opacity-80 transition-opacity" 
+                             onclick="playSong('${imageNumber}')">
+                        <p class="mt-2 text-lg">${songName}</p>
+                    `;
+                    imageContainer.appendChild(imageDiv);
+                }
+            });
+
+            // Function to play song
+            window.playSong = function (imageNumber) {
+                console.log('playSong: ', imageNumber);
+                let song = findSong(imageNumber);
+                
+                if (song) {
+                    const audioElement = document.getElementById('audioPlayer') || createAudioElement();
+                    audioElement.src = `${API_BASE_URL}/audio/${encodeURIComponent(song)}`;
+                    audioElement.play()
+                        .then(() => {
+                            console.log('Playing:', song);
+                            nowPlaying.textContent = `Now Playing: ${song}`;
+                            playPauseButton.textContent = 'Pause';
+                            if (isShuffleMode) {
+                                currentSongIndex = shuffledPlaylist.findIndex(file => file.split('.')[0] === imageNumber);
+                            } else {
+                                currentSongIndex = imageFiles.findIndex(file => file.split('.')[0] === imageNumber);
+                            }
+                            showProgressBar();
+                        })
+                        .catch(error => console.error('Error playing song:', error));
+                } else {
+                    console.log("No song associated with this image");
+                }
+            }
+
+            // Helper function to create audio element if it doesn't exist
+            function createAudioElement() {
+                const audioElement = document.createElement('audio');
+                audioElement.id = 'audioPlayer';
+                document.body.appendChild(audioElement);
+                return audioElement;
+            }
+
+            const audioElement = createAudioElement();
+            const playPauseButton = document.getElementById('playPauseButton');
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            const nowPlaying = document.getElementById('nowPlaying');
+            const progressContainer = document.querySelector('.progress-container');
+            const progressBar = document.querySelector('.progress-bar');
+            const progressHandle = document.querySelector('.progress-handle');
+            const currentTimeDisplay = document.getElementById('currentTime');
+            const durationDisplay = document.getElementById('duration');
+            let currentSongIndex = -1;
+
+            playPauseButton.addEventListener('click', togglePlayPause);
+            prevButton.addEventListener('click', playPreviousSong);
+            nextButton.addEventListener('click', playNextSong);
+
+            function togglePlayPause() {
+                const audioElement = document.getElementById('audioPlayer');
+                if (audioElement.paused) {
+                    if (!audioElement.src) {
+                        if (isShuffleMode) {
+                            shuffleAllSongs();
+                        } else {
+                            playAllSongs();
+                        }
+                    } else {
+                        audioElement.play();
+                    }
+                    playPauseButton.textContent = 'Pause';
+                    showProgressBar();
+                } else {
+                    audioElement.pause();
+                    playPauseButton.textContent = 'Play';
+                }
+            }
+
+            function playPreviousSong() {
+                const audioElement = document.getElementById('audioPlayer');
+                let currTime = Math.floor(audioElement.currentTime);
+                let playlist = isShuffleMode ? shuffledPlaylist : imageFiles;
+                let totalSongs = playlist.length;
+
+                if (currTime < 3 && currentSongIndex > 0) {
+                    currentSongIndex = (currentSongIndex - 1 + totalSongs) % totalSongs;
+                    playSong(playlist[currentSongIndex].split('.')[0]);
+                } else if (currentSongIndex > 0) {
+                    audioElement.currentTime = 0;
+                    audioElement.play();
+                }
+            }
+
+            function playNextSong() {
+                console.log('isShuffleMode: ', isShuffleMode);
+                if (isShuffleMode && currentSongIndex < shuffledPlaylist.length - 1) {
+                    currentSongIndex = (currentSongIndex + 1) % shuffledPlaylist.length;
+                    playSong(shuffledPlaylist[currentSongIndex].split('.')[0]);
+                } else if (currentSongIndex < imageFiles.length - 1) {
+                    currentSongIndex = (currentSongIndex + 1) % imageFiles.length;
+                    playSong(imageFiles[currentSongIndex].split('.')[0]);
+                }
+            }
+
+            const playAllButton = document.getElementById('playAllButton');
+            const shuffleAllButton = document.getElementById('shuffleAllButton');
+
+            playAllButton.addEventListener('click', playAllSongs);
+            shuffleAllButton.addEventListener('click', shuffleAllSongs);
+
+            function playAllSongs() {
+                if (imageFiles.length > 0) {
+                    isShuffleMode = false;
+                    currentSongIndex = 0;
+                    playSong(imageFiles[currentSongIndex].split('.')[0]);
+                }
+            }
+
+            function shuffleAllSongs() {
+                console.log('shuffleAllSongs called. Current isShuffleMode:', isShuffleMode);
+                isShuffleMode = !isShuffleMode;
+                console.log('isShuffleMode toggled to:', isShuffleMode);
+                if (imageFiles.length) {
+                    if (isShuffleMode) {
+                        shuffledPlaylist = [...imageFiles].sort(() => Math.random() - 0.5);
+                        currentSongIndex = 0;
+                        playSong(shuffledPlaylist[currentSongIndex].split('.')[0]);
+                    } else {
+                        // If turning off shuffle, start from the current song in the original playlist
+                        currentSongIndex = imageFiles.findIndex(file => file === shuffledPlaylist[currentSongIndex]);
+                        playSong(imageFiles[currentSongIndex].split('.')[0]);
+                    }
+                }
+            }
+
+            // Event listener for song end to play the next song
+            audioElement.addEventListener('ended', () => {
+                playNextSong();
+            });
+
+            // Update progress bar and time displays
+            audioElement.addEventListener('timeupdate', () => {
+                const currentTime = audioElement.currentTime;
+                const duration = audioElement.duration;
+                if (!isNaN(duration)) {
+                    const progress = (currentTime / duration) * 100;
+                    progressBar.style.width = `${progress}%`;
+                    progressHandle.style.left = `${progress}%`;
+                    currentTimeDisplay.textContent = formatTime(currentTime);
+                    durationDisplay.textContent = formatTime(duration);
+                }
+            });
+
+            // Seek functionality
+            progressContainer.addEventListener('click', (e) => {
+                const rect = progressContainer.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const clickedValue = (x / progressContainer.offsetWidth);
+                audioElement.currentTime = clickedValue * audioElement.duration;
+            });
+
+            // Drag functionality for progress handle
+            let isDragging = false;
+
+            progressHandle.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+
+            function onMouseMove(e) {
+                if (isDragging) {
+                    const rect = progressContainer.getBoundingClientRect();
+                    let x = e.clientX - rect.left;
+                    x = Math.max(0, Math.min(x, progressContainer.offsetWidth));
+                    const progress = x / progressContainer.offsetWidth;
+                    audioElement.currentTime = progress * audioElement.duration;
+                }
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+
+            // Format time in MM:SS
+            function formatTime(time) {
+                const minutes = Math.floor(time / 60);
+                const seconds = Math.floor(time % 60);
+                return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
+
+            function showProgressBar() {
+                document.getElementById('progressContainer').style.display = 'flex';
+                progressContainer.style.display = 'flex';
+            }
+
+            function hideProgressBar() {
+                progressContainer.style.display = 'none';
+            }
+
+            audioElement.addEventListener('play', showProgressBar);
+            audioElement.addEventListener('pause', () => {
+                if (audioElement.currentTime === 0) {
+                    hideProgressBar();
+                }
+            });
+            audioElement.addEventListener('ended', hideProgressBar);
+        });
+    </script>
+</body>
+</html>
