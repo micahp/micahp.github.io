@@ -66,11 +66,12 @@
         let isShuffleMode = false;
         let shuffledPlaylist = [];
 
+        // Sort the imageFiles list in descending order
         function sortImagesList(arr) {
             return arr.sort((a, b) => {
                 const imageNumberA = parseInt(a.split('.')[0], 10);
                 const imageNumberB = parseInt(b.split('.')[0], 10);
-                return imageNumberA - imageNumberB;
+                return imageNumberB - imageNumberA;
             });
         }
 
