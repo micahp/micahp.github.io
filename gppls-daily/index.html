@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Player</title>
+    <title>Gppls Daily 365 Player</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NM00FT5H0Y"></script>
@@ -36,12 +36,12 @@
 <body class="bg-gray-100">
     <div class="flex justify-center mt-4">
         <button id="playAllButton" class="px-4 py-2 bg-green-500 rounded mr-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="yes" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 inline mb-1 mr-1">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-            </svg>Play All
+            <img src="./images/play_arrow.png" alt="Play All" class="w-4 h-4 inline mb-1">
+            Play All
         </button>
         <button id="shuffleAllButton" class="px-4 py-2 bg-blue-500 rounded">
-            <span style="font-size: 16px;" class="material-icons align-middle mb-1">&#xe043;</span> Shuffle All
+            <img src="./images/shuffle.png" alt="Shuffle" class="w-4 h-4 inline mb-1">
+            Shuffle All
         </button>
     </div>
     <div id="imageContainer" class="flex flex-wrap justify-center p-8 pb-28"></div>
@@ -49,9 +49,15 @@
     <div id="audioControls" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4">
         <div id="nowPlaying" class="text-center mb-2"></div>
         <div class="flex justify-center items-center mb-2">
-            <button id="prevButton" class="px-4 py-2 bg-blue-500 rounded mr-2">&lt;&lt;</button>
-            <button id="playPauseButton" class="px-4 py-2 bg-green-500 rounded mr-2">Play</button>
-            <button id="nextButton" class="px-4 py-2 bg-blue-500 rounded">&gt;&gt;</button>
+            <button id="prevButton" class="px-4 py-2 bg-blue-500 rounded mr-2">
+                <img src="./images/skip_previous.png" alt="Previous" class="w-4 h-4 inline" style="width: 24px; height: 24px;">
+            </button>
+            <button id="playPauseButton" class="px-4 py-2 bg-green-500 rounded mr-2">
+                <img id="playPauseIcon" src="./images/play_arrow.png" alt="Play/Pause" class="w-4 h-4 inline" style="width: 24px; height: 24px;">
+            </button>
+            <button id="nextButton" class="px-4 py-2 bg-blue-500 rounded">
+                <img src="./images/skip_next.png" alt="Next" class="w-4 h-4 inline" style="width: 24px; height: 24px;">
+            </button>
         </div>
         <div id="progressContainer" class="flex items-center justify-center" style="display: none;">
             <span id="currentTime" class="mr-2">0:00</span>
@@ -173,7 +179,7 @@
                         .then(() => {
                             console.log('Playing:', song);
                             nowPlaying.textContent = `Now Playing: ${song}`;
-                            playPauseButton.textContent = 'Pause';
+                            playPauseIcon.src = './images/pause.png';
                             if (isShuffleMode) {
                                 currentSongIndex = shuffledPlaylist.findIndex(file => file.split('.')[0] === imageNumber);
                             } else {
@@ -197,6 +203,7 @@
 
             const audioElement = createAudioElement();
             const playPauseButton = document.getElementById('playPauseButton');
+            const playPauseIcon = document.getElementById('playPauseIcon');
             const prevButton = document.getElementById('prevButton');
             const nextButton = document.getElementById('nextButton');
             const nowPlaying = document.getElementById('nowPlaying');
@@ -223,11 +230,13 @@
                     } else {
                         audioElement.play();
                     }
-                    playPauseButton.textContent = 'Pause';
+                    //playPauseButton.textContent = 'Pause';
+                    playPauseIcon.src = './images/pause.png';
                     showProgressBar();
                 } else {
                     audioElement.pause();
-                    playPauseButton.textContent = 'Play';
+                    //playPauseButton.textContent = 'Play';
+                    playPauseIcon.src = './images/play_arrow.png';
                 }
             }
 
