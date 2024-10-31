@@ -13,20 +13,50 @@
         .fade-in {
             animation: fadeIn 0.5s ease-in-out;
         }
+        .grid::after {
+            content: "";
+            display: block;
+            width: 120px;
+            height: 1px; /* just a tiny height to fill the grid spot without adding space */
+            background: transparent;
+        }
+
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans">
-    <header class="bg-gray-800 shadow-md fixed top-0 left-0 right-0 z-10">
+<body class="bg-slate-900 text-slate-100 font-sans">
+    <header class="bg-slate-800 shadow-md fixed top-0 left-0 right-0 z-10">
         <nav class="container mx-auto px-4 py-4 flex justify-center">
-            <a href="https://innovativehype.substack.com" class="mx-4 text-gray-300 hover:text-white transition duration-300 ease-in-out fade-in">Newsletter</a>
-            <a href="https://twitter.com/innovativehype" class="mx-4 text-gray-300 hover:text-white transition duration-300 ease-in-out fade-in">Twitter</a>
-            <a href="https://instagram.com/innovativehype" class="mx-4 text-gray-300 hover:text-white transition duration-300 ease-in-out fade-in">Instagram</a>
+            <a href="https://innovativehype.substack.com" class="mx-4 text-slate-300 hover:text-white transition duration-300 ease-in-out fade-in">Newsletter</a>
+            <a href="https://twitter.com/innovativehype" class="mx-4 text-slate-300 hover:text-white transition duration-300 ease-in-out fade-in">Twitter</a>
+            <a href="https://instagram.com/innovativehype" class="mx-4 text-slate-300 hover:text-white transition duration-300 ease-in-out fade-in">Instagram</a>
         </nav>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10">
         <h1 class="text-4xl md:text-5xl font-extrabold text-center my-8 fade-in text-white tracking-tight">Innovative Hype</h1>
-        <div class="flex justify-center items-center fade-in">
+                <!-- Clients section with Client logos -->
+                <div class="bg-slate-800 mx-8 p-4 sm:p-6 md:p-8 lg:p-10 rounded-lg my-10 fade-in min-w-[350px] max-w-[1200px] mx-auto">
+                    <h2 class="text-2xl font-bold text-center text-white mb-8">Our Trusted Partners</h2>
+                    <div class="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10">
+                        <div class="flex justify-center w-[150px]">
+                            <img src="assets/images/client-logos/ellomix-logo.png" alt="Ellomix" class="w-full object-contain">
+                        </div>
+                        <div class="flex justify-center w-[150px]">
+                            <img src="assets/images/client-logos/AB_Logo_DarkBlue.png" alt="AppBrilliance" class="w-full object-contain">
+                        </div>
+                        <div class="flex justify-center w-[150px]">
+                            <img src="assets/images/client-logos/hip-hop-heads-logo-black.png" alt="Hip Hop Heads" class="w-full object-contain">
+                        </div>
+                        <div class="flex justify-center w-[150px]">
+                            <img src="assets/images/client-logos/rabbithole-logo.png" alt="Rabbithole" class="w-full object-contain">
+                        </div>
+                        <div class="flex justify-center w-[150px]">
+                            <img src="assets/images/client-logos/ShieldPay_corrected.png" alt="Shield Pay" class="w-full object-contain">
+                        </div>
+                    </div>
+                </div>
+        <div class="flex flex-col items-center fade-in">
+            <h3 class="text-2xl font-bold text-center text-white mt-6 mb-8">Video Description</h3>
             <video controls class="w-full max-w-sm rounded-lg shadow-xl">
                 <source src="assets/innovative-hype-explainer.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -34,7 +64,9 @@
         </div>
     </main>
 
-    <footer class="bg-gray-800 text-gray-300 py-4 text-center">
+
+
+    <footer class="bg-slate-800 text-slate-300 py-4 text-center">
         <p>&copy; 2024 Innovative Hype. All rights reserved.</p>
     </footer>
 
@@ -42,10 +74,10 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('mouseenter', () => {
-                    link.classList.add('text-blue-400');
+                    link.classList.add('text-indigo-400');
                 });
                 link.addEventListener('mouseleave', () => {
-                    link.classList.remove('text-blue-400');
+                    link.classList.remove('text-indigo-400');
                 });
             });
         });
