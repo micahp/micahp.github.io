@@ -3,81 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Innovative Hype</title>
+    <title>Innovative Hype - Bring your MVP to light</title>
     <link href="./output.css" rel="stylesheet">
     <style>
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.6s ease-out;
         }
-        .grid::after {
-            content: "";
-            display: block;
-            width: 120px;
-            height: 1px; /* just a tiny height to fill the grid spot without adding space */
-            background: transparent;
-        }
-
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans">
-    <header class="bg-slate-800 shadow-md fixed top-0 left-0 right-0 z-10">
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900 font-sans">
+    <header class="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
         <nav class="container mx-auto px-4 py-4 flex justify-center">
-            <a href="https://innovativehype.substack.com/" target="_blank" class="mx-4 text-slate-300 hover:text-white transition duration-300 ease-in-out fade-in">Newsletter</a>
-            <a href="https://open.spotify.com/show/4BOYK9pMvz8X4jq1Pk3ML7" target="_blank" class="mx-4 text-slate-300 hover:text-white transition duration-300 ease-in-out fade-in">Podcast</a>
-            <a href="https://twitter.com/innovativehype/" target="_blank" class="mx-4 text-slate-300 hover:text-white transition duration-300 ease-in-out fade-in">Twitter</a>
-            <a href="https://instagram.com/innovativehype/" target="_blank" class="mx-4 text-slate-300 hover:text-white transition duration-300 ease-in-out fade-in">Instagram</a>
+            <a href="https://innovativehype.substack.com/" target="_blank" class="mx-4 text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out hover:scale-105">Newsletter</a>
+            <a href="https://open.spotify.com/show/4BOYK9pMvz8X4jq1Pk3ML7" target="_blank" class="mx-4 text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out hover:scale-105">Podcast</a>
+            <a href="https://twitter.com/innovativehype/" target="_blank" class="mx-4 text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out hover:scale-105">Twitter</a>
+            <a href="https://instagram.com/innovativehype/" target="_blank" class="mx-4 text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out hover:scale-105">Instagram</a>
         </nav>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-center my-8 fade-in text-white tracking-tight">Innovative Hype</h1>
-        <p class="text-lg sm:text-xl text-slate-300 text-center max-w-3xl mx-auto leading-relaxed mb-4 fade-in" style="font-size: 1.125rem;">
-            Innovative Hype is a cutting-edge digital product and marketing agency specializing in rapid prototyping, brand development, and innovative media and technology solutions (e.g. Web3, AI, mixed reality and gamified experiences).
-        </p>
-        <p class="text-lg sm:text-xl text-slate-300 text-center max-w-3xl mx-auto mb-12 leading-relaxed fade-in" style="font-size: 1.125rem;">
-            We help independent artists, creators, and small businesses amplify their online presence and connect with their target audience through strategic, data-driven solutions.
-        </p>
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-16">
+        <!-- Hero Section -->
+        <section class="text-center mb-20 fade-in">
+            <div class="flex flex-col md:flex-row justify-center items-center mb-8">
+                <div class="text-7xl md:text-8xl mb-4 md:mb-0 md:mr-6 animate-pulse">💡</div>
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
+                    Bring your MVP<br>
+                    to light <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">in 2 weeks</span>
+                </h1>
+            </div>
+            <p class="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed fade-in stagger-1">
+                We rapidly build AI products for startups and entrepreneurs
+            </p>
+            <a href="http://calendly.com/geoppls" target="_blank" class="inline-block bg-black text-white px-10 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-lg fade-in stagger-2">
+                BOOK A DISCOVERY CALL
+            </a>
+        </section>
 
-            <!-- Clients section with Client logos -->
-            <div class="bg-slate-800 mx-8 p-4 sm:p-6 md:p-8 lg:p-10 rounded-lg my-10 fade-in min-w-[350px] max-w-[1200px] mx-auto">
-                <h2 class="text-2xl font-bold text-center text-white mb-8">Our Trusted Partners</h2>
-                <div class="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10">
-                    <div class="flex justify-center w-[150px]">
-                        <img src="assets/images/client-logos/ellomix-logo.png" alt="Ellomix" class="w-full object-contain">
-                    </div>
-                    <div class="flex justify-center w-[150px]">
-                        <img src="assets/images/client-logos/AB_Logo_DarkBlue.png" alt="AppBrilliance" class="w-full object-contain">
-                    </div>
-                    <div class="flex justify-center w-[150px]">
-                        <img src="assets/images/client-logos/hip-hop-heads-logo-black.png" alt="Hip Hop Heads" class="w-full object-contain">
-                    </div>
-                    <div class="flex justify-center w-[150px]">
-                        <img src="assets/images/client-logos/rabbithole-logo.png" alt="Rabbithole" class="w-full object-contain">
-                    </div>
-                    <div class="flex justify-center w-[150px]">
-                        <img src="assets/images/client-logos/ShieldPay_corrected.png" alt="Shield Pay" class="w-full object-contain">
-                    </div>
+        <!-- Metrics Section -->
+        <section class="bg-white/70 backdrop-blur-sm rounded-2xl p-8 md:p-12 mb-20 shadow-lg border border-gray-200 fade-in stagger-3">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12 text-center">
+                <div class="group">
+                    <div class="text-4xl md:text-5xl font-bold text-gray-900 group-hover:scale-110 transition-transform duration-300">18</div>
+                    <div class="text-gray-600 text-lg">MVPs launched</div>
+                </div>
+                <div class="hidden md:block text-gray-300 text-2xl">·</div>
+                <div class="group">
+                    <div class="text-4xl md:text-5xl font-bold text-gray-900 group-hover:scale-110 transition-transform duration-300">7+</div>
+                    <div class="text-gray-600 text-lg">years experience</div>
+                </div>
+                <div class="hidden md:block text-gray-300 text-2xl">·</div>
+                <div class="group">
+                    <div class="text-4xl md:text-5xl font-bold text-gray-900 group-hover:scale-110 transition-transform duration-300">$30M</div>
+                    <div class="text-gray-600 text-lg">raised by clients</div>
                 </div>
             </div>
-        <div class="flex flex-col items-center fade-in">
-            <h3 class="text-2xl font-bold text-center text-white mt-6 mb-8">Video Description</h3>
-            <video controls class="w-full max-w-sm rounded-lg shadow-xl">
-                <source src="assets/innovative-hype-explainer.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="mb-20 fade-in">
+            <h2 class="text-4xl md:text-5xl font-bold mb-8 text-center md:text-left">Innovative Hype</h2>
+            <p class="text-xl text-gray-600 mb-12 leading-relaxed max-w-4xl">
+                Innovative Hype is a digital product and marketing agency specializing in rapid prototyping and emerging technologies. We help founders, creators, and small businesses engage their audience through strategic, data-driven solutions.
+            </p>
+            
+            <!-- Client Logos -->
+            <div class="text-left mb-6">
+                <p class="text-sm text-gray-500 uppercase tracking-wider font-medium">Trusted by</p>
+            </div>
+            <div class="flex flex-wrap justify-center md:justify-start items-center gap-8 md:gap-12 mb-16 opacity-70">
+                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                    <img src="assets/images/client-logos/ellomix-logo.png" alt="Ellomix" class="h-full object-contain">
+                </div>
+                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                    <img src="assets/images/client-logos/AB_Logo_DarkBlue.png" alt="App Brilliance" class="h-full object-contain">
+                </div>
+                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                    <img src="assets/images/client-logos/hip-hop-heads-logo-black.png" alt="Hip Hop Heads" class="h-full object-contain">
+                </div>
+                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                    <img src="assets/images/client-logos/rabbithole-logo.png" alt="RabbitHole" class="h-full object-contain">
+                </div>
+                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                    <img src="assets/images/client-logos/jude-ai-logo-black-text.png" alt="Jude AI" class="h-full object-contain">
+                </div>
+                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                    <img src="assets/images/client-logos/otc-shop-logo.png" alt="OTC Shop" class="h-full object-contain">
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Partner With Us -->
+        <section class="mb-20 fade-in">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center md:text-left">Why partner with us</h2>
+            <div class="space-y-3 max-w-4xl">
+                <div class="flex items-center group hover:bg-white/50 rounded-lg p-4 transition-all duration-300">
+                    <div class="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-6 group-hover:scale-125 transition-transform duration-300"></div>
+                    <span class="text-xl text-gray-700 group-hover:text-gray-900 transition-colors duration-300">Deep expertise in innovative industries: AI, web3, gaming, and more</span>
+                </div>
+                <div class="flex items-center group hover:bg-white/50 rounded-lg p-4 transition-all duration-300">
+                    <div class="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-6 group-hover:scale-125 transition-transform duration-300"></div>
+                    <span class="text-xl text-gray-700 group-hover:text-gray-900 transition-colors duration-300">Agile sprints</span>
+                </div>
+                <div class="flex items-center group hover:bg-white/50 rounded-lg p-4 transition-all duration-300">
+                    <div class="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-6 group-hover:scale-125 transition-transform duration-300"></div>
+                    <span class="text-xl text-gray-700 group-hover:text-gray-900 transition-colors duration-300">Human-centered design focus</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work -->
+        <section class="mb-20 fade-in">
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center md:text-left">Work</h2>
+            <div class="grid lg:grid-cols-3 gap-8 md:gap-10">
+                <!-- Ellomix -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Ellomix</h3>
+                    <p class="text-gray-600 text-lg">Designed music app from scratch</p>
+                </div>
+
+                <!-- RabbitHole -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">RabbitHole</h3>
+                    <p class="text-gray-600 text-lg">Built partner campaign dashboard</p>
+                </div>
+
+                <!-- HIP HOP HEADS -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">HIP HOP HEADS</h3>
+                    <p class="text-gray-600 text-lg">Created multi-touch fan flywheel</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="text-center mb-20 fade-in">
+            <a href="http://calendly.com/geoppls" target="_blank" class="inline-block bg-black text-white px-10 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-lg">
+                BOOK A DISCOVERY CALL
+            </a>
+        </section>
     </main>
 
-
-
-    <footer class="bg-slate-800 text-slate-300 py-4 text-center">
-        <p>&copy; 2024 Innovative Hype. All rights reserved.</p>
+    <footer class="bg-white/80 backdrop-blur-sm border-t border-gray-200 text-gray-600 py-12 text-center">
+        <p class="text-lg">&copy; 2024 Innovative Hype. All rights reserved.</p>
     </footer>
-
-
 </body>
 </html>
