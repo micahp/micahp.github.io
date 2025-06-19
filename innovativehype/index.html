@@ -43,7 +43,10 @@
         <!-- Hero Section -->
         <section class="text-center mb-20 fade-in">
             <div class="flex flex-col md:flex-row justify-center items-center mb-8">
-                <div id="lightBulb" class="text-7xl md:text-8xl mb-4 md:mb-0 md:mr-6 light-bulb select-none" title="Toggle dark mode">💡</div>
+                <div id="lightBulb" class="relative mb-4 md:mb-0 md:mr-6 light-bulb select-none" title="Toggle dark mode">
+                    <span id="lightOnIcon" class="text-7xl md:text-8xl">💡</span>
+                    <img id="lightOffIcon" style="width: 113px; height: 113px;" src="assets/light-bulb-off.png" alt="Light bulb off" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden w-24 h-24 object-contain">
+                </div>
                 <h1 class="text-5xl md:text-7xl font-bold text-gray-900 dark:text-gray-100 leading-tight">
                     Bring your MVP<br>
                     to light <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">in 2 weeks</span>
@@ -90,22 +93,22 @@
             </div>
             <div class="flex flex-wrap justify-center md:justify-start items-center gap-8 md:gap-12 mb-16 opacity-70">
                 <div class="h-12 hover:opacity-100">
-                    <img src="assets/images/client-logos/ellomix-logo.png" alt="Ellomix" class="h-full object-contain dark:invert">
+                    <img src="assets/images/client-logos/ellomix-logo.png" alt="Ellomix" class="h-full object-contain">
                 </div>
                 <div class="h-12 hover:opacity-100">
-                    <img src="assets/images/client-logos/AB_Logo_DarkBlue.png" alt="App Brilliance" class="h-full object-contain dark:invert">
+                    <img src="assets/images/client-logos/AB_Logo_DarkBlue.png" alt="App Brilliance" class="h-full object-contain">
                 </div>
                 <div class="h-12 hover:opacity-100">
-                    <img src="assets/images/client-logos/hip-hop-heads-logo-black.png" alt="Hip Hop Heads" class="h-full object-contain dark:invert">
+                    <img src="assets/images/client-logos/hip-hop-heads-logo-black.png" alt="Hip Hop Heads" class="h-full object-contain">
                 </div>
                 <div class="h-12 hover:opacity-100">
-                    <img src="assets/images/client-logos/rabbithole-logo.png" alt="RabbitHole" class="h-full object-contain dark:invert">
+                    <img src="assets/images/client-logos/rabbithole-logo.png" alt="RabbitHole" class="h-full object-contain">
                 </div>
                 <div class="h-12 hover:opacity-100">
-                    <img src="assets/images/client-logos/jude-ai-logo-black-text.png" alt="Jude AI" class="h-full object-contain dark:invert">
+                    <img src="assets/images/client-logos/jude-ai-logo-black-text.png" alt="Jude AI" class="h-full object-contain">
                 </div>
                 <div class="h-12 hover:opacity-100">
-                    <img src="assets/images/client-logos/otc-shop-logo.png" alt="OTC Shop" class="h-full object-contain dark:invert">
+                    <img src="assets/images/client-logos/otc-shop-logo.png" alt="OTC Shop" class="h-full object-contain">
                 </div>
             </div>
         </section>
@@ -129,9 +132,9 @@
             </div>
         </section>
 
-        <!-- Work -->
+        <!-- Past Work -->
         <section class="mb-20 fade-in">
-            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center md:text-left dark:text-gray-100">Work</h2>
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center md:text-left">Past Work</h2>
             <div class="grid lg:grid-cols-3 gap-8 md:gap-10">
                 <!-- Ellomix -->
                 <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-2">
@@ -168,41 +171,33 @@
     <script>
         // Dark mode toggle functionality
         const lightBulb = document.getElementById('lightBulb');
+        const lightOnIcon = document.getElementById('lightOnIcon');
+        const lightOffIcon = document.getElementById('lightOffIcon');
         const html = document.documentElement;
         
+        const setTheme = (theme) => {
+            if (theme === 'dark') {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                lightOnIcon.classList.add('hidden');
+                lightOffIcon.classList.remove('hidden');
+            } else {
+                html.classList.add('light');
+                html.classList.remove('dark');
+                lightOnIcon.classList.remove('hidden');
+                lightOffIcon.classList.add('hidden');
+            }
+            localStorage.setItem('theme', theme);
+        };
+
         // Check for saved theme preference or default to light mode
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            html.classList.add('dark');
-            html.classList.remove('light');
-            lightBulb.style.opacity = '0.5';
-            lightBulb.textContent = '🔌'; // Unplugged/off bulb
-        } else {
-            html.classList.add('light');
-            html.classList.remove('dark');
-            lightBulb.style.opacity = '1';
-            lightBulb.textContent = '💡'; // Bright bulb
-        }
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
 
         // Toggle dark mode on light bulb click
         lightBulb.addEventListener('click', () => {
             const isDark = html.classList.contains('dark');
-            
-            if (isDark) {
-                // Switch to light mode
-                html.classList.add('light');
-                html.classList.remove('dark');
-                lightBulb.style.opacity = '1';
-                lightBulb.textContent = '💡';
-                localStorage.setItem('theme', 'light');
-            } else {
-                // Switch to dark mode
-                html.classList.add('dark');
-                html.classList.remove('light');
-                lightBulb.style.opacity = '0.5';
-                lightBulb.textContent = '🔌';
-                localStorage.setItem('theme', 'dark');
-            }
+            setTheme(isDark ? 'light' : 'dark');
         });
     </script>
 </body>
