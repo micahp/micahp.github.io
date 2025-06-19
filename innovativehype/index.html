@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,15 +16,26 @@
         .stagger-1 { animation-delay: 0.1s; }
         .stagger-2 { animation-delay: 0.2s; }
         .stagger-3 { animation-delay: 0.3s; }
+        
+        /* Light bulb transition */
+        .light-bulb {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .light-bulb:hover {
+            transform: scale(1.1);
+        }
+        
+
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900 font-sans">
-    <header class="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 font-sans">
+    <header class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
         <nav class="container mx-auto px-4 py-4 flex justify-center">
-            <a href="https://innovativehype.substack.com/" target="_blank" class="mx-4 text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out hover:scale-105">Newsletter</a>
-            <a href="https://open.spotify.com/show/4BOYK9pMvz8X4jq1Pk3ML7" target="_blank" class="mx-4 text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out hover:scale-105">Podcast</a>
-            <a href="https://twitter.com/innovativehype/" target="_blank" class="mx-4 text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out hover:scale-105">Twitter</a>
-            <a href="https://instagram.com/innovativehype/" target="_blank" class="mx-4 text-gray-600 hover:text-gray-900 transition duration-300 ease-in-out hover:scale-105">Instagram</a>
+            <a href="https://innovativehype.substack.com/" target="_blank" class="mx-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:scale-105">Newsletter</a>
+            <a href="https://open.spotify.com/show/4BOYK9pMvz8X4jq1Pk3ML7" target="_blank" class="mx-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:scale-105">Podcast</a>
+            <a href="https://twitter.com/innovativehype/" target="_blank" class="mx-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:scale-105">Twitter</a>
+            <a href="https://instagram.com/innovativehype/" target="_blank" class="mx-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:scale-105">Instagram</a>
         </nav>
     </header>
 
@@ -32,68 +43,71 @@
         <!-- Hero Section -->
         <section class="text-center mb-20 fade-in">
             <div class="flex flex-col md:flex-row justify-center items-center mb-8">
-                <div class="text-7xl md:text-8xl mb-4 md:mb-0 md:mr-6 animate-pulse">💡</div>
-                <h1 class="text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
+                <div id="lightBulb" class="relative mb-4 md:mb-0 md:mr-6 light-bulb select-none" title="Toggle dark mode">
+                    <span id="lightOnIcon" class="text-7xl md:text-8xl">💡</span>
+                    <img id="lightOffIcon" style="width: 113px; height: 113px;" src="assets/light-bulb-off.png" alt="Light bulb off" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden w-24 h-24 object-contain">
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-900 dark:text-gray-100 leading-tight">
                     Bring your MVP<br>
                     to light <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">in 2 weeks</span>
                 </h1>
             </div>
-            <p class="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed fade-in stagger-1">
+            <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed fade-in stagger-1">
                 We rapidly build AI products for startups and entrepreneurs
             </p>
-            <a href="http://calendly.com/geoppls" target="_blank" class="inline-block bg-black text-white px-10 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-lg fade-in stagger-2">
+            <a href="http://calendly.com/geoppls" target="_blank" class="inline-block bg-black dark:bg-gray-100 text-white dark:text-gray-900 px-10 py-4 rounded-lg font-semibold hover:bg-gray-800 dark:hover:bg-gray-200 transform hover:scale-105 hover:shadow-lg text-lg fade-in stagger-2">
                 BOOK A DISCOVERY CALL
             </a>
         </section>
 
         <!-- Metrics Section -->
-        <section class="bg-white/70 backdrop-blur-sm rounded-2xl p-8 md:p-12 mb-20 shadow-lg border border-gray-200 fade-in stagger-3">
+        <section class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-8 md:p-12 mb-20 shadow-lg border border-gray-200 dark:border-gray-700 fade-in stagger-3">
             <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12 text-center">
                 <div class="group">
-                    <div class="text-4xl md:text-5xl font-bold text-gray-900 group-hover:scale-110 transition-transform duration-300">18</div>
-                    <div class="text-gray-600 text-lg">MVPs launched</div>
+                    <div class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 group-hover:scale-110">18</div>
+                    <div class="text-gray-600 dark:text-gray-300 text-lg">MVPs launched</div>
                 </div>
-                <div class="hidden md:block text-gray-300 text-2xl">·</div>
+                <div class="hidden md:block text-gray-300 dark:text-gray-600 text-2xl">·</div>
                 <div class="group">
-                    <div class="text-4xl md:text-5xl font-bold text-gray-900 group-hover:scale-110 transition-transform duration-300">7+</div>
-                    <div class="text-gray-600 text-lg">years experience</div>
+                    <div class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 group-hover:scale-110">7+</div>
+                    <div class="text-gray-600 dark:text-gray-300 text-lg">years experience</div>
                 </div>
-                <div class="hidden md:block text-gray-300 text-2xl">·</div>
+                <div class="hidden md:block text-gray-300 dark:text-gray-600 text-2xl">·</div>
                 <div class="group">
-                    <div class="text-4xl md:text-5xl font-bold text-gray-900 group-hover:scale-110 transition-transform duration-300">$30M</div>
-                    <div class="text-gray-600 text-lg">raised by clients</div>
+                    <div class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 group-hover:scale-110">$30M</div>
+                    <div class="text-gray-600 dark:text-gray-300 text-lg">raised by clients</div>
                 </div>
             </div>
         </section>
 
         <!-- About Section -->
         <section class="mb-20 fade-in">
-            <h2 class="text-4xl md:text-5xl font-bold mb-8 text-center md:text-left">Innovative Hype</h2>
-            <p class="text-xl text-gray-600 mb-12 leading-relaxed max-w-4xl">
+            <h2 class="text-4xl md:text-5xl font-bold mb-8 text-center md:text-left dark:text-gray-100">Innovative Hype</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-12 leading-relaxed max-w-4xl">
                 Innovative Hype is a digital product and marketing agency specializing in rapid prototyping and emerging technologies. We help founders, creators, and small businesses engage their audience through strategic, data-driven solutions.
             </p>
             
             <!-- Client Logos -->
             <div class="text-left mb-6">
-                <p class="text-sm text-gray-500 uppercase tracking-wider font-medium">Trusted by</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider font-medium">Trusted by</p>
             </div>
             <div class="flex flex-wrap justify-center md:justify-start items-center gap-8 md:gap-12 mb-16 opacity-70">
-                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                <div class="h-12 hover:opacity-100">
                     <img src="assets/images/client-logos/ellomix-logo.png" alt="Ellomix" class="h-full object-contain">
                 </div>
-                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                <div class="h-12 hover:opacity-100">
                     <img src="assets/images/client-logos/AB_Logo_DarkBlue.png" alt="App Brilliance" class="h-full object-contain">
                 </div>
-                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                <div class="h-12 hover:opacity-100">
                     <img src="assets/images/client-logos/hip-hop-heads-logo-black.png" alt="Hip Hop Heads" class="h-full object-contain">
                 </div>
-                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                <div class="h-12 hover:opacity-100">
                     <img src="assets/images/client-logos/rabbithole-logo.png" alt="RabbitHole" class="h-full object-contain">
                 </div>
-                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                <div class="h-12 hover:opacity-100">
                     <img src="assets/images/client-logos/jude-ai-logo-black-text.png" alt="Jude AI" class="h-full object-contain">
                 </div>
-                <div class="h-12 hover:opacity-100 transition-opacity duration-300">
+                <div class="h-12 hover:opacity-100">
                     <img src="assets/images/client-logos/otc-shop-logo.png" alt="OTC Shop" class="h-full object-contain">
                 </div>
             </div>
@@ -101,57 +115,57 @@
 
         <!-- Why Partner With Us -->
         <section class="mb-20 fade-in">
-            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center md:text-left">Why partner with us</h2>
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center md:text-left dark:text-gray-100">Why partner with us</h2>
             <div class="space-y-3 max-w-4xl">
                 <div class="flex items-start p-4">
                     <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-6 mt-2 flex-shrink-0"></div>
-                    <span class="text-xl text-gray-700">Deep expertise in innovative industries: AI, web3, gaming, and more</span>
+                    <span class="text-xl text-gray-700 dark:text-gray-300">Deep expertise in innovative industries: AI, web3, gaming, and more</span>
                 </div>
                 <div class="flex items-start p-4">
                     <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-6 mt-2 flex-shrink-0"></div>
-                    <span class="text-xl text-gray-700">Human-centered design focus</span>
+                    <span class="text-xl text-gray-700 dark:text-gray-300">Human-centered design focus</span>
                 </div>
                 <div class="flex items-start p-4">
                     <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-6 mt-2 flex-shrink-0"></div>
-                    <span class="text-xl text-gray-700">Agile sprints</span>
+                    <span class="text-xl text-gray-700 dark:text-gray-300">Agile sprints</span>
                 </div>
             </div>
         </section>
 
         <!-- Our Apps -->
         <section class="mb-20 fade-in">
-            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center md:text-left">Our Apps</h2>
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center md:text-left dark:text-gray-100">Our Apps</h2>
             <div class="grid lg:grid-cols-3 gap-8 md:gap-10">
                 <!-- YapGPT -->
-                <a href="https://yapgpt.xyz" target="_blank" class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 block group">
+                <a href="https://yapgpt.xyz" target="_blank" class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-2 block group">
                     <div class="flex justify-between items-start">
                         <div>
-                            <h3 class="text-2xl font-bold mb-3 text-gray-900">YapGPT</h3>
-                            <p class="text-gray-600 text-lg">Aggregated LLM chat wrapper</p>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">YapGPT</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-lg">Aggregated LLM chat wrapper</p>
                         </div>
-                        <div class="text-gray-400 text-xl ml-4 transition-transform duration-300 group-hover:translate-x-1">→</div>
+                        <div class="text-gray-400 dark:text-gray-500 text-xl ml-4 group-hover:translate-x-1">→</div>
                     </div>
                 </a>
 
                 <!-- Fine Photo Gen -->
-                <a href="https://photogen.innovativehype.xyz" target="_blank" class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 block group">
+                <a href="https://photogen.innovativehype.xyz" target="_blank" class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-2 block group">
                     <div class="flex justify-between items-start">
                         <div>
-                            <h3 class="text-2xl font-bold mb-3 text-gray-900">Fine Photo Gen</h3>
-                            <p class="text-gray-600 text-lg">AI photo generation app</p>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">Fine Photo Gen</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-lg">AI photo generation app</p>
                         </div>
-                        <div class="text-gray-400 text-xl ml-4 transition-transform duration-300 group-hover:translate-x-1">→</div>
+                        <div class="text-gray-400 dark:text-gray-500 text-xl ml-4 group-hover:translate-x-1">→</div>
                     </div>
                 </a>
 
                 <!-- MinnesotaLakesOnChain -->
-                <a href="https://minneostalakesonchain.com" target="_blank" class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 block group">
+                <a href="https://minneostalakesonchain.com" target="_blank" class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-2 block group">
                     <div class="flex justify-between items-start">
                         <div>
-                            <h3 class="text-2xl font-bold mb-3 text-gray-900">Minnesota Lakes On Chain</h3>
-                            <p class="text-gray-600 text-lg">Minnesota lake visualizer</p>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">Minnesota Lakes On Chain</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-lg">Minnesota lake visualizer</p>
                         </div>
-                        <div class="text-gray-400 text-xl ml-4 transition-transform duration-300 group-hover:translate-x-1">→</div>
+                        <div class="text-gray-400 dark:text-gray-500 text-xl ml-4 group-hover:translate-x-1">→</div>
                     </div>
                 </a>
             </div>
@@ -162,35 +176,68 @@
             <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center md:text-left">Past Work</h2>
             <div class="grid lg:grid-cols-3 gap-8 md:gap-10">
                 <!-- Ellomix -->
-                <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Ellomix</h3>
-                    <p class="text-gray-600 text-lg">Designed music app from scratch</p>
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-2">
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">Ellomix</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-lg">Designed music app from scratch</p>
                 </div>
 
                 <!-- RabbitHole -->
-                <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                    <h3 class="text-2xl font-bold mb-3 text-gray-900">RabbitHole</h3>
-                    <p class="text-gray-600 text-lg">Built partner campaign dashboard</p>
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-2">
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">RabbitHole</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-lg">Built partner campaign dashboard</p>
                 </div>
 
                 <!-- Shield -->
-                <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Shield</h3>
-                    <p class="text-gray-600 text-lg">Created blockchain security scanner</p>
+                <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-2">
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">Shield</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-lg">Created blockchain security scanner</p>
                 </div>
             </div>
         </section>
 
         <!-- CTA Section -->
         <section class="text-center mb-20 fade-in">
-            <a href="http://calendly.com/geoppls" target="_blank" class="inline-block bg-black text-white px-10 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-lg">
+            <a href="http://calendly.com/geoppls" target="_blank" class="inline-block bg-black dark:bg-gray-100 text-white dark:text-gray-900 px-10 py-4 rounded-lg font-semibold hover:bg-gray-800 dark:hover:bg-gray-200 transform hover:scale-105 hover:shadow-lg text-lg">
                 BOOK A DISCOVERY CALL
             </a>
         </section>
     </main>
 
-    <footer class="bg-white/80 backdrop-blur-sm border-t border-gray-200 text-gray-600 py-12 text-center">
+    <footer class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 py-12 text-center">
         <p class="text-lg">&copy; 2024 Innovative Hype. All rights reserved.</p>
     </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        const lightBulb = document.getElementById('lightBulb');
+        const lightOnIcon = document.getElementById('lightOnIcon');
+        const lightOffIcon = document.getElementById('lightOffIcon');
+        const html = document.documentElement;
+        
+        const setTheme = (theme) => {
+            if (theme === 'dark') {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                lightOnIcon.classList.add('hidden');
+                lightOffIcon.classList.remove('hidden');
+            } else {
+                html.classList.add('light');
+                html.classList.remove('dark');
+                lightOnIcon.classList.remove('hidden');
+                lightOffIcon.classList.add('hidden');
+            }
+            localStorage.setItem('theme', theme);
+        };
+
+        // Check for saved theme preference or default to light mode
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
+        // Toggle dark mode on light bulb click
+        lightBulb.addEventListener('click', () => {
+            const isDark = html.classList.contains('dark');
+            setTheme(isDark ? 'light' : 'dark');
+        });
+    </script>
 </body>
 </html>
