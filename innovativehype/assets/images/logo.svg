@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Black background -->
+  <rect width="512" height="512" fill="#000"/>
+  
+  <!-- White triangle in the bottom-right -->
+  <polygon points="312,512 512,312 512,512" fill="#fff"/>
+
+  <!-- “innovative” -->
+  <text
+    x="40" y="180"
+    fill="#fff"
+    font-family="Helvetica Neue, Arial, sans-serif"
+    font-weight="bold"
+    font-size="80"
+  >innovative</text>
+
+  <!-- “hype” -->
+  <text
+    x="40" y="280"
+    fill="#fff"
+    font-family="Helvetica Neue, Arial, sans-serif"
+    font-weight="bold"
+    font-size="80"
+  >hype</text>
+</svg>
