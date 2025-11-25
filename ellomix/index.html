@@ -13,6 +13,102 @@
     		.evol img {
     			padding-left: 150px;
     		}
+    		.text-width {
+    			max-width: 750px;
+    			width: 100%;
+    			height: auto;
+    		}
+    		.image-row {
+    			display: flex;
+    			gap: 20px;
+    			max-width: 750px;
+    			margin-bottom: 20px;
+    		}
+    		.image-row img {
+    			flex: 1;
+    			max-width: calc(50% - 10px);
+    			width: auto;
+    			height: auto;
+    			object-fit: contain;
+    		}
+    		.phone-mockup {
+    			position: sticky;
+    			top: 50px;
+    			float: right;
+    			width: 330px;
+    			height: auto;
+    		}
+    		.phone-mockup img {
+    			width: 100%;
+    			height: auto;
+    			display: block;
+    		}
+    		.phone-mockup video {
+    			position: absolute;
+    			top: 0;
+    			left: 0;
+    			width: 87%;
+    			height: 73%;
+    			object-fit: cover;
+    			transform: translate(23.5px, 94px);
+    		}
+    		video.text-width {
+    			max-width: 750px;
+    			width: 100%;
+    			height: auto;
+    			display: block;
+    		}
+    		@media (max-width: 768px) {
+    			.section {
+    				padding: 50px 20px 0 20px;
+    			}
+    			.body-text {
+    				width: 100%;
+    				max-width: 100%;
+    			}
+    			.text-width {
+    				max-width: 100%;
+    			}
+    			.image-row {
+    				flex-direction: column;
+    				max-width: 100%;
+    			}
+    			.image-row img {
+    				max-width: 100%;
+    				width: 100%;
+    			}
+    			.header {
+    				height: auto;
+    				min-height: 518px;
+    			}
+    			.header-text {
+    				font-size: 60px;
+    			}
+    			.phone-mockup {
+    				max-width: 200px;
+    				width: 200px;
+    				top: 20px;
+    			}
+    			.support {
+    				font-size: 18px;
+    			}
+    		}
+    		@media (max-width: 480px) {
+    			.section {
+    				padding: 30px 15px 0 15px;
+    			}
+    			.header-text {
+    				font-size: 40px;
+    			}
+    			.phone-mockup {
+    				max-width: 150px;
+    				width: 150px;
+    				top: 15px;
+    			}
+    			.support {
+    				font-size: 16px;
+    			}
+    		}
     	</style>
     </head>
 <body>
@@ -21,31 +117,71 @@
 		<div class="header section">
 			<div class="header-text padding-top">
 				<p>Ellomix</p>
-				<p class="support">Social Media Music Steaming</p>
+				<p class="support">Social Media Music Streaming</p>
 			</div>
-			<iframe class="float-right" src="https://marvelapp.com/27ffdii?emb=1" width="330" height="640" allowTransparency="true" frameborder="0"></iframe>
+			<div class="phone-mockup float-right">
+				<img src="../images/ellomix/IPhone_SE_in_silver.png" alt="iPhone SE">
+				<video id="demo-video" controls poster="../images/ellomix/timeline.png">
+					<source src="../images/ellomix/Ellomix_Demo.mov" type="video/quicktime">
+					<source src="../images/ellomix/Ellomix_Demo.mov" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
 		</div>
 		<div class="section no-min-height">
 			<h1>OVERVIEW</h1>
-			<p class="body-text">Ellomix is an ongoing project and social media music streaming app.
-				I came on as a visual designer, creating high fidelity mockups of the wireframes provided, 
-				but I quickly assumed a UI/UX role once we realized we wanted the visuals to differentiate ourselves a bit more. 
-				I also am the web developer/designer for the team. Our website is 
+			<p class="body-text">Ellomix is a social media music streaming app that helps users discover new music through personalized timelines and artist profiles. I came on as a visual designer, creating high fidelity mockups of the wireframes provided, but I quickly assumed a UI/UX role once we realized we wanted the visuals to differentiate ourselves a bit more. I also am the web developer/designer for the team. Our website is 
 				<a href="http://ellomix.com">ellomix.com</a>
 			</p>
 			<a href="https://apps.apple.com/us/app/ellomix/id1639475775">App on the iOS App Store</a>
-			<!-- <div class="evol">
-				<img src="../images/ellomix/wireframe_timeline.png" width="450">
-				<img src="../images/ellomix/timeline.png" width="330">
+			<br><br/>
+
+			<h3>Demo Video:</h3>
+			<p class="body-text">
+				<a href="#" id="view-demo-link" style="color: black; text-decoration: underline; font-weight: bold;">View Demo</a>
+			</p>
+			<br/>
+
+			<h3>Research & Strategy:</h3>
+			<p class="body-text">Before diving into design, I conducted research to ensure Ellomix would be viable from day one. A critical concern was avoiding the fate of similar apps like Cymbal.FM, which was shutting down around the time we were launching. I identified that many social music apps failed because they required a critical mass of users to be valuable—creating a chicken-and-egg problem.</p>
+			<br/>
+			<p class="body-text">To solve this, I focused on features that would make the app valuable even in single-player mode and small group scenarios. The key strategies were:</p>
+			<br/>
+			<p class="body-text"><strong>Playlist Import/Export:</strong> By allowing users to import and export playlists from other platforms (Spotify, Apple Music, etc.), Ellomix became immediately useful regardless of how many friends were on the platform. Users could bring their existing music libraries and take their playlists with them—making the app invaluable from day one.</p>
+			<br/>
+			<p class="body-text"><strong>Group Playlist Feature:</strong> I designed a group playlist feature that allowed users to send songs directly in group messages, automatically adding them to a shared playlist. This made the app valuable for small groups of friends without needing a large network of users.</p>
+			<br/>
+			<p class="body-text"><strong>Timeline Feature:</strong> The timeline feature was specifically designed to fill the gap left by Cymbal.FM's shutdown. By creating a social feed for music discovery, we could capture users who were looking for an alternative, while ensuring the app remained useful even with a small user base through the other features.</p>
+			<br/>
+			<p class="body-text">This research-driven approach ensured Ellomix could survive and thrive without needing millions of users from the start, making it sustainable from launch.</p>
+			<br><br/>
+
+			<h3>UI Sketches & Wireframes:</h3>
+			<br/>
+			<div class="image-row">
+				<img src="../images/ellomix/wireframe_timeline.png" alt="Ellomix Timeline Wireframe">
+				<img src="../images/ellomix/wireframe_personal_profile.png" alt="Ellomix Personal Profile Wireframe">
 			</div>
-			<div class="evol">
-				<img src="../images/ellomix/wireframe_personal_profile.png">
-				<img src="../images/ellomix/personal_profile.png" width="330" style="padding-left: 216px;">
+			<br><br/>
+
+			<h3>Final Designs:</h3>
+			<br/>
+			<div class="image-row">
+				<img src="../images/ellomix/timeline.png" alt="Ellomix Timeline Final Design">
+				<img src="../images/ellomix/personal_profile.png" alt="Ellomix Personal Profile Final Design">
 			</div>
-			<h1>NEXT STEPS</h1>
-			<p class="body-text">User Research</p> -->
-			<br/><br/><br/><br/>
+			<br><br/><br/><br/>
 		</div>
 	</div>
+	<script>
+		document.getElementById('view-demo-link').addEventListener('click', function(e) {
+			e.preventDefault();
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+			setTimeout(function() {
+				var video = document.getElementById('demo-video');
+				video.play();
+			}, 500);
+		});
+	</script>
 </body>
 </html>
