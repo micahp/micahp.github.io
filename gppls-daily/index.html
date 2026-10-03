@@ -110,39 +110,44 @@
             let songList = [];
             let imageFiles = [];
 
-            // Fetch image files
-            const imageResponse = await fetch(`${API_BASE_URL}/image-files`);
-            imageFiles = await imageResponse.json();
+            // Fetch both listings in parallel. Fail loudly instead of leaving a blank page.
+            async function getJson(path) {
+                const res = await fetch(`${API_BASE_URL}${path}`);
+                if (!res.ok) throw new Error(`${path} returned HTTP ${res.status}`);
+                return res.json();
+            }
 
-            // Filter and deduplicate the imageFiles
-            imageFiles = filterAndDeduplicateImages(imageFiles);
+            const [imageResult, audioResult] = await Promise.allSettled([
+                getJson('/image-files'),
+                getJson('/audio-files'),
+            ]);
 
-            // Sort the imageFiles
-            imageFiles = sortImagesList(imageFiles);
+            if (imageResult.status === 'rejected') {
+                console.error('Could not load image list:', imageResult.reason);
+                imageContainer.innerHTML = `
+                    <p class="text-center text-gray-600 mt-8">
+                        Couldn't reach the gppls daily server. Please try again in a bit.
+                    </p>`;
+                return;
+            }
+            if (audioResult.status === 'rejected') {
+                console.error('Could not load song list:', audioResult.reason);
+            }
 
-            console.log('Filtered, deduplicated, and sorted imageFiles: ', imageFiles);
-
-            // Fetch audio files
-            const audioResponse = await fetch(`${API_BASE_URL}/audio-files`);
-            songList = await audioResponse.json();
-            
-            // Sort the songList
-            songList = sortStringsByNumber(songList);
-            
-            console.log('Sorted songList: ', songList);
+            // Filter, deduplicate and sort the imageFiles
+            imageFiles = sortImagesList(filterAndDeduplicateImages(imageResult.value));
+            songList = sortStringsByNumber(audioResult.status === 'fulfilled' ? audioResult.value : []);
 
             // Function to find corresponding song
             function findSong(imageNumber) {
-                console.log('findSong: ', imageNumber);
-                const searchPattern = `gppls daily ${imageNumber}`;
                 const mp3Song = songList.find(s => {
                     const match = s.match(/gppls daily (\d+)/i);
-                    return match && parseInt(match[1]) === parseInt(imageNumber) && s.endsWith('.mp3');
+                    return match && parseInt(match[1]) === parseInt(imageNumber) && /\.mp3$/i.test(s);
                 });
                 if (mp3Song) return mp3Song;
                 const wavSong = songList.find(s => {
                     const match = s.match(/gppls daily (\d+)/i);
-                    return match && match[1] === imageNumber && s.endsWith('.wav');
+                    return match && parseInt(match[1]) === parseInt(imageNumber) && /\.wav$/i.test(s);
                 });
                 return wavSong || null;
             }
@@ -151,16 +156,17 @@
             imageFiles.forEach(file => {
                 if (/^\d+$/.test(file.split('.')[0])) {
                     const imageNumber = file.split('.')[0];
-                    console.log('imageNumber: ', imageNumber);
                     const song = findSong(imageNumber);
                     const songName = song ? song.replace(/\.(mp3|wav)$/, '') : 'Unknown Song';
 
                     const imageDiv = document.createElement('div');
                     imageDiv.className = 'm-8 text-center';
                     imageDiv.innerHTML = `
-                        <img src="${API_BASE_URL}/images/${file}" alt="${songName}" 
-                             class="w-[250px] h-[250px] object-cover cursor-pointer hover:opacity-80 transition-opacity" 
-                             onclick="playSong('${imageNumber}')">
+                        <img src="${API_BASE_URL}/images/${encodeURIComponent(file)}" alt="${songName}"
+                             width="250" height="250" loading="lazy" decoding="async"
+                             class="w-[250px] h-[250px] object-cover bg-gray-300 cursor-pointer hover:opacity-80 transition-opacity"
+                             onclick="playSong('${imageNumber}')"
+                             onerror="this.onerror=null; console.error('Image failed to load:', this.src); this.removeAttribute('src');">
                         <p class="mt-2 text-lg">${songName}</p>
                     `;
                     imageContainer.appendChild(imageDiv);
