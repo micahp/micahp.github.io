@@ -91,6 +91,8 @@
         repeat: ['off', 'all', 'one'].includes(prefs.repeat) ? prefs.repeat : 'off',
         sort: prefs.sort === 'oldest' ? 'oldest' : 'newest',
         view: prefs.view === 'list' ? 'list' : 'grid',
+        plSort: ['newest', 'oldest'].includes(prefs.plSort) ? prefs.plSort : 'default',
+        plView: prefs.plView === 'grid' ? 'grid' : 'list',
         seeking: false,
         errorStreak: 0,
     };
@@ -358,20 +360,25 @@
         els.plDesc.textContent = p.description || '';
         els.plSoundcloud.hidden = !p.url;
         if (p.url) els.plSoundcloud.href = p.url;
-        els.plTracks.innerHTML = p.days.map((d) => {
-            const t = state.byDay.get(d);
-            return `<button class="card${t.audio ? '' : ' is-unavailable'}" data-day="${t.day}">
-                ${artHtml(t, EQ)}
-                <span class="card-text">
-                    <span class="card-title">${esc(t.title)}</span>
-                    <span class="card-sub">${esc(subtitle(t))}${t.audio ? '' : t.soundcloud ? ' · on SoundCloud' : ' · coming soon'}</span>
-                </span>
-            </button>`;
-        }).join('');
+        renderPlaylistTracks(p);
         const canPlay = p.days.some((d) => state.byDay.get(d).audio);
         els.plPlay.disabled = els.plShuffle.disabled = !canPlay;
         markCurrent();
         window.scrollTo(0, 0);
+    }
+
+    function orderedPlaylistDays(p) {
+        if (state.plSort === 'newest') return p.days.slice().sort((a, b) => b - a);
+        if (state.plSort === 'oldest') return p.days.slice().sort((a, b) => a - b);
+        return p.days;
+    }
+
+    function renderPlaylistTracks(p) {
+        els.plTracks.className = `library ${state.plView}`;
+        els.plTracks.innerHTML = orderedPlaylistDays(p).map((d) => cardHtml(state.byDay.get(d))).join('');
+        document.querySelectorAll('[data-plsort]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.plsort === state.plSort)));
+        document.querySelectorAll('[data-plview]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.plview === state.plView)));
+        markCurrent();
     }
 
     function openPlaylist(id) {
@@ -387,7 +394,7 @@
     function playPlaylist(p, { shuffle = false } = {}) {
         setShuffle(shuffle, { silent: true });
         state.context = p;
-        const pool = p.days.filter((d) => state.byDay.get(d).audio);
+        const pool = orderedPlaylistDays(p).filter((d) => state.byDay.get(d).audio);
         if (!pool.length) return;
         playDay(shuffle ? pool[Math.floor(Math.random() * pool.length)] : pool[0], { context: p });
     }
@@ -396,16 +403,20 @@
         return state.sort === 'oldest' ? state.tracks.slice().reverse() : state.tracks;
     }
 
-    function renderLibrary() {
-        els.library.className = `library ${state.view}`;
-        els.library.innerHTML = orderedTracks().map((t) => `
+    function cardHtml(t) {
+        return `
             <button class="card${t.audio ? '' : ' is-unavailable'}" data-day="${t.day}"${t.audio || t.soundcloud ? '' : ' aria-disabled="true"'}>
                 ${artHtml(t, EQ + HOVER_PLAY)}
                 <span class="card-text">
                     <span class="card-title">${esc(t.title)}</span>
                     <span class="card-sub">${esc(subtitle(t))}${t.audio ? '' : t.soundcloud ? ' · on SoundCloud' : ' · coming soon'}</span>
                 </span>
-            </button>`).join('') + '<p class="empty" id="noMatches" hidden></p>';
+            </button>`;
+    }
+
+    function renderLibrary() {
+        els.library.className = `library ${state.view}`;
+        els.library.innerHTML = orderedTracks().map(cardHtml).join('') + '<p class="empty" id="noMatches" hidden></p>';
 
         document.querySelectorAll('[data-sort]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sort === state.sort)));
         document.querySelectorAll('[data-view]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === state.view)));
@@ -518,7 +529,7 @@
     // ---------- Playback ----------
 
     function contextDays() {
-        if (state.context) return state.context.days.filter((d) => state.byDay.get(d).audio);
+        if (state.context) return orderedPlaylistDays(state.context).filter((d) => state.byDay.get(d).audio);
         return (state.sort === 'oldest' ? playableTracks().reverse() : playableTracks()).map((t) => t.day);
     }
 
@@ -800,6 +811,25 @@
     els.plPlay.addEventListener('click', () => state.openPlaylist && playPlaylist(state.openPlaylist));
     els.plShuffle.addEventListener('click', () => state.openPlaylist && playPlaylist(state.openPlaylist, { shuffle: true }));
     els.backButton.addEventListener('click', goHome);
+
+    document.querySelectorAll('[data-plsort]').forEach((btn) => btn.addEventListener('click', () => {
+        if (state.plSort === btn.dataset.plsort || !state.openPlaylist) return;
+        state.plSort = btn.dataset.plsort;
+        savePrefs({ plSort: state.plSort });
+        renderPlaylistTracks(state.openPlaylist);
+        // Keep playing the current song; what comes next follows the new order
+        if (state.context === state.openPlaylist && state.current && !state.shuffle) {
+            buildQueue(state.current.day);
+            renderUpNext();
+        }
+    }));
+
+    document.querySelectorAll('[data-plview]').forEach((btn) => btn.addEventListener('click', () => {
+        if (state.plView === btn.dataset.plview || !state.openPlaylist) return;
+        state.plView = btn.dataset.plview;
+        savePrefs({ plView: state.plView });
+        renderPlaylistTracks(state.openPlaylist);
+    }));
 
     document.addEventListener('click', (e) => {
         const playlistCard = e.target.closest('[data-playlist]');
