@@ -717,6 +717,9 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
     margin: 0 -10px 12px;
 }
 
+/* Now Playing opens with the close button focused; no ring around it */
+#npClose:focus-visible { outline: none; }
+
 .np-context { display: flex; flex-direction: column; align-items: center; font-size: 15px; }
 .np-context-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 
