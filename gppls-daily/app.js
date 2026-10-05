@@ -310,8 +310,9 @@
     // ---------- Playlists ----------
 
     function coverHtml(p) {
-        // Releases without their own artwork use the g.ppls DAILY artboard
-        const src = p.artwork || 'icons/icon-512.png';
+        // Releases without their own artwork use the cover of their first song that has one
+        const first = p.days.map((d) => state.byDay.get(d)).find((t) => t.image && !brokenImages.has(t.image));
+        const src = p.artwork || first?.image || 'icons/icon-512.png';
         return `<span class="cover"><img src="${esc(src)}" alt="" loading="lazy" decoding="async"></span>`;
     }
 
