@@ -404,8 +404,6 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 #playlistView .hero-sub { margin-bottom: 4px; }
 .pl-desc { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
 
-.pl-source { margin: 20px 0 0; text-align: center; font-size: 14px; }
-.pl-source a { color: var(--muted); font-weight: 600; }
 
 #playlistView .library.list .card-title { font-size: 16px; }
 .pl-tools { justify-content: flex-end; }

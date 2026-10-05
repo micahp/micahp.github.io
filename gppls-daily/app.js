@@ -28,7 +28,6 @@
         plPlay: $('plPlay'),
         plShuffle: $('plShuffle'),
         plTracks: $('plTracks'),
-        plSoundcloud: $('plSoundcloud'),
         backButton: $('backButton'),
         topbarSpacer: $('topbarSpacer'),
         npContext: $('npContext'),
@@ -356,8 +355,6 @@
         els.plSub.textContent = ['gppls', `${p.days.length} ${p.days.length === 1 ? 'song' : 'songs'}`, year].filter(Boolean).join(' · ');
         els.plDesc.hidden = !p.description;
         els.plDesc.textContent = p.description || '';
-        els.plSoundcloud.hidden = !p.url;
-        if (p.url) els.plSoundcloud.href = p.url;
         renderPlaylistTracks(p);
         const canPlay = p.days.some((d) => state.byDay.get(d).audio);
         els.plPlay.disabled = els.plShuffle.disabled = !canPlay;
