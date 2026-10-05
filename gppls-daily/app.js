@@ -51,8 +51,8 @@
         mute: $('muteButton'),
         volume: $('volume'),
         upNext: $('upNext'),
-        upNextSection: $('upNextSection'),
-        npSoundcloud: $('npSoundcloud'),
+        queueToggle: $('queueToggle'),
+        queueLabel: $('queueLabel'),
         toast: $('toast'),
     };
 
@@ -478,8 +478,6 @@
         els.npTitle.textContent = t.title;
         els.npContext.textContent = state.context ? state.context.title : 'gppls daily';
         els.npSub.textContent = [subtitle(t), t.date].filter(Boolean).join(' · ');
-        els.npSoundcloud.hidden = !t.soundcloud;
-        if (t.soundcloud) els.npSoundcloud.href = t.soundcloud;
         els.npBg.style.backgroundImage = imageSrc(t, true) ? `url("${imageSrc(t, true)}")` : 'none';
         document.title = `${t.title} · gppls daily`;
         markCurrent();
@@ -489,7 +487,8 @@
 
     function renderUpNext() {
         const days = upcomingDays();
-        els.upNextSection.hidden = days.length === 0;
+        els.queueToggle.hidden = days.length === 0;
+        if (!days.length) setQueueOpen(false);
         els.upNext.innerHTML = days.map((day) => {
             const t = state.byDay.get(day);
             return `<li><button class="row" data-queue-day="${day}">
@@ -772,7 +771,15 @@
         els.npClose.focus({ preventScroll: true });
     }
 
+    // Swap the artwork for the Up next list (and back) without moving the screen
+    function setQueueOpen(open) {
+        els.np.classList.toggle('show-queue', open);
+        els.queueToggle.setAttribute('aria-pressed', String(open));
+        els.queueLabel.textContent = open ? 'Artwork' : 'Up next';
+    }
+
     function closeNowPlaying() {
+        setQueueOpen(false);
         els.np.classList.remove('is-open');
         document.body.classList.remove('np-open');
         setTimeout(() => { if (!els.np.classList.contains('is-open')) els.np.hidden = true; }, 420);
@@ -886,6 +893,16 @@
 
     els.miniOpen.addEventListener('click', openNowPlaying);
     els.npClose.addEventListener('click', closeNowPlaying);
+    els.queueToggle.addEventListener('click', () => setQueueOpen(!els.np.classList.contains('show-queue')));
+
+    // Now Playing is a fixed screen: dragging it never moves it or the page behind it.
+    // Only the sliders and a scrollable Up next list respond to touch movement.
+    els.np.addEventListener('touchmove', (e) => {
+        if (e.target.closest('input[type="range"]')) return;
+        const list = e.target.closest('.up-next-scroll');
+        if (list && list.scrollHeight > list.clientHeight) return;
+        e.preventDefault();
+    }, { passive: false });
     els.npShare.addEventListener('click', share);
     els.shuffle.addEventListener('click', () => setShuffle(!state.shuffle));
     els.repeat.addEventListener('click', cycleRepeat);

@@ -151,41 +151,46 @@
                 <button class="icon-btn" id="npShare" aria-label="Share this song"><svg><use href="#i-share"/></svg></button>
             </div>
 
-            <div class="np-art" id="npArt"></div>
+            <!-- Artwork, or the Up next list when toggled; fills the space above the controls -->
+            <div class="np-stage">
+                <div class="np-art" id="npArt"></div>
+                <section class="up-next" id="upNextSection" aria-label="Up next">
+                    <h3 class="section-title">Up next</h3>
+                    <div class="up-next-scroll"><ol id="upNext"></ol></div>
+                </section>
+            </div>
 
-            <div class="np-meta">
-                <button class="icon-btn toggle" id="repeatButton" aria-label="Repeat: off"><svg><use href="#i-repeat"/></svg></button>
-                <div class="np-titles">
-                    <h2 id="npTitle"></h2>
-                    <p id="npSub"></p>
+            <div class="np-panel">
+                <div class="np-meta">
+                    <button class="icon-btn toggle" id="repeatButton" aria-label="Repeat: off"><svg><use href="#i-repeat"/></svg></button>
+                    <div class="np-titles">
+                        <h2 id="npTitle"></h2>
+                        <p id="npSub"></p>
+                    </div>
+                    <button class="icon-btn toggle" id="shuffleButton" aria-label="Shuffle" aria-pressed="false"><svg><use href="#i-shuffle"/></svg></button>
                 </div>
-                <button class="icon-btn toggle" id="shuffleButton" aria-label="Shuffle" aria-pressed="false"><svg><use href="#i-shuffle"/></svg></button>
-            </div>
 
-            <div class="np-seek">
-                <input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="Seek">
-                <div class="np-times"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
-            </div>
+                <div class="np-seek">
+                    <input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="Seek">
+                    <div class="np-times"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+                </div>
 
-            <div class="np-controls">
-                <button class="icon-btn lg" data-action="prev" aria-label="Previous"><svg><use href="#i-prev"/></svg></button>
-                <button class="icon-btn play-btn xl" data-action="toggle" aria-label="Play"><svg><use href="#i-play"/></svg></button>
-                <button class="icon-btn lg" data-action="next" aria-label="Next"><svg><use href="#i-next"/></svg></button>
-            </div>
+                <div class="np-controls">
+                    <button class="icon-btn lg" data-action="prev" aria-label="Previous"><svg><use href="#i-prev"/></svg></button>
+                    <button class="icon-btn play-btn xl" data-action="toggle" aria-label="Play"><svg><use href="#i-play"/></svg></button>
+                    <button class="icon-btn lg" data-action="next" aria-label="Next"><svg><use href="#i-next"/></svg></button>
+                </div>
 
-            <div class="np-links">
-                <a class="pill pill-outline pill-sm" id="npSoundcloud" href="#" target="_blank" rel="noopener" hidden>Listen on SoundCloud</a>
+                <div class="np-foot">
+                    <div class="np-volume">
+                        <button class="icon-btn" id="muteButton" aria-label="Mute"><svg><use href="#i-volume"/></svg></button>
+                        <input type="range" id="volume" min="0" max="100" value="100" aria-label="Volume">
+                    </div>
+                    <button class="queue-btn" id="queueToggle" aria-pressed="false" hidden>
+                        <svg><use href="#i-list"/></svg><span id="queueLabel">Up next</span>
+                    </button>
+                </div>
             </div>
-
-            <div class="np-volume">
-                <button class="icon-btn" id="muteButton" aria-label="Mute"><svg><use href="#i-volume"/></svg></button>
-                <input type="range" id="volume" min="0" max="100" value="100" aria-label="Volume">
-            </div>
-
-            <section class="up-next" id="upNextSection">
-                <h3 class="section-title">Up next</h3>
-                <ol id="upNext"></ol>
-            </section>
         </div>
     </div>
 
