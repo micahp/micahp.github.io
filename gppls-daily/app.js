@@ -24,6 +24,7 @@
         shelfNav: $('shelfNav'),
         npContext: $('npContext'),
         songsTitle: $('allDaysTitle'),
+        sortControl: document.querySelector('[data-sort]').parentElement,
         library: $('library'),
         count: $('libraryCount'),
         searchToggle: $('searchToggle'),
@@ -367,7 +368,9 @@
         updateShelfNav();
     }
 
+    // Releases with an official tracklist ("ordered") always keep it; the rest sort by day
     function orderedPlaylistDays(p) {
+        if (p.ordered) return p.days;
         return p.days.slice().sort((a, b) => (state.sort === 'oldest' ? a - b : b - a));
     }
 
@@ -379,9 +382,10 @@
         playDay(shuffle ? pool[Math.floor(Math.random() * pool.length)] : pool[0], { context: p });
     }
 
-    function cardHtml(t) {
+    function cardHtml(t, trackNo) {
         return `
             <button class="card${t.audio ? '' : ' is-unavailable'}" data-day="${t.day}"${t.audio || t.soundcloud ? '' : ' aria-disabled="true"'}>
+                ${trackNo ? `<span class="track-no">${trackNo}</span>` : ''}
                 ${artHtml(t, EQ + HOVER_PLAY)}
                 <span class="card-text">
                     <span class="card-title">${esc(t.title)}</span>
@@ -393,7 +397,9 @@
     function renderLibrary() {
         els.library.className = `library ${state.view}`;
         els.songsTitle.textContent = state.selected.isAll ? 'All days' : 'Songs';
-        els.library.innerHTML = orderedPlaylistDays(state.selected).map((d) => cardHtml(state.byDay.get(d))).join('')
+        const ordered = !!state.selected.ordered;
+        els.sortControl.hidden = ordered;
+        els.library.innerHTML = orderedPlaylistDays(state.selected).map((d, i) => cardHtml(state.byDay.get(d), ordered ? i + 1 : 0)).join('')
             + '<p class="empty" id="noMatches" hidden></p>';
 
         document.querySelectorAll('[data-sort]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sort === state.sort)));

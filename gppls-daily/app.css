@@ -539,6 +539,18 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 .library.list .card-text,
 .row .card-text { padding-top: 0; flex: 1; }
 
+/* Track numbers for releases with an official order (list view only) */
+.track-no { display: none; }
+.library.list .track-no {
+    display: block;
+    width: 18px;
+    flex: none;
+    text-align: right;
+    color: var(--muted);
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+}
+
 .library.list .card-title,
 .row .card-title { font-size: 17px; font-weight: 500; }
 
