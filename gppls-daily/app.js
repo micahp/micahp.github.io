@@ -6,6 +6,7 @@
     // Browser-renderable cover formats, best first. Anything else (e.g. .heic) gets generated art.
     const IMAGE_RANK = { jpg: 5, jpeg: 5, webp: 4, avif: 4, png: 3, gif: 2 };
     const UP_NEXT_COUNT = 12;
+    const SONGS_URL = 'songs.json';
 
     const $ = (id) => document.getElementById(id);
     const els = {
@@ -43,6 +44,7 @@
         volume: $('volume'),
         upNext: $('upNext'),
         upNextSection: $('upNextSection'),
+        npSoundcloud: $('npSoundcloud'),
         toast: $('toast'),
     };
 
@@ -113,6 +115,10 @@
         if (typeof window.gtag === 'function') window.gtag('event', event, params);
     }
 
+    function subtitle(t) {
+        return [`Day ${t.day}`, t.producer && `prod. ${t.producer}`].filter(Boolean).join(' · ');
+    }
+
     function artHtml(t, extra = '') {
         const img = t.image && !brokenImages.has(t.image)
             ? `<img src="${esc(t.image)}" alt="" loading="lazy" decoding="async">`
@@ -148,12 +154,29 @@
         return res.json();
     }
 
-    function buildLibrary(imageFiles, audioFiles) {
+    function buildLibrary(imageFiles, audioFiles, songs) {
         const byDay = new Map();
         const get = (day) => {
-            if (!byDay.has(day)) byDay.set(day, { day, title: `gppls daily ${day}`, image: null, imageRank: 0, audio: null, audioExt: null });
+            if (!byDay.has(day)) {
+                byDay.set(day, {
+                    day, title: `gppls daily ${day}`, name: '', producer: null, date: null, soundcloud: null,
+                    hasMeta: false, image: null, imageRank: 0, audio: null, audioExt: null,
+                });
+            }
             return byDay.get(day);
         };
+
+        for (const song of songs) {
+            if (!Number.isInteger(song.day)) continue;
+            Object.assign(get(song.day), {
+                title: song.title || `gppls daily ${song.day}`,
+                name: song.name || '',
+                producer: song.producer || null,
+                date: song.date || null,
+                soundcloud: song.soundcloud || null,
+                hasMeta: true,
+            });
+        }
 
         for (const file of imageFiles) {
             const m = /^(\d+)\.([a-z0-9]+)$/i.exec(file);
@@ -176,7 +199,7 @@
             if (!t.audio || (ext === 'mp3' && t.audioExt !== 'mp3')) {
                 t.audio = `${API_BASE_URL}/audio/${encodeURIComponent(file)}`;
                 t.audioExt = ext;
-                t.title = file.replace(/\.(mp3|wav)$/i, '');
+                if (!t.hasMeta) t.title = file.replace(/\.(mp3|wav)$/i, '');
             }
         }
 
@@ -185,10 +208,15 @@
 
     async function loadLibrary() {
         renderSkeleton();
-        const [images, songs] = await Promise.allSettled([getJson('/image-files'), getJson('/audio-files')]);
+        const [images, songs, meta] = await Promise.allSettled([
+            getJson('/image-files'),
+            getJson('/audio-files'),
+            fetch(SONGS_URL).then((res) => (res.ok ? res.json() : [])),
+        ]);
 
         if (images.status === 'rejected') console.error('Could not load image list:', images.reason);
         if (songs.status === 'rejected') console.error('Could not load song list:', songs.reason);
+        if (meta.status === 'rejected') console.warn('Could not load song titles:', meta.reason);
 
         if (songs.status === 'rejected' && images.status === 'rejected') {
             renderError();
@@ -198,6 +226,7 @@
         state.tracks = buildLibrary(
             images.status === 'fulfilled' ? images.value : [],
             songs.status === 'fulfilled' ? songs.value : [],
+            meta.status === 'fulfilled' && Array.isArray(meta.value) ? meta.value : [],
         );
         state.byDay = new Map(state.tracks.map((t) => [t.day, t]));
 
@@ -251,9 +280,8 @@
                 ${artHtml(latest, EQ)}
                 <span class="card-text">
                     <span class="card-title">${esc(latest.title)}</span>
-                    <span class="card-sub">gppls</span>
+                    <span class="card-sub">${esc(subtitle(latest))}</span>
                 </span>
-                <span class="row-day">Day ${latest.day}</span>
             </button>`;
     }
 
@@ -264,11 +292,11 @@
     function renderLibrary() {
         els.library.className = `library ${state.view}`;
         els.library.innerHTML = orderedTracks().map((t) => `
-            <button class="card${t.audio ? '' : ' is-unavailable'}" data-day="${t.day}"${t.audio ? '' : ' aria-disabled="true"'}>
+            <button class="card${t.audio ? '' : ' is-unavailable'}" data-day="${t.day}"${t.audio || t.soundcloud ? '' : ' aria-disabled="true"'}>
                 ${artHtml(t, EQ + HOVER_PLAY)}
                 <span class="card-text">
                     <span class="card-title">${esc(t.title)}</span>
-                    <span class="card-sub">Day ${t.day}${t.audio ? '' : ' · audio coming soon'}</span>
+                    <span class="card-sub">${esc(subtitle(t))}${t.audio ? '' : t.soundcloud ? ' · on SoundCloud' : ' · coming soon'}</span>
                 </span>
             </button>`).join('') + '<p class="empty" id="noMatches" hidden></p>';
 
@@ -283,7 +311,8 @@
         let shown = 0;
         els.library.querySelectorAll('.card').forEach((card) => {
             const t = state.byDay.get(Number(card.dataset.day));
-            const match = !q || String(t.day).includes(q) || t.title.toLowerCase().includes(q);
+            const haystack = `${t.title} ${t.name} ${t.producer || ''}`.toLowerCase();
+            const match = !q || String(t.day) === q || haystack.includes(q);
             card.hidden = !match;
             if (match) shown++;
         });
@@ -311,10 +340,12 @@
         els.mini.hidden = false;
         els.miniArt.innerHTML = artHtml(t);
         els.miniTitle.textContent = t.title;
-        els.miniSub.textContent = `Day ${t.day}`;
+        els.miniSub.textContent = subtitle(t);
         els.npArt.innerHTML = artHtml(t);
         els.npTitle.textContent = t.title;
-        els.npSub.textContent = `gppls · Day ${t.day}`;
+        els.npSub.textContent = [subtitle(t), t.date].filter(Boolean).join(' · ');
+        els.npSoundcloud.hidden = !t.soundcloud;
+        if (t.soundcloud) els.npSoundcloud.href = t.soundcloud;
         els.npBg.style.backgroundImage = t.image && !brokenImages.has(t.image) ? `url("${t.image}")` : 'none';
         document.title = `${t.title} · gppls daily`;
         markCurrent();
@@ -329,7 +360,7 @@
             const t = state.byDay.get(day);
             return `<li><button class="row" data-queue-day="${day}">
                 ${artHtml(t)}
-                <span class="card-text"><span class="card-title">${esc(t.title)}</span><span class="card-sub">Day ${t.day}</span></span>
+                <span class="card-text"><span class="card-title">${esc(t.title)}</span><span class="card-sub">${esc(subtitle(t))}</span></span>
             </button></li>`;
         }).join('');
     }
@@ -404,7 +435,8 @@
     function playDay(day, { keepQueue = false, startAt = 0 } = {}) {
         const t = state.byDay.get(day);
         if (!t || !t.audio) {
-            toast('That day doesn’t have audio yet');
+            if (t?.soundcloud) window.open(t.soundcloud, '_blank', 'noopener');
+            else toast('That day doesn’t have audio yet');
             return;
         }
         if (!keepQueue || !state.queue.includes(day)) buildQueue(day);
@@ -526,7 +558,7 @@
         navigator.mediaSession.metadata = new MediaMetadata({
             title: t.title,
             artist: 'gppls',
-            album: 'gppls daily',
+            album: `gppls daily ${t.day}`,
             artwork: t.image && !brokenImages.has(t.image) ? [{ src: t.image, sizes: '512x512' }] : [],
         });
     }
