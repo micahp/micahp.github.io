@@ -2,383 +2,195 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gppls Daily 365 Player</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>gppls daily</title>
+    <meta name="description" content="A new gppls song every day for 365 days.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="gppls daily">
+    <meta property="og:title" content="gppls daily">
+    <meta property="og:description" content="A new gppls song every day for 365 days.">
+    <meta property="og:url" content="https://micahp.github.io/gppls-daily/">
+    <meta property="og:image" content="https://micahp.github.io/gppls-daily/icons/og-image.jpg">
+    <meta property="og:image:width" content="1000">
+    <meta property="og:image:height" content="1000">
+    <meta property="og:image:alt" content="g.ppls DAILY: press play, don't stop">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="gppls daily">
+    <meta name="twitter:description" content="A new gppls song every day for 365 days.">
+    <meta name="twitter:image" content="https://micahp.github.io/gppls-daily/icons/og-image.jpg">
+    <meta name="theme-color" content="#f2f2f2" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-180.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="preconnect" href="https://gppls-daily-api.innovativehype.xyz" crossorigin>
+    <link rel="stylesheet" href="app.css">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NM00FT5H0Y"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
-        .progress-container {
-            width: 100%;
-            height: 5px;
-            background-color: #d3d3d3;
-            position: relative;
-            cursor: pointer;
-        }
-        .progress-bar {
-            height: 100%;
-            background-color: #4CAF50;
-            width: 0;
-        }
-        .progress-handle {
-            width: 15px;
-            height: 15px;
-            background-color: #4CAF50;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body class="bg-gray-100">
-    <div class="flex justify-center mt-4">
-        <button id="playAllButton" class="px-4 py-2 bg-green-500 rounded mr-2">
-            <img src="./images/play_arrow.png" alt="Play All" class="w-4 h-4 inline mb-1">
-            Play All
-        </button>
-        <button id="shuffleAllButton" class="px-4 py-2 bg-blue-500 rounded">
-            <img src="./images/shuffle.png" alt="Shuffle" class="w-4 h-4 inline mb-1">
-            Shuffle All
-        </button>
-    </div>
-    <div id="imageContainer" class="flex flex-wrap justify-center p-8 pb-28"></div>
-
-    <div id="audioControls" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4">
-        <div id="nowPlaying" class="text-center mb-2"></div>
-        <div class="flex justify-center items-center mb-2">
-            <button id="prevButton" class="px-4 py-2 bg-blue-500 rounded mr-2">
-                <img src="./images/skip_previous.png" alt="Previous" class="w-4 h-4 inline" style="width: 24px; height: 24px;">
-            </button>
-            <button id="playPauseButton" class="px-4 py-2 bg-green-500 rounded mr-2">
-                <img id="playPauseIcon" src="./images/play_arrow.png" alt="Play/Pause" class="w-4 h-4 inline" style="width: 24px; height: 24px;">
-            </button>
-            <button id="nextButton" class="px-4 py-2 bg-blue-500 rounded">
-                <img src="./images/skip_next.png" alt="Next" class="w-4 h-4 inline" style="width: 24px; height: 24px;">
-            </button>
-        </div>
-        <div id="progressContainer" class="flex items-center justify-center" style="display: none;">
-            <span id="currentTime" class="mr-2">0:00</span>
-            <div class="progress-container flex-grow mx-2 max-w-5xl">
-                <div class="progress-bar"></div>
-                <div class="progress-handle"></div>
-            </div>
-            <span id="duration" class="ml-2">0:00</span>
-        </div>
-    </div>
-
-    <script>
-        const API_BASE_URL = 'https://gppls-daily-api.innovativehype.xyz';
-        let isShuffleMode = false;
-        let shuffledPlaylist = [];
-
-        // Sort the imageFiles list in descending order
-        function sortImagesList(arr) {
-            return arr.sort((a, b) => {
-                const imageNumberA = parseInt(a.split('.')[0], 10);
-                const imageNumberB = parseInt(b.split('.')[0], 10);
-                return imageNumberB - imageNumberA;
-            });
-        }
-
-        function sortStringsByNumber(arr) {
-            return arr.sort((a, b) => {
-                const numberA = parseInt(a.split(' ')[2]);
-                const numberB = parseInt(b.split(' ')[2]);
-                return numberA - numberB;
-            });
-        }
-
-        function filterAndDeduplicateImages(imageFiles) {
-            const uniqueImages = {};
-            imageFiles.forEach(file => {
-                const [name, ext] = file.split('.');
-                if (/^\d+$/.test(name)) {
-                    if (!uniqueImages[name] || (ext === 'jpg' && uniqueImages[name].split('.')[1] === 'png')) {
-                        uniqueImages[name] = file;
-                    }
-                }
-            });
-            return Object.values(uniqueImages);
-        }
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            const imageContainer = document.getElementById('imageContainer');
-            let songs = [];
-            let songList = [];
-            let imageFiles = [];
-
-            // Fetch image files
-            const imageResponse = await fetch(`${API_BASE_URL}/image-files`);
-            imageFiles = await imageResponse.json();
-
-            // Filter and deduplicate the imageFiles
-            imageFiles = filterAndDeduplicateImages(imageFiles);
-
-            // Sort the imageFiles
-            imageFiles = sortImagesList(imageFiles);
-
-            console.log('Filtered, deduplicated, and sorted imageFiles: ', imageFiles);
-
-            // Fetch audio files
-            const audioResponse = await fetch(`${API_BASE_URL}/audio-files`);
-            songList = await audioResponse.json();
-            
-            // Sort the songList
-            songList = sortStringsByNumber(songList);
-            
-            console.log('Sorted songList: ', songList);
-
-            // Function to find corresponding song
-            function findSong(imageNumber) {
-                console.log('findSong: ', imageNumber);
-                const searchPattern = `gppls daily ${imageNumber}`;
-                const mp3Song = songList.find(s => {
-                    const match = s.match(/gppls daily (\d+)/i);
-                    return match && parseInt(match[1]) === parseInt(imageNumber) && s.endsWith('.mp3');
-                });
-                if (mp3Song) return mp3Song;
-                const wavSong = songList.find(s => {
-                    const match = s.match(/gppls daily (\d+)/i);
-                    return match && match[1] === imageNumber && s.endsWith('.wav');
-                });
-                return wavSong || null;
-            }
-
-            // Display images and song names
-            imageFiles.forEach(file => {
-                if (/^\d+$/.test(file.split('.')[0])) {
-                    const imageNumber = file.split('.')[0];
-                    console.log('imageNumber: ', imageNumber);
-                    const song = findSong(imageNumber);
-                    const songName = song ? song.replace(/\.(mp3|wav)$/, '') : 'Unknown Song';
-
-                    const imageDiv = document.createElement('div');
-                    imageDiv.className = 'm-8 text-center';
-                    imageDiv.innerHTML = `
-                        <img src="${API_BASE_URL}/images/${file}" alt="${songName}" 
-                             class="w-[250px] h-[250px] object-cover cursor-pointer hover:opacity-80 transition-opacity" 
-                             onclick="playSong('${imageNumber}')">
-                        <p class="mt-2 text-lg">${songName}</p>
-                    `;
-                    imageContainer.appendChild(imageDiv);
-                }
-            });
-
-            // Function to play song
-            window.playSong = function (imageNumber) {
-                console.log('playSong: ', imageNumber);
-                let song = findSong(imageNumber);
-                
-                if (song) {
-                    const audioElement = document.getElementById('audioPlayer') || createAudioElement();
-                    audioElement.src = `${API_BASE_URL}/audio/${encodeURIComponent(song)}`;
-                    audioElement.play()
-                        .then(() => {
-                            console.log('Playing:', song);
-                            nowPlaying.textContent = `Now Playing: ${song}`;
-                            playPauseIcon.src = './images/pause.png';
-                            if (isShuffleMode) {
-                                currentSongIndex = shuffledPlaylist.findIndex(file => file.split('.')[0] === imageNumber);
-                            } else {
-                                currentSongIndex = imageFiles.findIndex(file => file.split('.')[0] === imageNumber);
-                            }
-                            showProgressBar();
-                        })
-                        .catch(error => console.error('Error playing song:', error));
-                } else {
-                    console.log("No song associated with this image");
-                }
-            }
-
-            // Helper function to create audio element if it doesn't exist
-            function createAudioElement() {
-                const audioElement = document.createElement('audio');
-                audioElement.id = 'audioPlayer';
-                document.body.appendChild(audioElement);
-                return audioElement;
-            }
-
-            const audioElement = createAudioElement();
-            const playPauseButton = document.getElementById('playPauseButton');
-            const playPauseIcon = document.getElementById('playPauseIcon');
-            const prevButton = document.getElementById('prevButton');
-            const nextButton = document.getElementById('nextButton');
-            const nowPlaying = document.getElementById('nowPlaying');
-            const progressContainer = document.querySelector('.progress-container');
-            const progressBar = document.querySelector('.progress-bar');
-            const progressHandle = document.querySelector('.progress-handle');
-            const currentTimeDisplay = document.getElementById('currentTime');
-            const durationDisplay = document.getElementById('duration');
-            let currentSongIndex = -1;
-
-            playPauseButton.addEventListener('click', togglePlayPause);
-            prevButton.addEventListener('click', playPreviousSong);
-            nextButton.addEventListener('click', playNextSong);
-
-            function togglePlayPause() {
-                const audioElement = document.getElementById('audioPlayer');
-                if (audioElement.paused) {
-                    if (!audioElement.src) {
-                        if (isShuffleMode) {
-                            shuffleAllSongs();
-                        } else {
-                            playAllSongs();
-                        }
-                    } else {
-                        audioElement.play();
-                    }
-                    //playPauseButton.textContent = 'Pause';
-                    playPauseIcon.src = './images/pause.png';
-                    showProgressBar();
-                } else {
-                    audioElement.pause();
-                    //playPauseButton.textContent = 'Play';
-                    playPauseIcon.src = './images/play_arrow.png';
-                }
-            }
-
-            function playPreviousSong() {
-                const audioElement = document.getElementById('audioPlayer');
-                let currTime = Math.floor(audioElement.currentTime);
-                let playlist = isShuffleMode ? shuffledPlaylist : imageFiles;
-                let totalSongs = playlist.length;
-
-                if (currTime < 3 && currentSongIndex > 0) {
-                    currentSongIndex = (currentSongIndex - 1 + totalSongs) % totalSongs;
-                    playSong(playlist[currentSongIndex].split('.')[0]);
-                } else if (currentSongIndex > 0) {
-                    audioElement.currentTime = 0;
-                    audioElement.play();
-                }
-            }
-
-            function playNextSong() {
-                console.log('isShuffleMode: ', isShuffleMode);
-                if (isShuffleMode && currentSongIndex < shuffledPlaylist.length - 1) {
-                    currentSongIndex = (currentSongIndex + 1) % shuffledPlaylist.length;
-                    playSong(shuffledPlaylist[currentSongIndex].split('.')[0]);
-                } else if (currentSongIndex < imageFiles.length - 1) {
-                    currentSongIndex = (currentSongIndex + 1) % imageFiles.length;
-                    playSong(imageFiles[currentSongIndex].split('.')[0]);
-                }
-            }
-
-            const playAllButton = document.getElementById('playAllButton');
-            const shuffleAllButton = document.getElementById('shuffleAllButton');
-
-            playAllButton.addEventListener('click', playAllSongs);
-            shuffleAllButton.addEventListener('click', shuffleAllSongs);
-
-            function playAllSongs() {
-                if (imageFiles.length > 0) {
-                    isShuffleMode = false;
-                    currentSongIndex = 0;
-                    playSong(imageFiles[currentSongIndex].split('.')[0]);
-                }
-            }
-
-            function shuffleAllSongs() {
-                console.log('shuffleAllSongs called. Current isShuffleMode:', isShuffleMode);
-                isShuffleMode = !isShuffleMode;
-                console.log('isShuffleMode toggled to:', isShuffleMode);
-                if (imageFiles.length) {
-                    if (isShuffleMode) {
-                        shuffledPlaylist = [...imageFiles].sort(() => Math.random() - 0.5);
-                        currentSongIndex = 0;
-                        playSong(shuffledPlaylist[currentSongIndex].split('.')[0]);
-                    } else {
-                        // If turning off shuffle, start from the current song in the original playlist
-                        currentSongIndex = imageFiles.findIndex(file => file === shuffledPlaylist[currentSongIndex]);
-                        playSong(imageFiles[currentSongIndex].split('.')[0]);
-                    }
-                }
-            }
-
-            // Event listener for song end to play the next song
-            audioElement.addEventListener('ended', () => {
-                playNextSong();
-            });
-
-            // Update progress bar and time displays
-            audioElement.addEventListener('timeupdate', () => {
-                const currentTime = audioElement.currentTime;
-                const duration = audioElement.duration;
-                if (!isNaN(duration)) {
-                    const progress = (currentTime / duration) * 100;
-                    progressBar.style.width = `${progress}%`;
-                    progressHandle.style.left = `${progress}%`;
-                    currentTimeDisplay.textContent = formatTime(currentTime);
-                    durationDisplay.textContent = formatTime(duration);
-                }
-            });
-
-            // Seek functionality
-            progressContainer.addEventListener('click', (e) => {
-                const rect = progressContainer.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const clickedValue = (x / progressContainer.offsetWidth);
-                audioElement.currentTime = clickedValue * audioElement.duration;
-            });
-
-            // Drag functionality for progress handle
-            let isDragging = false;
-
-            progressHandle.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
-            });
-
-            function onMouseMove(e) {
-                if (isDragging) {
-                    const rect = progressContainer.getBoundingClientRect();
-                    let x = e.clientX - rect.left;
-                    x = Math.max(0, Math.min(x, progressContainer.offsetWidth));
-                    const progress = x / progressContainer.offsetWidth;
-                    audioElement.currentTime = progress * audioElement.duration;
-                }
-            }
-
-            function onMouseUp() {
-                isDragging = false;
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
-            }
-
-            // Format time in MM:SS
-            function formatTime(time) {
-                const minutes = Math.floor(time / 60);
-                const seconds = Math.floor(time % 60);
-                return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            }
-
-            function showProgressBar() {
-                document.getElementById('progressContainer').style.display = 'flex';
-                progressContainer.style.display = 'flex';
-            }
-
-            function hideProgressBar() {
-                progressContainer.style.display = 'none';
-            }
-
-            audioElement.addEventListener('play', showProgressBar);
-            audioElement.addEventListener('pause', () => {
-                if (audioElement.currentTime === 0) {
-                    hideProgressBar();
-                }
-            });
-            audioElement.addEventListener('ended', hideProgressBar);
-        });
-    </script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-    
         gtag('config', 'G-NM00FT5H0Y');
     </script>
+</head>
+<body>
+    <!-- Icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z"/></symbol>
+        <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></symbol>
+        <symbol id="i-next" viewBox="0 0 24 24"><path d="M4 6.2v11.6a.8.8 0 0 0 1.25.66L13 13.1v4.7a.8.8 0 0 0 1.25.66l8.2-5.8a.8.8 0 0 0 0-1.32l-8.2-5.8A.8.8 0 0 0 13 6.2v4.7L5.25 5.54A.8.8 0 0 0 4 6.2z"/></symbol>
+        <symbol id="i-prev" viewBox="0 0 24 24"><path d="M20 6.2v11.6a.8.8 0 0 1-1.25.66L11 13.1v4.7a.8.8 0 0 1-1.25.66l-8.2-5.8a.8.8 0 0 1 0-1.32l8.2-5.8A.8.8 0 0 1 11 6.2v4.7l7.75-5.36A.8.8 0 0 1 20 6.2z"/></symbol>
+        <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></symbol>
+        <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></symbol>
+        <symbol id="i-repeat-one" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-2V9h-1l-2 1v1h1.5v4H13z"/></symbol>
+        <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="M15.7 4.3a1 1 0 0 1 0 1.4L9.4 12l6.3 6.3a1 1 0 1 1-1.4 1.4l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.4 0z"/></symbol>
+        <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M8.3 4.3a1 1 0 0 1 1.4 0l7 7a1 1 0 0 1 0 1.4l-7 7a1 1 0 1 1-1.4-1.4l6.3-6.3-6.3-6.3a1 1 0 0 1 0-1.4z"/></symbol>
+        <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M3.3 8.3a1 1 0 0 1 1.4 0L12 14.6l7.3-6.3a1 1 0 1 1 1.3 1.5l-8 7a1 1 0 0 1-1.3 0l-8-7a1 1 0 0 1 0-1.5z"/></symbol>
+        <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 2.6 7.3 7.3l1.4 1.4L11 6.4V15h2V6.4l2.3 2.3 1.4-1.4L12 2.6zM5 10v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10h-3v2h1v8H7v-8h1v-2H5z"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></symbol>
+        <symbol id="i-grid" viewBox="0 0 24 24"><path d="M4 4h7v7H4zm9 0h7v7h-7zM4 13h7v7H4zm9 0h7v7h-7z"/></symbol>
+        <symbol id="i-list" viewBox="0 0 24 24"><path d="M4 5h3v3H4zm5 0h11v3H9zM4 10.5h3v3H4zm5 0h11v3H9zM4 16h3v3H4zm5 0h11v3H9z"/></symbol>
+        <symbol id="i-volume" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05A4.48 4.48 0 0 0 16.5 12zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></symbol>
+        <symbol id="i-volume-off" viewBox="0 0 24 24"><path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.8 8.8 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></symbol>
+    </svg>
+
+    <header class="topbar">
+        <div class="topbar-inner">
+            <span class="topbar-spacer"></span>
+            <a class="brand" href="#">gppls daily</a>
+            <button class="icon-btn" id="searchToggle" aria-label="Search songs" aria-expanded="false" aria-controls="searchRow">
+                <svg><use href="#i-search"/></svg>
+            </button>
+        </div>
+        <div class="search-row" id="searchRow" hidden>
+            <input type="search" id="searchInput" placeholder="Search by day or title" autocomplete="off" aria-label="Search by day or title">
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="playlists" id="playlists" aria-labelledby="playlistsTitle" hidden>
+            <div class="shelf-head">
+                <h2 class="section-title" id="playlistsTitle">Releases</h2>
+                <div class="shelf-nav" id="shelfNav" hidden>
+                    <button class="icon-btn shelf-btn" data-shelf="-1" aria-label="Scroll releases left"><svg><use href="#i-chevron-left"/></svg></button>
+                    <button class="icon-btn shelf-btn" data-shelf="1" aria-label="Scroll releases right"><svg><use href="#i-chevron-right"/></svg></button>
+                </div>
+            </div>
+            <div class="shelf" id="playlistShelf" role="group" aria-label="Choose a release"></div>
+        </section>
+
+        <!-- Overview of the selected release -->
+        <section class="hero is-loading" id="hero" aria-live="polite">
+            <div class="hero-art" id="heroArt"></div>
+            <div class="hero-body">
+                <p class="eyebrow" id="heroType">Album</p>
+                <h1 class="hero-title" id="heroTitle">gppls daily</h1>
+                <p class="hero-sub" id="heroSub">Loading songs…</p>
+                <p class="pl-desc" id="heroDesc" hidden></p>
+            </div>
+            <div class="hero-actions">
+                <button class="pill" id="playAllButton" disabled>
+                    <svg><use href="#i-play"/></svg>Play
+                </button>
+                <button class="pill pill-outline" id="shuffleAllButton" disabled>
+                    <svg><use href="#i-shuffle"/></svg>Shuffle
+                </button>
+            </div>
+        </section>
+
+        <section aria-labelledby="allDaysTitle">
+            <div class="section-head">
+                <div>
+                    <h2 class="section-title" id="allDaysTitle">All days</h2>
+                    <p class="section-meta" id="libraryCount"></p>
+                </div>
+                <div class="section-tools">
+                    <div class="segmented" role="group" aria-label="Sort order">
+                        <button data-sort="newest" aria-pressed="true">Newest</button>
+                        <button data-sort="oldest" aria-pressed="false">Oldest</button>
+                    </div>
+                    <div class="segmented" role="group" aria-label="Layout">
+                        <button data-view="grid" aria-pressed="true" aria-label="Grid view"><svg><use href="#i-grid"/></svg></button>
+                        <button data-view="list" aria-pressed="false" aria-label="List view"><svg><use href="#i-list"/></svg></button>
+                    </div>
+                </div>
+            </div>
+            <div class="library grid" id="library"></div>
+        </section>
+    </main>
+
+    <!-- Mini player -->
+    <div class="mini" id="mini" hidden>
+        <div class="mini-progress"><span id="miniProgress"></span></div>
+        <button class="mini-open" id="miniOpen" aria-label="Open now playing">
+            <span class="mini-art" id="miniArt"></span>
+            <span class="mini-text">
+                <span class="mini-title" id="miniTitle"></span>
+                <span class="mini-sub" id="miniSub"></span>
+            </span>
+        </button>
+        <div class="mini-controls">
+            <button class="icon-btn hide-sm" data-action="prev" aria-label="Previous"><svg><use href="#i-prev"/></svg></button>
+            <button class="icon-btn play-btn" data-action="toggle" aria-label="Play"><svg><use href="#i-play"/></svg></button>
+            <button class="icon-btn" data-action="next" aria-label="Next"><svg><use href="#i-next"/></svg></button>
+        </div>
+    </div>
+
+    <!-- Full-screen now playing -->
+    <div class="np" id="np" role="dialog" aria-modal="true" aria-label="Now playing" hidden>
+        <div class="np-bg" id="npBg"></div>
+        <div class="np-inner">
+            <div class="np-top">
+                <button class="icon-btn" id="npClose" aria-label="Close now playing"><svg><use href="#i-chevron-down"/></svg></button>
+                <div class="np-context">
+                    <span class="np-context-label">Playing from</span>
+                    <strong id="npContext">gppls daily</strong>
+                </div>
+                <button class="icon-btn" id="npShare" aria-label="Share this song"><svg><use href="#i-share"/></svg></button>
+            </div>
+
+            <div class="np-art" id="npArt"></div>
+
+            <div class="np-meta">
+                <button class="icon-btn toggle" id="repeatButton" aria-label="Repeat: off"><svg><use href="#i-repeat"/></svg></button>
+                <div class="np-titles">
+                    <h2 id="npTitle"></h2>
+                    <p id="npSub"></p>
+                </div>
+                <button class="icon-btn toggle" id="shuffleButton" aria-label="Shuffle" aria-pressed="false"><svg><use href="#i-shuffle"/></svg></button>
+            </div>
+
+            <div class="np-seek">
+                <input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="Seek">
+                <div class="np-times"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+            </div>
+
+            <div class="np-controls">
+                <button class="icon-btn lg" data-action="prev" aria-label="Previous"><svg><use href="#i-prev"/></svg></button>
+                <button class="icon-btn play-btn xl" data-action="toggle" aria-label="Play"><svg><use href="#i-play"/></svg></button>
+                <button class="icon-btn lg" data-action="next" aria-label="Next"><svg><use href="#i-next"/></svg></button>
+            </div>
+
+            <div class="np-links">
+                <a class="pill pill-outline pill-sm" id="npSoundcloud" href="#" target="_blank" rel="noopener" hidden>Listen on SoundCloud</a>
+            </div>
+
+            <div class="np-volume">
+                <button class="icon-btn" id="muteButton" aria-label="Mute"><svg><use href="#i-volume"/></svg></button>
+                <input type="range" id="volume" min="0" max="100" value="100" aria-label="Volume">
+            </div>
+
+            <section class="up-next" id="upNextSection">
+                <h3 class="section-title">Up next</h3>
+                <ol id="upNext"></ol>
+            </section>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
 </body>
 </html>
