@@ -6,6 +6,5 @@
   {"id": "study-beats", "title": "study beats", "type": "playlist", "coverDay": 241, "days": [199, 239, 238, 198, 243, 244, 250, 248, 197, 206, 200, 256, 204, 210, 230, 201, 205, 242, 240, 241, 255, 166, 219, 237, 193, 170, 171]},
   {"id": "love-lockdown", "title": "summerfling 2 summerfling", "type": "album", "url": "https://soundcloud.com/geoppls/sets/love-lockdown", "description": "keep your love locked down you lose", "released": "2019-10-14", "artwork": "https://i1.sndcdn.com/artworks-000677204797-m2j1r0-t500x500.jpg", "days": [297, 290, 343, 301, 151, 340, 88, 338, 276, 359, 211, 360, 183, 64, 130, 261, 116, 53, 138, 52, 137, 140, 242, 206, 204, 141, 304, 157]},
   {"id": "nerdcore", "title": "nerdcore", "type": "album", "released": "2025-04-23", "artwork": "covers/nerdcore.jpg", "ordered": true, "days": [72, 191, 159, 258, 62, 285, 109, 88]},
-  {"id": "current-events-rap", "title": "Current events rap", "type": "playlist", "days": [321, 155, 156, 154]},
-  {"id": "moon-lambo", "title": "Moon Lambo EP: Web3, Crypto, NFTs", "type": "ep", "released": "2023-02-20", "artwork": "covers/moon-lambo.jpg", "ordered": true, "trackNumbers": [2, 4], "days": [84, 333]}
+  {"id": "current-events-rap", "title": "Current events rap", "type": "playlist", "days": [321, 155, 156, 154]}
 ]
