@@ -421,7 +421,10 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
     margin-bottom: 16px;
 }
 
-.section-tools { display: flex; gap: 8px; }
+.section-tools { display: flex; align-items: center; gap: 8px; }
+
+.sort-by { display: flex; align-items: center; gap: 8px; }
+.tool-label { color: var(--muted); font-size: 14px; font-weight: 600; white-space: nowrap; }
 
 /* ---------- Library ---------- */
 
