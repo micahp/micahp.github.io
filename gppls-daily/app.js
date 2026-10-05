@@ -24,6 +24,7 @@
         plType: $('plType'),
         plTitle: $('plTitle'),
         plSub: $('plSub'),
+        plDesc: $('plDesc'),
         plPlay: $('plPlay'),
         plShuffle: $('plShuffle'),
         plTracks: $('plTracks'),
@@ -351,7 +352,10 @@
         els.plArt.innerHTML = coverHtml(p);
         els.plType.textContent = p.type === 'album' ? 'Album' : 'Playlist';
         els.plTitle.textContent = p.title;
-        els.plSub.textContent = `gppls · ${p.days.length} ${p.days.length === 1 ? 'song' : 'songs'}`;
+        const year = /^\d{4}/.exec(p.released || '')?.[0];
+        els.plSub.textContent = ['gppls', `${p.days.length} ${p.days.length === 1 ? 'song' : 'songs'}`, year].filter(Boolean).join(' · ');
+        els.plDesc.hidden = !p.description;
+        els.plDesc.textContent = p.description || '';
         els.plSoundcloud.hidden = !p.url;
         if (p.url) els.plSoundcloud.href = p.url;
         els.plTracks.innerHTML = p.days.map((d) => {
