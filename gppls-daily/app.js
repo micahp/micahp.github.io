@@ -299,7 +299,7 @@
         const year = /^\d{4}/.exec(p.released || '')?.[0];
         els.hero.classList.remove('is-loading');
         els.heroArt.innerHTML = coverHtml(p);
-        els.heroType.textContent = p.type === 'album' ? 'Album' : 'Playlist';
+        els.heroType.textContent = releaseType(p);
         els.heroTitle.textContent = p.title;
         els.heroSub.textContent = ['gppls', `${n} ${n === 1 ? 'song' : 'songs'}`, year].filter(Boolean).join(' · ');
         els.heroDesc.hidden = !p.description;
@@ -319,9 +319,13 @@
         return `<span class="cover"><img src="${esc(src)}" alt="" loading="lazy" decoding="async"></span>`;
     }
 
+    function releaseType(p) {
+        return { album: 'Album', ep: 'EP' }[p.type] || 'Playlist';
+    }
+
     function playlistMeta(p) {
         const n = p.days.length;
-        return `${p.type === 'album' ? 'Album' : 'Playlist'} · ${n} ${n === 1 ? 'song' : 'songs'}`;
+        return `${releaseType(p)} · ${n} ${n === 1 ? 'song' : 'songs'}`;
     }
 
     function renderPlaylists() {
@@ -399,7 +403,7 @@
         els.songsTitle.textContent = state.selected.isAll ? 'All days' : 'Songs';
         const ordered = !!state.selected.ordered;
         els.sortControl.hidden = ordered;
-        els.library.innerHTML = orderedPlaylistDays(state.selected).map((d, i) => cardHtml(state.byDay.get(d), ordered ? i + 1 : 0)).join('')
+        els.library.innerHTML = orderedPlaylistDays(state.selected).map((d, i) => cardHtml(state.byDay.get(d), ordered ? (state.selected.trackNumbers?.[i] ?? i + 1) : 0)).join('')
             + '<p class="empty" id="noMatches" hidden></p>';
 
         document.querySelectorAll('[data-sort]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sort === state.sort)));
