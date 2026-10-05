@@ -310,12 +310,9 @@
     // ---------- Playlists ----------
 
     function coverHtml(p) {
-        if (p.artwork) {
-            return `<span class="cover"><img src="${esc(p.artwork)}" alt="" loading="lazy" decoding="async"></span>`;
-        }
-        const days = p.days.slice(0, 4);
-        if (days.length < 4) return `<span class="cover single">${artHtml(state.byDay.get(days[0]))}</span>`;
-        return `<span class="cover mosaic">${days.map((d) => artHtml(state.byDay.get(d))).join('')}</span>`;
+        // Releases without their own artwork use the g.ppls DAILY artboard
+        const src = p.artwork || 'icons/icon-512.png';
+        return `<span class="cover"><img src="${esc(src)}" alt="" loading="lazy" decoding="async"></span>`;
     }
 
     function playlistMeta(p) {

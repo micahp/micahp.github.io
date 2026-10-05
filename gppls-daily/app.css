@@ -380,12 +380,11 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 }
 
 .pl-card .cover { width: 64px; flex: none; border-radius: 6px; transition: transform 0.15s; }
-.pl-card .cover.mosaic .art { font-size: 0.3em; }
 .pl-card .card-text { padding-top: 0; flex: 1; }
 .pl-card .card-title { font-size: 17px; }
 .pl-card:active .cover { transform: scale(0.95); }
 
-/* Playlist cover: its own artwork, or a 2x2 mosaic of its first songs */
+/* Playlist cover */
 .cover {
     position: relative;
     display: block;
@@ -399,12 +398,7 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 
 .cover > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
-.cover.mosaic { display: grid; grid-template-columns: 1fr 1fr; }
-.cover.mosaic .art { border-radius: 0; box-shadow: none; font-size: 0.6em; }
-.cover.single .art { position: absolute; inset: 0; border-radius: 0; box-shadow: none; }
 
-.hero-art .cover.single .art { font-size: 1em; }
-.hero-art .cover.mosaic .art { font-size: 0.55em; }
 
 .pl-title { font-size: clamp(26px, 5vw, 48px); }
 #playlistView .hero-sub { margin-bottom: 4px; }
