@@ -839,6 +839,12 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.35); }
 .up-next .row .art { width: 44px; }
 .up-next .row .card-title { font-size: 16px; }
 
+/* No vertical scrollbar on mobile; the page and Now Playing still scroll */
+@media (max-width: 719px), (pointer: coarse) {
+    html, .np { scrollbar-width: none; }
+    html::-webkit-scrollbar, .np::-webkit-scrollbar { display: none; }
+}
+
 /* ---------- Toast ---------- */
 
 .toast {
