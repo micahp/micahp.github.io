@@ -409,6 +409,7 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 
 #playlistView .library.list .card-title { font-size: 16px; }
 .pl-tools { justify-content: flex-end; }
+.pl-tools .section-tools { width: auto; margin-left: auto; justify-content: flex-end; }
 
 .section-head {
     display: flex;
