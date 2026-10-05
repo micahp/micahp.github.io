@@ -7,6 +7,7 @@
     const IMAGE_RANK = { jpg: 5, jpeg: 5, webp: 4, avif: 4, png: 3, gif: 2 };
     const UP_NEXT_COUNT = 12;
     const SONGS_URL = 'songs.json';
+    const PLAYLISTS_URL = 'playlists.json';
 
     const $ = (id) => document.getElementById(id);
     const els = {
@@ -15,8 +16,21 @@
         heroSub: $('heroSub'),
         playAll: $('playAllButton'),
         shuffleAll: $('shuffleAllButton'),
-        latest: $('latest'),
-        latestRow: $('latestRow'),
+        homeView: $('homeView'),
+        playlists: $('playlists'),
+        playlistShelf: $('playlistShelf'),
+        playlistView: $('playlistView'),
+        plArt: $('plArt'),
+        plType: $('plType'),
+        plTitle: $('plTitle'),
+        plSub: $('plSub'),
+        plPlay: $('plPlay'),
+        plShuffle: $('plShuffle'),
+        plTracks: $('plTracks'),
+        plSoundcloud: $('plSoundcloud'),
+        backButton: $('backButton'),
+        topbarSpacer: $('topbarSpacer'),
+        npContext: $('npContext'),
         library: $('library'),
         count: $('libraryCount'),
         searchToggle: $('searchToggle'),
@@ -63,6 +77,9 @@
 
     const state = {
         tracks: [],          // every day we know about, newest first
+        playlists: [],       // SoundCloud sets/albums made only of gppls daily songs
+        context: null,       // playlist being played from, or null for all days
+        openPlaylist: null,  // playlist shown in the playlist view
         byDay: new Map(),
         queue: [],           // days in play order
         index: -1,           // position in queue
@@ -213,6 +230,7 @@
             getJson('/audio-files'),
             fetch(SONGS_URL).then((res) => (res.ok ? res.json() : [])),
         ]);
+        const playlistsRequest = fetch(PLAYLISTS_URL).then((res) => (res.ok ? res.json() : [])).catch(() => []);
 
         if (images.status === 'rejected') console.error('Could not load image list:', images.reason);
         if (songs.status === 'rejected') console.error('Could not load song list:', songs.reason);
@@ -235,9 +253,20 @@
             return;
         }
 
+        state.playlists = normalizePlaylists(await playlistsRequest);
+
         renderHero();
+        renderPlaylists();
         renderLibrary();
         restoreSession();
+        route();
+    }
+
+    function normalizePlaylists(list) {
+        if (!Array.isArray(list)) return [];
+        return list
+            .map((p) => ({ ...p, days: (p.days || []).filter((d) => state.byDay.has(d)) }))
+            .filter((p) => p.id && p.title && p.days.length);
     }
 
     // ---------- Rendering ----------
@@ -273,16 +302,90 @@
         els.heroArt.innerHTML = artHtml(latest);
         els.heroSub.textContent = `gppls · ${playable} ${playable === 1 ? 'song' : 'songs'}`;
         els.playAll.disabled = els.shuffleAll.disabled = playable === 0;
+    }
 
-        els.latest.hidden = !latest.audio;
-        els.latestRow.innerHTML = `
-            <button class="row card" data-day="${latest.day}">
-                ${artHtml(latest, EQ)}
+    // ---------- Playlists ----------
+
+    function coverHtml(p) {
+        if (p.artwork) {
+            return `<span class="cover"><img src="${esc(p.artwork)}" alt="" loading="lazy" decoding="async"></span>`;
+        }
+        const days = p.days.slice(0, 4);
+        if (days.length < 4) return `<span class="cover single">${artHtml(state.byDay.get(days[0]))}</span>`;
+        return `<span class="cover mosaic">${days.map((d) => artHtml(state.byDay.get(d))).join('')}</span>`;
+    }
+
+    function playlistMeta(p) {
+        const n = p.days.length;
+        return `${p.type === 'album' ? 'Album' : 'Playlist'} · ${n} ${n === 1 ? 'song' : 'songs'}`;
+    }
+
+    function renderPlaylists() {
+        els.playlists.hidden = state.playlists.length === 0;
+        els.playlistShelf.innerHTML = state.playlists.map((p) => `
+            <button class="pl-card" data-playlist="${esc(p.id)}">
+                ${coverHtml(p)}
                 <span class="card-text">
-                    <span class="card-title">${esc(latest.title)}</span>
-                    <span class="card-sub">${esc(subtitle(latest))}</span>
+                    <span class="card-title">${esc(p.title)}</span>
+                    <span class="card-sub">${esc(playlistMeta(p))}</span>
+                </span>
+            </button>`).join('');
+    }
+
+    function playlistFromHash() {
+        const m = /^#playlist-(.+)$/.exec(location.hash);
+        return m ? state.playlists.find((p) => p.id === decodeURIComponent(m[1])) : null;
+    }
+
+    function route() {
+        const p = playlistFromHash();
+        state.openPlaylist = p || null;
+        els.homeView.hidden = !!p;
+        els.playlistView.hidden = !p;
+        els.backButton.hidden = !p;
+        els.topbarSpacer.hidden = !!p;
+        if (!p) {
+            if (typeof history.state?.scrollY === 'number') window.scrollTo(0, history.state.scrollY);
+            return;
+        }
+        els.plArt.innerHTML = coverHtml(p);
+        els.plType.textContent = p.type === 'album' ? 'Album' : 'Playlist';
+        els.plTitle.textContent = p.title;
+        els.plSub.textContent = `gppls · ${p.days.length} ${p.days.length === 1 ? 'song' : 'songs'}`;
+        els.plSoundcloud.hidden = !p.url;
+        if (p.url) els.plSoundcloud.href = p.url;
+        els.plTracks.innerHTML = p.days.map((d) => {
+            const t = state.byDay.get(d);
+            return `<button class="card${t.audio ? '' : ' is-unavailable'}" data-day="${t.day}">
+                ${artHtml(t, EQ)}
+                <span class="card-text">
+                    <span class="card-title">${esc(t.title)}</span>
+                    <span class="card-sub">${esc(subtitle(t))}${t.audio ? '' : t.soundcloud ? ' · on SoundCloud' : ' · coming soon'}</span>
                 </span>
             </button>`;
+        }).join('');
+        const canPlay = p.days.some((d) => state.byDay.get(d).audio);
+        els.plPlay.disabled = els.plShuffle.disabled = !canPlay;
+        markCurrent();
+        window.scrollTo(0, 0);
+    }
+
+    function openPlaylist(id) {
+        location.hash = `#playlist-${encodeURIComponent(id)}`;
+        history.replaceState({ fromHome: true }, '');
+    }
+
+    function goHome() {
+        if (history.state?.fromHome) history.back();
+        else location.hash = '';
+    }
+
+    function playPlaylist(p, { shuffle = false } = {}) {
+        setShuffle(shuffle, { silent: true });
+        state.context = p;
+        const pool = p.days.filter((d) => state.byDay.get(d).audio);
+        if (!pool.length) return;
+        playDay(shuffle ? pool[Math.floor(Math.random() * pool.length)] : pool[0], { context: p });
     }
 
     function orderedTracks() {
@@ -343,6 +446,7 @@
         els.miniSub.textContent = subtitle(t);
         els.npArt.innerHTML = artHtml(t);
         els.npTitle.textContent = t.title;
+        els.npContext.textContent = state.context ? state.context.title : 'gppls daily';
         els.npSub.textContent = [subtitle(t), t.date].filter(Boolean).join(' · ');
         els.npSoundcloud.hidden = !t.soundcloud;
         if (t.soundcloud) els.npSoundcloud.href = t.soundcloud;
@@ -409,8 +513,13 @@
 
     // ---------- Playback ----------
 
+    function contextDays() {
+        if (state.context) return state.context.days.filter((d) => state.byDay.get(d).audio);
+        return (state.sort === 'oldest' ? playableTracks().reverse() : playableTracks()).map((t) => t.day);
+    }
+
     function buildQueue(startDay) {
-        const days = (state.sort === 'oldest' ? playableTracks().reverse() : playableTracks()).map((t) => t.day);
+        const days = contextDays();
         if (state.shuffle) {
             const rest = shuffled(days.filter((d) => d !== startDay));
             state.queue = startDay != null ? [startDay, ...rest] : rest;
@@ -432,12 +541,16 @@
         updateMediaSession();
     }
 
-    function playDay(day, { keepQueue = false, startAt = 0 } = {}) {
+    function playDay(day, { keepQueue = false, startAt = 0, context } = {}) {
         const t = state.byDay.get(day);
         if (!t || !t.audio) {
             if (t?.soundcloud) window.open(t.soundcloud, '_blank', 'noopener');
             else toast('That day doesn’t have audio yet');
             return;
+        }
+        if (context !== undefined && context !== state.context) {
+            state.context = context;
+            keepQueue = false;
         }
         if (!keepQueue || !state.queue.includes(day)) buildQueue(day);
         state.index = state.queue.indexOf(day);
@@ -447,8 +560,7 @@
         renderNowPlaying();
         updateMediaSession();
         savePrefs({ lastDay: day, lastTime: startAt });
-        history.replaceState(null, '', `#day-${day}`);
-        track('play_song', { day });
+        track('play_song', { day, playlist: state.context?.id });
     }
 
     function loadAndPlay() {
@@ -516,12 +628,14 @@
 
     function playAll() {
         setShuffle(false, { silent: true });
+        state.context = null;
         const first = state.sort === 'oldest' ? playableTracks().at(-1) : playableTracks()[0];
         if (first) playDay(first.day);
     }
 
     function shuffleAll() {
         setShuffle(true, { silent: true });
+        state.context = null;
         const pool = playableTracks();
         if (!pool.length) return;
         playDay(pool[Math.floor(Math.random() * pool.length)].day);
@@ -678,13 +792,23 @@
 
     els.playAll.addEventListener('click', playAll);
     els.shuffleAll.addEventListener('click', shuffleAll);
+    els.plPlay.addEventListener('click', () => state.openPlaylist && playPlaylist(state.openPlaylist));
+    els.plShuffle.addEventListener('click', () => state.openPlaylist && playPlaylist(state.openPlaylist, { shuffle: true }));
+    els.backButton.addEventListener('click', goHome);
 
     document.addEventListener('click', (e) => {
+        const playlistCard = e.target.closest('[data-playlist]');
+        if (playlistCard) {
+            history.replaceState({ ...history.state, scrollY: window.scrollY }, '');
+            openPlaylist(playlistCard.dataset.playlist);
+            return;
+        }
         const card = e.target.closest('.card[data-day]');
         if (card && !card.classList.contains('skeleton')) {
             const day = Number(card.dataset.day);
-            if (state.current?.day === day) togglePlay();
-            else playDay(day);
+            const context = card.closest('#playlistView') ? state.openPlaylist : null;
+            if (state.current?.day === day && state.context === context) togglePlay();
+            else playDay(day, { context });
             return;
         }
         const queued = e.target.closest('[data-queue-day]');
@@ -715,6 +839,7 @@
 
     els.searchToggle.addEventListener('click', () => {
         const open = els.searchRow.hidden;
+        if (open && state.openPlaylist) goHome();
         els.searchRow.hidden = !open;
         els.searchToggle.setAttribute('aria-expanded', String(open));
         if (open) {
@@ -776,6 +901,7 @@
     });
 
     window.addEventListener('hashchange', () => {
+        if (state.tracks.length) route();
         const day = dayFromHash();
         if (day != null && day !== state.current?.day && state.byDay.get(day)?.audio) playDay(day);
     });

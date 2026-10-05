@@ -350,8 +350,58 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 
 .section-meta { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
 
-.latest { margin-bottom: 32px; }
-.latest .section-title { margin-bottom: 10px; }
+/* Playlists shelf, after the ellomix artist profile */
+.playlists { margin-bottom: 36px; }
+.playlists .section-title { margin-bottom: 12px; }
+
+.shelf {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(148px, 180px);
+    gap: 16px;
+    margin: 0 calc(-1 * var(--page-pad));
+    padding: 4px var(--page-pad) 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 var(--page-pad);
+    scrollbar-width: none;
+}
+
+.shelf::-webkit-scrollbar { display: none; }
+
+.pl-card { display: block; text-align: left; scroll-snap-align: start; min-width: 0; }
+.pl-card .cover { transition: transform 0.2s var(--ease), box-shadow 0.2s; }
+@media (hover: hover) {
+    .pl-card:hover .cover { transform: translateY(-2px); box-shadow: var(--shadow-float); }
+}
+.pl-card:active .cover { transform: scale(0.97); }
+
+/* Playlist cover: its own artwork, or a 2x2 mosaic of its first songs */
+.cover {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--radius-art);
+    background: var(--surface);
+    box-shadow: var(--shadow-art);
+}
+
+.cover > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.cover.mosaic { display: grid; grid-template-columns: 1fr 1fr; }
+.cover.mosaic .art { border-radius: 0; box-shadow: none; font-size: 0.6em; }
+.cover.single .art { position: absolute; inset: 0; border-radius: 0; box-shadow: none; }
+
+.hero-art .cover .art { font-size: 1em; }
+
+.pl-title { font-size: clamp(26px, 5vw, 48px); }
+
+.pl-source { margin: 20px 0 0; text-align: center; font-size: 14px; }
+.pl-source a { color: var(--muted); font-weight: 600; }
+
+#playlistView .library.list .card-title { font-size: 16px; }
 
 .section-head {
     display: flex;
@@ -472,8 +522,6 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 
 .row { width: 100%; text-align: left; }
 
-.latest .row { border: 0; padding: 0; }
-.latest .row .art { width: 64px; box-shadow: var(--shadow-art); }
 
 /* States */
 .skeleton .art { box-shadow: none; background: var(--surface); }
