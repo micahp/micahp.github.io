@@ -352,7 +352,24 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 
 /* Playlists shelf, after the ellomix artist profile */
 .playlists { margin-bottom: 36px; }
-.playlists .section-title { margin-bottom: 10px; }
+.shelf-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* Arrow buttons only where there's a mouse; touch devices swipe the shelf */
+.shelf-nav { display: none; gap: 6px; }
+
+@media (hover: hover) and (pointer: fine) {
+    .shelf-nav { display: flex; }
+}
+
+.shelf-btn { width: 32px; height: 32px; background: var(--surface); }
+.shelf-btn svg { width: 20px; height: 20px; }
+.shelf-btn:hover:not(:disabled) { background: var(--surface-2); }
+.shelf-btn:disabled { opacity: 0.3; }
 
 .shelf {
     display: grid;

@@ -19,6 +19,7 @@
         homeView: $('homeView'),
         playlists: $('playlists'),
         playlistShelf: $('playlistShelf'),
+        shelfNav: $('shelfNav'),
         playlistView: $('playlistView'),
         plArt: $('plArt'),
         plType: $('plType'),
@@ -309,9 +310,12 @@
     // ---------- Playlists ----------
 
     function coverHtml(p) {
-        // Releases without their own artwork use the cover of their first song that has one
-        const first = p.days.map((d) => state.byDay.get(d)).find((t) => t.image && !brokenImages.has(t.image));
-        const src = p.artwork || first?.image || 'icons/icon-512.png';
+        // Releases without their own artwork use a chosen song's cover (coverDay),
+        // otherwise the first of their songs that has one
+        const hasCover = (t) => t?.image && !brokenImages.has(t.image);
+        const chosen = state.byDay.get(p.coverDay);
+        const first = p.days.map((d) => state.byDay.get(d)).find(hasCover);
+        const src = p.artwork || (hasCover(chosen) ? chosen.image : first?.image) || 'icons/icon-512.png';
         return `<span class="cover"><img src="${esc(src)}" alt="" loading="lazy" decoding="async"></span>`;
     }
 
@@ -332,6 +336,15 @@
             </button>`).join('');
     }
 
+    function updateShelfNav() {
+        const shelf = els.playlistShelf;
+        const overflowing = shelf.scrollWidth > shelf.clientWidth + 1;
+        els.shelfNav.hidden = !overflowing;
+        if (!overflowing) return;
+        els.shelfNav.querySelector('[data-shelf="-1"]').disabled = shelf.scrollLeft <= 1;
+        els.shelfNav.querySelector('[data-shelf="1"]').disabled = shelf.scrollLeft + shelf.clientWidth >= shelf.scrollWidth - 1;
+    }
+
     function playlistFromHash() {
         const m = /^#playlist-(.+)$/.exec(location.hash);
         return m ? state.playlists.find((p) => p.id === decodeURIComponent(m[1])) : null;
@@ -345,6 +358,7 @@
         els.backButton.hidden = !p;
         els.topbarSpacer.hidden = !!p;
         if (!p) {
+            updateShelfNav();
             if (typeof history.state?.scrollY === 'number') window.scrollTo(0, history.state.scrollY);
             return;
         }
@@ -804,6 +818,13 @@
     els.plPlay.addEventListener('click', () => state.openPlaylist && playPlaylist(state.openPlaylist));
     els.plShuffle.addEventListener('click', () => state.openPlaylist && playPlaylist(state.openPlaylist, { shuffle: true }));
     els.backButton.addEventListener('click', goHome);
+
+    els.shelfNav.addEventListener('click', (e) => {
+        const dir = Number(e.target.closest('[data-shelf]')?.dataset.shelf);
+        if (dir) els.playlistShelf.scrollBy({ left: dir * els.playlistShelf.clientWidth * 0.8, behavior: 'smooth' });
+    });
+    els.playlistShelf.addEventListener('scroll', updateShelfNav, { passive: true });
+    window.addEventListener('resize', updateShelfNav);
 
     document.querySelectorAll('[data-plsort]').forEach((btn) => btn.addEventListener('click', () => {
         if (state.plSort === btn.dataset.plsort || !state.openPlaylist) return;
