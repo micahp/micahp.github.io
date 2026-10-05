@@ -677,7 +677,8 @@
             title: t.title,
             artist: 'gppls',
             album: `gppls daily ${t.day}`,
-            artwork: t.image && !brokenImages.has(t.image) ? [{ src: t.image, sizes: '512x512' }] : [],
+            // Lock screen falls back to the gppls daily artboard when a day has no cover
+            artwork: [{ src: t.image && !brokenImages.has(t.image) ? t.image : new URL('icons/icon-512.png', location.href).href, sizes: '512x512' }],
         });
     }
 
