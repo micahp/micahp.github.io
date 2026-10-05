@@ -52,7 +52,6 @@
         volume: $('volume'),
         upNext: $('upNext'),
         upNextSection: $('upNextSection'),
-        npSoundcloud: $('npSoundcloud'),
         toast: $('toast'),
     };
 
@@ -130,10 +129,22 @@
         return [`Day ${t.day}`, t.producer && `prod. ${t.producer}`].filter(Boolean).join(' · ');
     }
 
-    function artHtml(t, extra = '') {
-        const img = t.image && !brokenImages.has(t.image)
-            ? `<img src="${esc(t.image)}" alt="" loading="lazy" decoding="async">`
-            : '';
+    // Small views use the server's WebP thumbnail; big views (full: true) use the original.
+    // If a thumbnail fails, the image falls back to the original (see the error handler).
+    function imageSrc(t, full = false) {
+        if (!t?.image) return null;
+        if (!full && t.thumb && !brokenImages.has(t.thumb)) return t.thumb;
+        return brokenImages.has(t.image) ? null : t.image;
+    }
+
+    function imgTag(src, fallback) {
+        const fb = fallback && fallback !== src ? ` data-full="${esc(fallback)}"` : '';
+        return `<img src="${esc(src)}"${fb} alt="" loading="lazy" decoding="async">`;
+    }
+
+    function artHtml(t, extra = '', { full = false } = {}) {
+        const src = imageSrc(t, full);
+        const img = src ? imgTag(src, imageSrc(t, true)) : '';
         return `<span class="art" style="--hue:${(t.day * 47) % 360}"><span class="art-num" aria-hidden="true">${t.day}</span>${img}${extra}</span>`;
     }
 
@@ -142,14 +153,28 @@
 
     // Cover images fade in when loaded, and fall back to generated art if they fail.
     document.addEventListener('load', (e) => {
-        if (e.target.tagName === 'IMG' && e.target.parentElement?.classList.contains('art')) {
+        if (e.target.tagName === 'IMG' && e.target.parentElement?.matches('.art, .cover')) {
             e.target.classList.add('loaded');
         }
     }, true);
 
     document.addEventListener('error', (e) => {
-        if (e.target.tagName === 'IMG' && e.target.parentElement?.classList.contains('art')) {
-            const src = e.target.getAttribute('src');
+        const img = e.target;
+        if (img.tagName !== 'IMG') return;
+        const src = img.getAttribute('src');
+        // Thumbnail failed: try the original image instead
+        if (img.dataset.full && img.dataset.full !== src) {
+            brokenImages.add(src);
+            img.src = img.dataset.full;
+            delete img.dataset.full;
+            return;
+        }
+        if (img.parentElement?.classList.contains('cover')) {
+            brokenImages.add(src);
+            if (!src.endsWith('icons/icon-512.png')) img.src = 'icons/icon-512.png';
+            return;
+        }
+        if (img.parentElement?.classList.contains('art')) {
             if (!brokenImages.has(src)) console.warn('Cover art failed to load:', src);
             brokenImages.add(src);
             e.target.remove();
@@ -197,6 +222,7 @@
             const t = get(parseInt(m[1], 10));
             if (rank > t.imageRank) {
                 t.image = `${API_BASE_URL}/images/${encodeURIComponent(file)}`;
+                t.thumb = `${API_BASE_URL}/thumbs/${encodeURIComponent(file)}`;
                 t.imageRank = rank;
             }
         }
@@ -298,7 +324,7 @@
         const n = p.days.length;
         const year = /^\d{4}/.exec(p.released || '')?.[0];
         els.hero.classList.remove('is-loading');
-        els.heroArt.innerHTML = coverHtml(p);
+        els.heroArt.innerHTML = coverHtml(p, { full: true });
         els.heroType.textContent = releaseType(p);
         els.heroTitle.textContent = p.title;
         els.heroSub.textContent = ['gppls', `${n} ${n === 1 ? 'song' : 'songs'}`, year].filter(Boolean).join(' · ');
@@ -309,14 +335,18 @@
 
     // ---------- Playlists ----------
 
-    function coverHtml(p) {
+    // Placeholder color shown while a release's cover loads (same look as the day tiles)
+    const coverHue = (p) => [...p.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) % 360, 7);
+
+    function coverHtml(p, { full = false } = {}) {
         // Releases without their own artwork use a chosen song's cover (coverDay),
         // otherwise the first of their songs that has one
-        const hasCover = (t) => t?.image && !brokenImages.has(t.image);
+        const open = `<span class="cover" style="--hue:${coverHue(p)}">`;
+        if (p.artwork) return `${open}${imgTag(p.artwork)}</span>`;
         const chosen = state.byDay.get(p.coverDay);
-        const first = p.days.map((d) => state.byDay.get(d)).find(hasCover);
-        const src = p.artwork || (hasCover(chosen) ? chosen.image : first?.image) || 'icons/icon-512.png';
-        return `<span class="cover"><img src="${esc(src)}" alt="" loading="lazy" decoding="async"></span>`;
+        const song = imageSrc(chosen) ? chosen : p.days.map((d) => state.byDay.get(d)).find((t) => imageSrc(t));
+        const src = song ? imageSrc(song, full) : 'icons/icon-512.png';
+        return `${open}${imgTag(src, song && imageSrc(song, true))}</span>`;
     }
 
     function releaseType(p) {
@@ -447,13 +477,11 @@
         els.miniArt.innerHTML = artHtml(t);
         els.miniTitle.textContent = t.title;
         els.miniSub.textContent = subtitle(t);
-        els.npArt.innerHTML = artHtml(t);
+        els.npArt.innerHTML = artHtml(t, '', { full: true });
         els.npTitle.textContent = t.title;
         els.npContext.textContent = state.context ? state.context.title : 'gppls daily';
         els.npSub.textContent = [subtitle(t), t.date].filter(Boolean).join(' · ');
-        els.npSoundcloud.hidden = !t.soundcloud;
-        if (t.soundcloud) els.npSoundcloud.href = t.soundcloud;
-        els.npBg.style.backgroundImage = t.image && !brokenImages.has(t.image) ? `url("${t.image}")` : 'none';
+        els.npBg.style.backgroundImage = imageSrc(t, true) ? `url("${imageSrc(t, true)}")` : 'none';
         document.title = `${t.title} · gppls daily`;
         markCurrent();
         renderUpNext();
@@ -671,7 +699,7 @@
             artist: 'gppls',
             album: `gppls daily ${t.day}`,
             // Lock screen falls back to the gppls daily artboard when a day has no cover
-            artwork: [{ src: t.image && !brokenImages.has(t.image) ? t.image : new URL('icons/icon-512.png', location.href).href, sizes: '512x512' }],
+            artwork: [{ src: imageSrc(t, true) || new URL('icons/icon-512.png', location.href).href, sizes: '512x512' }],
         });
     }
 

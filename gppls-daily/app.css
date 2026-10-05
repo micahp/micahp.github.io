@@ -418,11 +418,24 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
     aspect-ratio: 1;
     overflow: hidden;
     border-radius: var(--radius-art);
-    background: var(--surface);
+    /* the same colored placeholder as the day tiles while the cover loads */
+    background:
+        radial-gradient(120% 120% at 15% 10%, hsl(var(--hue, 0) 70% 72%), transparent 60%),
+        linear-gradient(135deg, hsl(var(--hue, 0) 55% 45%), hsl(calc(var(--hue, 0) + 50) 60% 30%));
     box-shadow: var(--shadow-art);
 }
 
-.cover > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cover > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.35s;
+}
+
+.cover > img.loaded { opacity: 1; }
 
 
 
@@ -679,7 +692,9 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
     inset: 0;
     z-index: 50;
     overflow-y: auto;
+    overflow-x: hidden;          /* up and down only, like the page */
     overscroll-behavior: contain;
+    touch-action: pan-y pinch-zoom;
     background: var(--bg);
     transform: translateY(100%);
     transition: transform 0.42s var(--ease);
@@ -714,6 +729,9 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
     justify-content: space-between;
     margin: 0 -10px 12px;
 }
+
+/* Now Playing opens with the close button focused; no ring around it */
+#npClose:focus-visible { outline: none; }
 
 .np-context { display: flex; flex-direction: column; align-items: center; font-size: 15px; }
 .np-context-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
@@ -817,10 +835,6 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.35); }
 
 .play-btn.xl svg { width: 36px; height: 36px; }
 
-.np-links { display: flex; justify-content: center; margin: 4px 0 12px; }
-
-.pill-sm { height: 36px; padding: 0 16px; font-size: 14px; border-width: 1.5px; text-decoration: none; }
-
 .np-volume {
     display: none;
     align-items: center;
@@ -837,6 +851,12 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.35); }
 .up-next ol { list-style: none; margin: 0; padding: 0; }
 .up-next .row .art { width: 44px; }
 .up-next .row .card-title { font-size: 16px; }
+
+/* No vertical scrollbar on mobile; the page and Now Playing still scroll */
+@media (max-width: 719px), (pointer: coarse) {
+    html, .np { scrollbar-width: none; }
+    html::-webkit-scrollbar, .np::-webkit-scrollbar { display: none; }
+}
 
 /* ---------- Toast ---------- */
 
