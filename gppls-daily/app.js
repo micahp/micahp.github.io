@@ -91,7 +91,7 @@
         repeat: ['off', 'all', 'one'].includes(prefs.repeat) ? prefs.repeat : 'off',
         sort: prefs.sort === 'oldest' ? 'oldest' : 'newest',
         view: prefs.view === 'list' ? 'list' : 'grid',
-        plSort: ['newest', 'oldest'].includes(prefs.plSort) ? prefs.plSort : 'default',
+        plSort: prefs.plSort === 'oldest' ? 'oldest' : 'newest',
         plView: prefs.plView === 'grid' ? 'grid' : 'list',
         seeking: false,
         errorStreak: 0,
@@ -366,9 +366,7 @@
     }
 
     function orderedPlaylistDays(p) {
-        if (state.plSort === 'newest') return p.days.slice().sort((a, b) => b - a);
-        if (state.plSort === 'oldest') return p.days.slice().sort((a, b) => a - b);
-        return p.days;
+        return p.days.slice().sort((a, b) => (state.plSort === 'oldest' ? a - b : b - a));
     }
 
     function renderPlaylistTracks(p) {
