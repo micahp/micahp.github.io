@@ -678,10 +678,10 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
     position: fixed;
     inset: 0;
     z-index: 50;
-    overflow: hidden;            /* a fixed screen: nothing here scrolls or drags */
-    overflow: clip;              /* and the blurred background can't shift it either */
-    overscroll-behavior: none;
-    touch-action: none;
+    overflow-y: auto;
+    overflow-x: hidden;          /* up and down only, like the page */
+    overscroll-behavior: contain;
+    touch-action: pan-y pinch-zoom;
     background: var(--bg);
     transform: translateY(100%);
     transition: transform 0.42s var(--ease);
@@ -705,41 +705,17 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 
 .np-inner {
     position: relative;
-    height: 100%;
     max-width: 460px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    padding: calc(8px + env(safe-area-inset-top)) 22px calc(14px + env(safe-area-inset-bottom));
+    padding: calc(8px + env(safe-area-inset-top)) 22px calc(32px + env(safe-area-inset-bottom));
 }
 
 .np-top {
-    flex: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0 -10px 8px;
+    margin: 0 -10px 12px;
 }
-
-/* Everything between the header and the controls; the artwork takes whatever space is left */
-.np-stage {
-    flex: 1 1 0;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-.np-art {
-    flex: 1 1 0;
-    min-height: 0;
-    container-type: size;
-    display: grid;
-    place-items: center;
-}
-
-.np-art .art { width: 100cqmin; }   /* the biggest square that fits */
-
-.np-panel { flex: none; }
 
 .np-context { display: flex; flex-direction: column; align-items: center; font-size: 15px; }
 .np-context-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
@@ -758,7 +734,7 @@ body.is-playing .np-art .art { transform: none; }
     display: grid;
     grid-template-columns: 44px 1fr 44px;
     align-items: center;
-    margin: 12px -10px 6px;
+    margin: 20px -10px 8px;
 }
 
 .np-titles { min-width: 0; text-align: center; }
@@ -831,7 +807,7 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.35); }
     align-items: center;
     justify-content: center;
     gap: 28px;
-    margin: 8px 0 6px;
+    margin: 14px 0 10px;
 }
 
 .play-btn.xl {
@@ -843,18 +819,8 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.35); }
 
 .play-btn.xl svg { width: 36px; height: 36px; }
 
-.np-foot {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    min-height: 44px;
-}
-
 .np-volume {
     display: none;
-    flex: 1;
-    min-width: 0;
     align-items: center;
     gap: 6px;
     color: var(--muted);
@@ -862,70 +828,13 @@ input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.35); }
 
 @media (hover: hover) and (pointer: fine) {
     .np-volume { display: flex; }
-    .np-foot { justify-content: space-between; }
-    .np-volume input[type="range"] { max-width: 220px; }
 }
 
-.queue-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    height: 40px;
-    padding: 0 16px 0 12px;
-    border-radius: 999px;
-    background: var(--surface);
-    color: var(--text);
-    font-size: 14px;
-    font-weight: 700;
-    transition: transform 0.15s, background-color 0.15s, color 0.15s;
-}
-
-.queue-btn svg { width: 20px; height: 20px; }
-.queue-btn:active { transform: scale(0.96); }
-.queue-btn[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
-
-/* Up next takes the place of the artwork; only its list scrolls */
-.np .up-next {
-    display: none;
-    flex: 1 1 0;
-    min-height: 0;
-    flex-direction: column;
-}
-
-.np.show-queue .up-next { display: flex; }
-.np.show-queue .np-art { display: none; }
-
-.up-next .section-title { flex: none; font-size: 18px; margin-bottom: 4px; }
-
-.up-next-scroll {
-    flex: 1 1 0;
-    min-height: 0;
-    margin: 0 -22px;
-    padding: 0 22px;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    touch-action: pan-y;
-    -webkit-overflow-scrolling: touch;
-}
-
+.up-next { margin-top: 28px; }
+.up-next .section-title { font-size: 18px; margin-bottom: 4px; }
 .up-next ol { list-style: none; margin: 0; padding: 0; }
 .up-next .row .art { width: 44px; }
 .up-next .row .card-title { font-size: 16px; }
-
-@media (orientation: landscape) and (max-height: 520px) {
-    .np-inner {
-        max-width: 860px;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        grid-template-rows: auto minmax(0, 1fr);
-        column-gap: 32px;
-    }
-    .np-top { grid-column: 1 / -1; margin-bottom: 0; }
-    .np-stage { grid-column: 1; grid-row: 2; }
-    .np-panel { grid-column: 2; grid-row: 2; align-self: center; }
-    .np-controls { margin: 4px 0; }
-    .play-btn.xl { width: 64px; height: 64px; }
-}
 
 /* ---------- Toast ---------- */
 
