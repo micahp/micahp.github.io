@@ -401,8 +401,8 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 
 
 .pl-title { font-size: clamp(26px, 5vw, 48px); }
-#playlistView .hero-sub { margin-bottom: 4px; }
-.pl-desc { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+/* Same spacing above Play / Shuffle as the home page; the description tucks under the subtitle */
+.pl-desc { margin: -12px 0 16px; color: var(--muted); font-size: 14px; }
 
 
 #playlistView .library.list .card-title { font-size: 16px; }
