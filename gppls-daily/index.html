@@ -58,8 +58,7 @@
 
     <header class="topbar">
         <div class="topbar-inner">
-            <button class="icon-btn" id="backButton" aria-label="Back to all days" hidden><svg><use href="#i-chevron-left"/></svg></button>
-            <span class="topbar-spacer" id="topbarSpacer"></span>
+            <span class="topbar-spacer"></span>
             <a class="brand" href="#">gppls daily</a>
             <button class="icon-btn" id="searchToggle" aria-label="Search songs" aria-expanded="false" aria-controls="searchRow">
                 <svg><use href="#i-search"/></svg>
@@ -71,13 +70,25 @@
     </header>
 
     <main class="page">
-      <div id="homeView">
-        <section class="hero is-loading" id="hero" aria-label="gppls daily">
+        <section class="playlists" id="playlists" aria-labelledby="playlistsTitle" hidden>
+            <div class="shelf-head">
+                <h2 class="section-title" id="playlistsTitle">Releases</h2>
+                <div class="shelf-nav" id="shelfNav" hidden>
+                    <button class="icon-btn shelf-btn" data-shelf="-1" aria-label="Scroll releases left"><svg><use href="#i-chevron-left"/></svg></button>
+                    <button class="icon-btn shelf-btn" data-shelf="1" aria-label="Scroll releases right"><svg><use href="#i-chevron-right"/></svg></button>
+                </div>
+            </div>
+            <div class="shelf" id="playlistShelf" role="group" aria-label="Choose a release"></div>
+        </section>
+
+        <!-- Overview of the selected release -->
+        <section class="hero is-loading" id="hero" aria-live="polite">
             <div class="hero-art" id="heroArt"></div>
             <div class="hero-body">
-                <p class="eyebrow">Album</p>
-                <h1 class="hero-title">gppls daily</h1>
+                <p class="eyebrow" id="heroType">Album</p>
+                <h1 class="hero-title" id="heroTitle">gppls daily</h1>
                 <p class="hero-sub" id="heroSub">Loading songs…</p>
+                <p class="pl-desc" id="heroDesc" hidden></p>
             </div>
             <div class="hero-actions">
                 <button class="pill" id="playAllButton" disabled>
@@ -87,17 +98,6 @@
                     <svg><use href="#i-shuffle"/></svg>Shuffle
                 </button>
             </div>
-        </section>
-
-        <section class="playlists" id="playlists" aria-labelledby="playlistsTitle" hidden>
-            <div class="shelf-head">
-                <h2 class="section-title" id="playlistsTitle">Releases</h2>
-                <div class="shelf-nav" id="shelfNav" hidden>
-                    <button class="icon-btn shelf-btn" data-shelf="-1" aria-label="Scroll releases left"><svg><use href="#i-chevron-left"/></svg></button>
-                    <button class="icon-btn shelf-btn" data-shelf="1" aria-label="Scroll releases right"><svg><use href="#i-chevron-right"/></svg></button>
-                </div>
-            </div>
-            <div class="shelf" id="playlistShelf"></div>
         </section>
 
         <section aria-labelledby="allDaysTitle">
@@ -119,37 +119,6 @@
             </div>
             <div class="library grid" id="library"></div>
         </section>
-      </div>
-
-        <!-- Playlist / album view -->
-        <div id="playlistView" hidden>
-            <section class="hero">
-                <div class="hero-art" id="plArt"></div>
-                <div class="hero-body">
-                    <p class="eyebrow" id="plType">Playlist</p>
-                    <h1 class="hero-title pl-title" id="plTitle"></h1>
-                    <p class="hero-sub" id="plSub"></p>
-                    <p class="pl-desc" id="plDesc" hidden></p>
-                </div>
-                <div class="hero-actions">
-                    <button class="pill" id="plPlay"><svg><use href="#i-play"/></svg>Play</button>
-                    <button class="pill pill-outline" id="plShuffle"><svg><use href="#i-shuffle"/></svg>Shuffle</button>
-                </div>
-            </section>
-            <div class="section-head pl-tools">
-                <div class="section-tools">
-                    <div class="segmented" role="group" aria-label="Sort order">
-                        <button data-plsort="newest" aria-pressed="true">Newest</button>
-                        <button data-plsort="oldest" aria-pressed="false">Oldest</button>
-                    </div>
-                    <div class="segmented" role="group" aria-label="Layout">
-                        <button data-plview="grid" aria-pressed="false" aria-label="Grid view"><svg><use href="#i-grid"/></svg></button>
-                        <button data-plview="list" aria-pressed="true" aria-label="List view"><svg><use href="#i-list"/></svg></button>
-                    </div>
-                </div>
-            </div>
-            <div class="library list" id="plTracks"></div>
-        </div>
     </main>
 
     <!-- Mini player -->

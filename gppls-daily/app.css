@@ -325,7 +325,8 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 
 .hero-title {
     margin: 0;
-    font-size: clamp(28px, 6vw, 56px);
+    font-size: clamp(26px, 4.5vw, 48px);
+    overflow-wrap: anywhere;
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.02;
@@ -351,7 +352,7 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 .section-meta { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
 
 /* Playlists shelf, after the ellomix artist profile */
-.playlists { margin-bottom: 36px; }
+.playlists { margin-bottom: 28px; }
 .shelf-head {
     display: flex;
     align-items: center;
@@ -401,6 +402,14 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 .pl-card .card-title { font-size: 17px; }
 .pl-card:active .cover { transform: scale(0.95); }
 
+/* Selected release */
+.pl-card { padding: 6px; margin: -6px; border-radius: 12px; transition: background-color 0.15s; }
+.pl-card.is-selected { background: var(--surface); }
+.pl-card.is-selected .card-title { font-weight: 800; }
+@media (hover: hover) {
+    .pl-card:not(.is-selected):hover { background: var(--surface); }
+}
+
 /* Playlist cover */
 .cover {
     position: relative;
@@ -417,14 +426,11 @@ body.has-player .page { padding-bottom: calc(var(--mini-h) + 56px + env(safe-are
 
 
 
-.pl-title { font-size: clamp(24px, 3.6vw, 40px); overflow-wrap: anywhere; }
+
 /* Same spacing above Play / Shuffle as the home page; the description tucks under the subtitle */
 .pl-desc { margin: -12px 0 16px; color: var(--muted); font-size: 14px; }
 
 
-#playlistView .library.list .card-title { font-size: 16px; }
-.pl-tools { justify-content: flex-end; }
-.pl-tools .section-tools { width: auto; margin-left: auto; justify-content: flex-end; }
 
 .section-head {
     display: flex;

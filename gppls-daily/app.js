@@ -13,25 +13,17 @@
     const els = {
         hero: $('hero'),
         heroArt: $('heroArt'),
+        heroType: $('heroType'),
+        heroTitle: $('heroTitle'),
         heroSub: $('heroSub'),
+        heroDesc: $('heroDesc'),
         playAll: $('playAllButton'),
         shuffleAll: $('shuffleAllButton'),
-        homeView: $('homeView'),
         playlists: $('playlists'),
         playlistShelf: $('playlistShelf'),
         shelfNav: $('shelfNav'),
-        playlistView: $('playlistView'),
-        plArt: $('plArt'),
-        plType: $('plType'),
-        plTitle: $('plTitle'),
-        plSub: $('plSub'),
-        plDesc: $('plDesc'),
-        plPlay: $('plPlay'),
-        plShuffle: $('plShuffle'),
-        plTracks: $('plTracks'),
-        backButton: $('backButton'),
-        topbarSpacer: $('topbarSpacer'),
         npContext: $('npContext'),
+        songsTitle: $('allDaysTitle'),
         library: $('library'),
         count: $('libraryCount'),
         searchToggle: $('searchToggle'),
@@ -78,9 +70,9 @@
 
     const state = {
         tracks: [],          // every day we know about, newest first
-        playlists: [],       // SoundCloud sets/albums made only of gppls daily songs
-        context: null,       // playlist being played from, or null for all days
-        openPlaylist: null,  // playlist shown in the playlist view
+        playlists: [],       // releases: the full gppls daily album plus SoundCloud sets of gppls daily songs
+        selected: null,      // release shown in the overview and song list
+        context: null,       // release being played from
         byDay: new Map(),
         queue: [],           // days in play order
         index: -1,           // position in queue
@@ -91,8 +83,6 @@
         repeat: ['off', 'all', 'one'].includes(prefs.repeat) ? prefs.repeat : 'off',
         sort: prefs.sort === 'oldest' ? 'oldest' : 'newest',
         view: prefs.view === 'list' ? 'list' : 'grid',
-        plSort: prefs.plSort === 'oldest' ? 'oldest' : 'newest',
-        plView: prefs.plView === 'grid' ? 'grid' : 'list',
         seeking: false,
         errorStreak: 0,
     };
@@ -258,18 +248,26 @@
 
         state.playlists = normalizePlaylists(await playlistsRequest);
 
-        renderHero();
         renderPlaylists();
-        renderLibrary();
+        selectRelease(releaseFromHash() || state.playlists[0], { updateUrl: false });
         restoreSession();
-        route();
     }
 
+    const ALL_DAYS_ID = 'gppls-daily';
+
+    // The gppls daily album always exists and always holds every day, even if playlists.json is missing
     function normalizePlaylists(list) {
-        if (!Array.isArray(list)) return [];
-        return list
+        const releases = (Array.isArray(list) ? list : [])
             .map((p) => ({ ...p, days: (p.days || []).filter((d) => state.byDay.has(d)) }))
-            .filter((p) => p.id && p.title && p.days.length);
+            .filter((p) => p.id && p.title && (p.days.length || p.id === ALL_DAYS_ID));
+        let all = releases.find((p) => p.id === ALL_DAYS_ID);
+        if (!all) {
+            all = { id: ALL_DAYS_ID, title: 'gppls daily', type: 'album' };
+            releases.unshift(all);
+        }
+        all.days = state.tracks.map((t) => t.day).sort((a, b) => a - b);
+        all.isAll = true;
+        return releases;
     }
 
     // ---------- Rendering ----------
@@ -294,17 +292,18 @@
         $('retryButton').addEventListener('click', loadLibrary);
     }
 
-    function playableTracks() {
-        return state.tracks.filter((t) => t.audio);
-    }
-
     function renderHero() {
-        const latest = state.tracks.find((t) => t.audio) || state.tracks[0];
-        const playable = playableTracks().length;
+        const p = state.selected;
+        const n = p.days.length;
+        const year = /^\d{4}/.exec(p.released || '')?.[0];
         els.hero.classList.remove('is-loading');
-        els.heroArt.innerHTML = artHtml(latest);
-        els.heroSub.textContent = `gppls · ${playable} ${playable === 1 ? 'song' : 'songs'}`;
-        els.playAll.disabled = els.shuffleAll.disabled = playable === 0;
+        els.heroArt.innerHTML = coverHtml(p);
+        els.heroType.textContent = p.type === 'album' ? 'Album' : 'Playlist';
+        els.heroTitle.textContent = p.title;
+        els.heroSub.textContent = ['gppls', `${n} ${n === 1 ? 'song' : 'songs'}`, year].filter(Boolean).join(' · ');
+        els.heroDesc.hidden = !p.description;
+        els.heroDesc.textContent = p.description || '';
+        els.playAll.disabled = els.shuffleAll.disabled = !p.days.some((d) => state.byDay.get(d).audio);
     }
 
     // ---------- Playlists ----------
@@ -327,7 +326,7 @@
     function renderPlaylists() {
         els.playlists.hidden = state.playlists.length === 0;
         els.playlistShelf.innerHTML = state.playlists.map((p) => `
-            <button class="pl-card" data-playlist="${esc(p.id)}">
+            <button class="pl-card" data-playlist="${esc(p.id)}" aria-pressed="false">
                 ${coverHtml(p)}
                 <span class="card-text">
                     <span class="card-title">${esc(p.title)}</span>
@@ -345,57 +344,31 @@
         els.shelfNav.querySelector('[data-shelf="1"]').disabled = shelf.scrollLeft + shelf.clientWidth >= shelf.scrollWidth - 1;
     }
 
-    function playlistFromHash() {
+    function releaseFromHash() {
         const m = /^#playlist-(.+)$/.exec(location.hash);
         return m ? state.playlists.find((p) => p.id === decodeURIComponent(m[1])) : null;
     }
 
-    function route() {
-        const p = playlistFromHash();
-        state.openPlaylist = p || null;
-        els.homeView.hidden = !!p;
-        els.playlistView.hidden = !p;
-        els.backButton.hidden = !p;
-        els.topbarSpacer.hidden = !!p;
-        if (!p) {
-            updateShelfNav();
-            if (typeof history.state?.scrollY === 'number') window.scrollTo(0, history.state.scrollY);
-            return;
+    // Show a release in the overview and song list without leaving the page
+    function selectRelease(p, { updateUrl = true } = {}) {
+        if (!p) return;
+        state.selected = p;
+        els.playlistShelf.querySelectorAll('[data-playlist]').forEach((card) => {
+            const on = card.dataset.playlist === p.id;
+            card.classList.toggle('is-selected', on);
+            card.setAttribute('aria-pressed', String(on));
+            if (on) card.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        });
+        if (updateUrl) {
+            history.replaceState(null, '', p.isAll ? location.pathname + location.search : `#playlist-${encodeURIComponent(p.id)}`);
         }
-        els.plArt.innerHTML = coverHtml(p);
-        els.plType.textContent = p.type === 'album' ? 'Album' : 'Playlist';
-        els.plTitle.textContent = p.title;
-        const year = /^\d{4}/.exec(p.released || '')?.[0];
-        els.plSub.textContent = ['gppls', `${p.days.length} ${p.days.length === 1 ? 'song' : 'songs'}`, year].filter(Boolean).join(' · ');
-        els.plDesc.hidden = !p.description;
-        els.plDesc.textContent = p.description || '';
-        renderPlaylistTracks(p);
-        const canPlay = p.days.some((d) => state.byDay.get(d).audio);
-        els.plPlay.disabled = els.plShuffle.disabled = !canPlay;
-        markCurrent();
-        window.scrollTo(0, 0);
+        renderHero();
+        renderLibrary();
+        updateShelfNav();
     }
 
     function orderedPlaylistDays(p) {
-        return p.days.slice().sort((a, b) => (state.plSort === 'oldest' ? a - b : b - a));
-    }
-
-    function renderPlaylistTracks(p) {
-        els.plTracks.className = `library ${state.plView}`;
-        els.plTracks.innerHTML = orderedPlaylistDays(p).map((d) => cardHtml(state.byDay.get(d))).join('');
-        document.querySelectorAll('[data-plsort]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.plsort === state.plSort)));
-        document.querySelectorAll('[data-plview]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.plview === state.plView)));
-        markCurrent();
-    }
-
-    function openPlaylist(id) {
-        location.hash = `#playlist-${encodeURIComponent(id)}`;
-        history.replaceState({ fromHome: true }, '');
-    }
-
-    function goHome() {
-        if (history.state?.fromHome) history.back();
-        else location.hash = '';
+        return p.days.slice().sort((a, b) => (state.sort === 'oldest' ? a - b : b - a));
     }
 
     function playPlaylist(p, { shuffle = false } = {}) {
@@ -404,10 +377,6 @@
         const pool = orderedPlaylistDays(p).filter((d) => state.byDay.get(d).audio);
         if (!pool.length) return;
         playDay(shuffle ? pool[Math.floor(Math.random() * pool.length)] : pool[0], { context: p });
-    }
-
-    function orderedTracks() {
-        return state.sort === 'oldest' ? state.tracks.slice().reverse() : state.tracks;
     }
 
     function cardHtml(t) {
@@ -423,7 +392,9 @@
 
     function renderLibrary() {
         els.library.className = `library ${state.view}`;
-        els.library.innerHTML = orderedTracks().map(cardHtml).join('') + '<p class="empty" id="noMatches" hidden></p>';
+        els.songsTitle.textContent = state.selected.isAll ? 'All days' : 'Songs';
+        els.library.innerHTML = orderedPlaylistDays(state.selected).map((d) => cardHtml(state.byDay.get(d))).join('')
+            + '<p class="empty" id="noMatches" hidden></p>';
 
         document.querySelectorAll('[data-sort]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sort === state.sort)));
         document.querySelectorAll('[data-view]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === state.view)));
@@ -443,10 +414,10 @@
         });
         const noMatches = $('noMatches');
         noMatches.hidden = shown > 0;
-        noMatches.textContent = `No days match “${q}”.`;
-        els.count.textContent = q
-            ? `${shown} of ${state.tracks.length} days`
-            : `${state.tracks.length} days`;
+        noMatches.textContent = `No songs match “${q}”.`;
+        const total = state.selected.days.length;
+        const unit = state.selected.isAll ? 'days' : (total === 1 ? 'song' : 'songs');
+        els.count.textContent = q ? `${shown} of ${total} ${unit}` : `${total} ${unit}`;
     }
 
     function markCurrent() {
@@ -536,8 +507,8 @@
     // ---------- Playback ----------
 
     function contextDays() {
-        if (state.context) return orderedPlaylistDays(state.context).filter((d) => state.byDay.get(d).audio);
-        return (state.sort === 'oldest' ? playableTracks().reverse() : playableTracks()).map((t) => t.day);
+        const release = state.context || state.playlists.find((p) => p.isAll);
+        return orderedPlaylistDays(release).filter((d) => state.byDay.get(d).audio);
     }
 
     function buildQueue(startDay) {
@@ -648,19 +619,13 @@
         playDay(state.queue[i], { keepQueue: true });
     }
 
+    // Play / Shuffle play whichever release is selected
     function playAll() {
-        setShuffle(false, { silent: true });
-        state.context = null;
-        const first = state.sort === 'oldest' ? playableTracks().at(-1) : playableTracks()[0];
-        if (first) playDay(first.day);
+        if (state.selected) playPlaylist(state.selected);
     }
 
     function shuffleAll() {
-        setShuffle(true, { silent: true });
-        state.context = null;
-        const pool = playableTracks();
-        if (!pool.length) return;
-        playDay(pool[Math.floor(Math.random() * pool.length)].day);
+        if (state.selected) playPlaylist(state.selected, { shuffle: true });
     }
 
     function setShuffle(on, { silent = false } = {}) {
@@ -815,9 +780,6 @@
 
     els.playAll.addEventListener('click', playAll);
     els.shuffleAll.addEventListener('click', shuffleAll);
-    els.plPlay.addEventListener('click', () => state.openPlaylist && playPlaylist(state.openPlaylist));
-    els.plShuffle.addEventListener('click', () => state.openPlaylist && playPlaylist(state.openPlaylist, { shuffle: true }));
-    els.backButton.addEventListener('click', goHome);
 
     els.shelfNav.addEventListener('click', (e) => {
         const dir = Number(e.target.closest('[data-shelf]')?.dataset.shelf);
@@ -826,36 +788,17 @@
     els.playlistShelf.addEventListener('scroll', updateShelfNav, { passive: true });
     window.addEventListener('resize', updateShelfNav);
 
-    document.querySelectorAll('[data-plsort]').forEach((btn) => btn.addEventListener('click', () => {
-        if (state.plSort === btn.dataset.plsort || !state.openPlaylist) return;
-        state.plSort = btn.dataset.plsort;
-        savePrefs({ plSort: state.plSort });
-        renderPlaylistTracks(state.openPlaylist);
-        // Keep playing the current song; what comes next follows the new order
-        if (state.context === state.openPlaylist && state.current && !state.shuffle) {
-            buildQueue(state.current.day);
-            renderUpNext();
-        }
-    }));
-
-    document.querySelectorAll('[data-plview]').forEach((btn) => btn.addEventListener('click', () => {
-        if (state.plView === btn.dataset.plview || !state.openPlaylist) return;
-        state.plView = btn.dataset.plview;
-        savePrefs({ plView: state.plView });
-        renderPlaylistTracks(state.openPlaylist);
-    }));
-
     document.addEventListener('click', (e) => {
         const playlistCard = e.target.closest('[data-playlist]');
         if (playlistCard) {
-            history.replaceState({ ...history.state, scrollY: window.scrollY }, '');
-            openPlaylist(playlistCard.dataset.playlist);
+            const p = state.playlists.find((x) => x.id === playlistCard.dataset.playlist);
+            if (p && p !== state.selected) selectRelease(p);
             return;
         }
         const card = e.target.closest('.card[data-day]');
         if (card && !card.classList.contains('skeleton')) {
             const day = Number(card.dataset.day);
-            const context = card.closest('#playlistView') ? state.openPlaylist : null;
+            const context = state.selected;
             if (state.current?.day === day && state.context === context) togglePlay();
             else playDay(day, { context });
             return;
@@ -876,6 +819,11 @@
         state.sort = btn.dataset.sort;
         savePrefs({ sort: state.sort });
         renderLibrary();
+        // Keep playing the current song; what comes next follows the new order
+        if (state.current && !state.shuffle && state.queue.length) {
+            buildQueue(state.current.day);
+            renderUpNext();
+        }
     }));
 
     document.querySelectorAll('[data-view]').forEach((btn) => btn.addEventListener('click', () => {
@@ -888,7 +836,6 @@
 
     els.searchToggle.addEventListener('click', () => {
         const open = els.searchRow.hidden;
-        if (open && state.openPlaylist) goHome();
         els.searchRow.hidden = !open;
         els.searchToggle.setAttribute('aria-expanded', String(open));
         if (open) {
@@ -950,7 +897,9 @@
     });
 
     window.addEventListener('hashchange', () => {
-        if (state.tracks.length) route();
+        if (state.tracks.length && !dayFromHash()) {
+            selectRelease(releaseFromHash() || state.playlists.find((p) => p.isAll), { updateUrl: false });
+        }
         const day = dayFromHash();
         if (day != null && day !== state.current?.day && state.byDay.get(day)?.audio) playDay(day);
     });
