@@ -153,7 +153,7 @@
 
     // Cover images fade in when loaded, and fall back to generated art if they fail.
     document.addEventListener('load', (e) => {
-        if (e.target.tagName === 'IMG' && e.target.parentElement?.classList.contains('art')) {
+        if (e.target.tagName === 'IMG' && e.target.parentElement?.matches('.art, .cover')) {
             e.target.classList.add('loaded');
         }
     }, true);
@@ -335,14 +335,18 @@
 
     // ---------- Playlists ----------
 
+    // Placeholder color shown while a release's cover loads (same look as the day tiles)
+    const coverHue = (p) => [...p.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) % 360, 7);
+
     function coverHtml(p, { full = false } = {}) {
         // Releases without their own artwork use a chosen song's cover (coverDay),
         // otherwise the first of their songs that has one
-        if (p.artwork) return `<span class="cover">${imgTag(p.artwork)}</span>`;
+        const open = `<span class="cover" style="--hue:${coverHue(p)}">`;
+        if (p.artwork) return `${open}${imgTag(p.artwork)}</span>`;
         const chosen = state.byDay.get(p.coverDay);
         const song = imageSrc(chosen) ? chosen : p.days.map((d) => state.byDay.get(d)).find((t) => imageSrc(t));
         const src = song ? imageSrc(song, full) : 'icons/icon-512.png';
-        return `<span class="cover">${imgTag(src, song && imageSrc(song, true))}</span>`;
+        return `${open}${imgTag(src, song && imageSrc(song, true))}</span>`;
     }
 
     function releaseType(p) {
