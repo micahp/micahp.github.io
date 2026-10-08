@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Legendary&lt;br&gt;Picks | Micah Peoples</title>
+	<meta name="description" content="Legendary Picks: a data-first sports product for live scores, predictions, props and esports.">
+	<meta property="og:title" content="Legendary&lt;br&gt;Picks">
+	<meta property="og:description" content="Legendary Picks: a data-first sports product for live scores, predictions, props and esports.">
+	<link rel="icon" type="image/png" href="../images/PeepHolesIconWire.png">
+	<link rel="stylesheet" href="../index.css">
+	<link rel="stylesheet" href="../css/project.css">
+</head>
+<body>
+	<div class="fixed-width">
+		<a href="../index.html"><img class="home-icon" src="../images/PeepHolesIconWire.png" alt="Home"></a>
+		<div class="header section page-header">
+			<div class="header-text">
+				<p>Legendary<br>Picks</p>
+				<p class="support">Every play. Every stat. One scoreboard.</p>
+			</div>
+			<div class="hero"><img src="legendary-picks-home.jpg" alt="Legendary Picks home page"></div>
+		</div>
+		<div class="section content">
+			<dl class="facts">
+				<div><dt>Role</dt><dd>Founder, product, full-stack engineering</dd></div>
+				<div><dt>Stack</dt><dd>Next.js, FastAPI, SQLite, Python ingest jobs</dd></div>
+				<div><dt>Leagues</dt><dd>NBA, NFL, MLB, NHL, college football, soccer, esports and more</dd></div>
+				<div><dt>Status</dt><dd>Live, in active development</dd></div>
+			</dl>
+			<div class="links">
+				<a class="btn" href="https://legendarypicks.xyz" target="_blank" rel="noopener">Visit legendarypicks.xyz</a>
+				<a class="btn ghost" href="https://github.com/micahp/legendarypicks" target="_blank" rel="noopener">Source on GitHub</a>
+			</div>
+			<h1>OVERVIEW</h1>
+			<p class="body-text">Legendary Picks is a sports data and prediction product for following live games, player performance, props, league standings and esports. Live scores, box scores and play-by-play across the NBA, NFL, MLB, NHL and more. Fast, clean, no noise.</p>
+			<p class="body-text">It started as a fantasy layer on top of NBA Top Shot. When Top Shot moved into that space itself, I pivoted Legendary Picks into an independent, data-first sports product that doesn't depend on anyone else's platform.</p>
+			<h1>WHAT IT DOES</h1>
+			<ul class="body-text">
+				<li><strong>Live scores</strong> across 8+ leagues, with box scores, play-by-play and game detail pages.</li>
+				<li><strong>Predictions</strong>: pick winners and track your accuracy over the season.</li>
+				<li><strong>Props</strong>: player prop outcomes, hit rates and trends.</li>
+				<li><strong>Esports</strong>: CS2 pick'em and fantasy.</li>
+				<li><strong>NFL tools</strong>: a mock draft room and draft board built from published ADP.</li>
+				<li><strong>Game previews</strong> written only from what's actually true of the game: no stale standings, no filler.</li>
+			</ul>
+			<h1>HOW IT'S BUILT</h1>
+			<p class="body-text">The browser never scrapes anything. Explicit ingest jobs are the only things that write data. They pull from each league's own publisher, resolve players, teams and games by stable source IDs rather than display names, and publish snapshots to a canonical SQLite store. A FastAPI service reads from that store, and the Next.js app reads from the API. If data is missing or unverified, the site says so instead of making something up.</p>
+			<div class="pipeline">
+				<div><span class="step">STEP 01</span><b>Ingest</b>League sources and data releases pulled by scheduled jobs.</div>
+				<div><span class="step">STEP 02</span><b>Store</b>One canonical SQLite store, written only by ingest.</div>
+				<div><span class="step">STEP 03</span><b>Serve</b>FastAPI routers for games, players, props, news and esports.</div>
+				<div><span class="step">STEP 04</span><b>Show</b>Next.js pages for scores, leagues, players, props and drafts.</div>
+			</div>
+			<figure>
+				<img src="top-shot-era.jpg" alt="Legendary Picks during its NBA Top Shot era" loading="lazy">
+				<figcaption>The Top Shot era: “Own the Moment. Rule the Board.” Connect a Flow wallet, browse your moments, draft with them.</figcaption>
+			</figure>
+			<h1>ALONG THE WAY</h1>
+			<p class="body-text">Before the product was a scoreboard, Legendary Picks was a picks show. I made prediction videos for UFC cards (UFC 292, 306, 307 and 308) and posted them on the Innovative Hype channels.</p>
+		</div>
+		<div class="section more">
+			<p class="header-text">More Projects</p>
+			<nav class="tiles">
+				<a href="../legendary-picks/index.html" aria-current="page">Legendary Picks</a>
+				<a href="../fine-photo-gen/index.html">Fine Photo Gen</a>
+				<a href="../minnesota-lakes/index.html">Minnesota Lakes on Chain</a>
+				<a href="../yapgpt/index.html">YapGPT</a>
+				<a href="../warm-fuzzy-wall/index.html">Warm Fuzzy Birthday Wall</a>
+				<a href="../shana-care/index.html">Shana Care</a>
+				<a href="../stream-of-consciousness/about.html">Stream of Conscious Writer</a>
+				<a href="../gppls-daily/about.html">Gppls Daily</a>
+				<a href="../spitfire/index.html">Spitfire</a>
+				<a href="../clutch/index.html">Clutch</a>
+				<a href="../ellomix/index.html">Ellomix</a>
+				<a href="../pinterest/index.html">Pinterest</a>
+			</nav>
+		</div>
+	</div>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-NM00FT5H0Y"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-NM00FT5H0Y');
+	</script>
+</body>
+</html>

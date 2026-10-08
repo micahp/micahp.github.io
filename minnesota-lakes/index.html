@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Minnesota&lt;br&gt;Lakes on Chain | Micah Peoples</title>
+	<meta name="description" content="Minnesota Lakes on Chain: an interactive explorer for Minnesota&#x27;s lakes and fish data, growing into a hub for verified catches.">
+	<meta property="og:title" content="Minnesota&lt;br&gt;Lakes on Chain">
+	<meta property="og:description" content="Minnesota Lakes on Chain: an interactive explorer for Minnesota&#x27;s lakes and fish data, growing into a hub for verified catches.">
+	<link rel="icon" type="image/png" href="../images/PeepHolesIconWire.png">
+	<link rel="stylesheet" href="../index.css">
+	<link rel="stylesheet" href="../css/project.css">
+</head>
+<body>
+	<div class="fixed-width">
+		<a href="../index.html"><img class="home-icon" src="../images/PeepHolesIconWire.png" alt="Home"></a>
+		<div class="header section page-header">
+			<div class="header-text">
+				<p>Minnesota<br>Lakes on Chain</p>
+				<p class="support">Collect lakes. Verify catches. Give the data back to the state.</p>
+			</div>
+			<div class="hero"><img src="lake-explorer-map.jpg" alt="Minnesota Lake Explorer map around Brainerd and Mille Lacs"></div>
+		</div>
+		<div class="section content">
+			<dl class="facts">
+				<div><dt>Role</dt><dd>Founder, data engineering, front end</dd></div>
+				<div><dt>Stack</dt><dd>Leaflet, vanilla JS, Python + pandas for data prep</dd></div>
+				<div><dt>Data</dt><dd>Minnesota DNR lake metadata, fish catch and length surveys</dd></div>
+				<div><dt>Year</dt><dd>2025</dd></div>
+			</dl>
+			<div class="links">
+				<a class="btn" href="https://minnesotalakesonchain.com" target="_blank" rel="noopener">Explore the lakes</a>
+				<a class="btn ghost" href="https://github.com/micahp/minnesota-lakes-explorer" target="_blank" rel="noopener">Source on GitHub</a>
+			</div>
+			<h1>OVERVIEW</h1>
+			<p class="body-text">Minnesota is the land of 10,000 lakes, and I wanted to see all of them at once. Minnesota Lakes on Chain started as an interactive map of every lake in the state, with the Department of Natural Resources' own data on each one: area, max depth, shoreline length, and which fish are actually in it.</p>
+			<p class="body-text">It's also the start of something bigger: a place where you can collect lakes, and where anglers are rewarded for fishing and verifying their catches. That catch data then goes back to the Minnesota DNR, so the app becomes a public good for the state.</p>
+			<h1>FEATURES</h1>
+			<ul class="body-text">
+				<li>Interactive Leaflet map with clustered markers for every lake.</li>
+				<li>Search by name and filter by county, lake size and fish species.</li>
+				<li>Lake detail: area, depth, shoreline, fish species with catch and length data.</li>
+				<li>Sentinel lake and border-water designations, plus fish consumption advisories.</li>
+				<li>One-tap directions in Google Maps or Bing Maps.</li>
+				<li>Works on desktop and phone.</li>
+			</ul>
+			<h1>THE DATA</h1>
+			<p class="body-text">The DNR publishes its lake data as a pile of spreadsheets and geopackages: 2024 lake metadata, a statewide catch file, fish length surveys, sentinel and border-water lists, and county borders. I wrote Python preprocessing scripts that join them on lake ID, remove duplicate fish records and put out one consolidated dataset the browser can load directly, with no backend.</p>
+			<h1>WHAT'S NEXT</h1>
+			<p class="body-text">Verified catches. An angler logs a catch, it gets verified, they earn a reward, and the record goes back to the DNR. I've pitched the vision to the Minnesota blockchain community as the on-chain side of the project.</p>
+		</div>
+		<div class="section more">
+			<p class="header-text">More Projects</p>
+			<nav class="tiles">
+				<a href="../legendary-picks/index.html">Legendary Picks</a>
+				<a href="../fine-photo-gen/index.html">Fine Photo Gen</a>
+				<a href="../minnesota-lakes/index.html" aria-current="page">Minnesota Lakes on Chain</a>
+				<a href="../yapgpt/index.html">YapGPT</a>
+				<a href="../warm-fuzzy-wall/index.html">Warm Fuzzy Birthday Wall</a>
+				<a href="../shana-care/index.html">Shana Care</a>
+				<a href="../stream-of-consciousness/about.html">Stream of Conscious Writer</a>
+				<a href="../gppls-daily/about.html">Gppls Daily</a>
+				<a href="../spitfire/index.html">Spitfire</a>
+				<a href="../clutch/index.html">Clutch</a>
+				<a href="../ellomix/index.html">Ellomix</a>
+				<a href="../pinterest/index.html">Pinterest</a>
+			</nav>
+		</div>
+	</div>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-NM00FT5H0Y"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-NM00FT5H0Y');
+	</script>
+</body>
+</html>

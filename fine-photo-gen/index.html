@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Fine Photo&lt;br&gt;Gen | Micah Peoples</title>
+	<meta name="description" content="Fine Photo Gen: train a personal AI model on your selfies, then generate photos, storyboards and video.">
+	<meta property="og:title" content="Fine Photo&lt;br&gt;Gen">
+	<meta property="og:description" content="Fine Photo Gen: train a personal AI model on your selfies, then generate photos, storyboards and video.">
+	<link rel="icon" type="image/png" href="../images/PeepHolesIconWire.png">
+	<link rel="stylesheet" href="../index.css">
+	<link rel="stylesheet" href="../css/project.css">
+</head>
+<body>
+	<div class="fixed-width">
+		<a href="../index.html"><img class="home-icon" src="../images/PeepHolesIconWire.png" alt="Home"></a>
+		<div class="header section page-header">
+			<div class="header-text">
+				<p>Fine Photo<br>Gen</p>
+				<p class="support">Cast yourself in any movie.</p>
+			</div>
+			<div class="hero"><img src="storyboard-0.jpg" alt="Anime-style source image of an archer in a forest generated with Fine Photo Gen"></div>
+		</div>
+		<div class="section content">
+			<dl class="facts">
+				<div><dt>Role</dt><dd>Founder, design, full-stack engineering</dd></div>
+				<div><dt>Stack</dt><dd>Next.js, Prisma + Postgres, NextAuth, Stripe, S3, fal.ai, Replicate</dd></div>
+				<div><dt>Models</dt><dd>FLUX LoRA training, Flux Kontext, Kling and other video models</dd></div>
+				<div><dt>Year</dt><dd>2025</dd></div>
+			</dl>
+			<div class="links">
+				<a class="btn" href="https://photogen.innovativehype.xyz" target="_blank" rel="noopener">Try Fine Photo Gen</a>
+				<a class="btn ghost" href="https://github.com/micahp/finetuned-photo-gen" target="_blank" rel="noopener">Source on GitHub</a>
+			</div>
+			<h1>OVERVIEW</h1>
+			<p class="body-text">Fine Photo Gen is a personalized AI photo and video studio. Upload 10 to 20 selfies and it trains a custom FLUX model of you. From there you can put yourself in any scene, edit photos with plain-language instructions, and turn the stills into short animated films.</p>
+			<p class="body-text">No subscription required to start, results in minutes, and your training photos stay private.</p>
+			<h1>FROM ONE IMAGE TO A SHORT FILM</h1>
+			<div class="pipeline">
+				<div><span class="step">STEP 01</span><b>Generate a source image</b>One picture, endless possibilities. Start from a prompt or from your own trained model.</div>
+				<div><span class="step">STEP 02</span><b>Create the storyboard</b>Scenes become panels and panels become your storyboard, powered by Flux Kontext.</div>
+				<div><span class="step">STEP 03</span><b>Animate &amp; stitch</b>Each panel becomes a video clip, and the clips are stitched together automatically.</div>
+			</div>
+			<figure>
+				<div class="strip">
+					<img src="storyboard-1.jpg" alt="Storyboard panel 1" loading="lazy">
+					<img src="storyboard-2.jpg" alt="Storyboard panel 2" loading="lazy">
+					<img src="storyboard-3.jpg" alt="Storyboard panel 3" loading="lazy">
+					<img src="storyboard-4.jpg" alt="Storyboard panel 4" loading="lazy">
+				</div>
+				<figcaption>Storyboard panels generated from the source image above, ready to animate.</figcaption>
+			</figure>
+			<h1>WHAT I SHIPPED</h1>
+			<ul class="body-text">
+				<li>Selfie upload and personal model training (FLUX LoRA).</li>
+				<li>Photo editing with Flux Kontext. Describe the change and it's made.</li>
+				<li>Video generation, with a model picker that covers several of the current video models.</li>
+				<li>A credit system with Stripe subscriptions and one-off credit packs.</li>
+				<li>A redesigned landing page with a browsable demo library so new visitors can see what's possible before signing up.</li>
+			</ul>
+			<p class="body-text">I built it in public and posted demo videos and changelogs as features landed: photo editing in June 2025, video generation and the new credit system in July.</p>
+		</div>
+		<div class="section more">
+			<p class="header-text">More Projects</p>
+			<nav class="tiles">
+				<a href="../legendary-picks/index.html">Legendary Picks</a>
+				<a href="../fine-photo-gen/index.html" aria-current="page">Fine Photo Gen</a>
+				<a href="../minnesota-lakes/index.html">Minnesota Lakes on Chain</a>
+				<a href="../yapgpt/index.html">YapGPT</a>
+				<a href="../warm-fuzzy-wall/index.html">Warm Fuzzy Birthday Wall</a>
+				<a href="../shana-care/index.html">Shana Care</a>
+				<a href="../stream-of-consciousness/about.html">Stream of Conscious Writer</a>
+				<a href="../gppls-daily/about.html">Gppls Daily</a>
+				<a href="../spitfire/index.html">Spitfire</a>
+				<a href="../clutch/index.html">Clutch</a>
+				<a href="../ellomix/index.html">Ellomix</a>
+				<a href="../pinterest/index.html">Pinterest</a>
+			</nav>
+		</div>
+	</div>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-NM00FT5H0Y"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-NM00FT5H0Y');
+	</script>
+</body>
+</html>

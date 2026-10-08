@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Gppls&lt;br&gt;Daily | Micah Peoples</title>
+	<meta name="description" content="gppls daily: 365 songs in 365 days, and the web player I built to hear them all.">
+	<meta property="og:title" content="Gppls&lt;br&gt;Daily">
+	<meta property="og:description" content="gppls daily: 365 songs in 365 days, and the web player I built to hear them all.">
+	<link rel="icon" type="image/png" href="../images/PeepHolesIconWire.png">
+	<link rel="stylesheet" href="../index.css">
+	<link rel="stylesheet" href="../css/project.css">
+</head>
+<body>
+	<div class="fixed-width">
+		<a href="../index.html"><img class="home-icon" src="../images/PeepHolesIconWire.png" alt="Home"></a>
+		<div class="header section page-header">
+			<div class="header-text">
+				<p>Gppls<br>Daily</p>
+				<p class="support">A new song every day for 365 days.</p>
+			</div>
+			<div class="hero square"><img src="icons/og-image.jpg" alt="g.ppls DAILY: press play, don&#x27;t stop"></div>
+		</div>
+		<div class="section content">
+			<dl class="facts">
+				<div><dt>Role</dt><dd>Artist (as geo ppls), designer, engineer</dd></div>
+				<div><dt>Music</dt><dd>365 songs, one a day, 2018–2019</dd></div>
+				<div><dt>Player</dt><dd>Vanilla JS PWA with a Node API</dd></div>
+				<div><dt>Player launched</dt><dd>October 2024</dd></div>
+			</dl>
+			<div class="links">
+				<a class="btn" href="index.html" target="_blank" rel="noopener">Open the player</a>
+				<a class="btn ghost" href="https://github.com/micahp/gppls-daily-api" target="_blank" rel="noopener">API source</a>
+			</div>
+			<h1>OVERVIEW</h1>
+			<p class="body-text">gppls daily was my project to make a song a day for a year and publish each song on the same day I made it. 365 days, 365 songs, under my artist name geo ppls. Day 365, “too bad freestyle,” went up on October 28, 2019.</p>
+			<p class="body-text">Then I kept going with it: <em>#40days40bops</em> put a song a day from the project on Spotify, Apple Music and the other streaming platforms, I streamed favorites on Twitch, and tracks were later minted as music NFTs. The best songs became official releases, including the album <em>Nerdcore</em> (2025) and the <em>Moon Lambo EP</em>.</p>
+			<h1>THE PLAYER</h1>
+			<p class="body-text">Most of the catalog lived only on SoundCloud, scattered across uploads. So I built a home for it: a web player where all 365 days are laid out as tiles. Click a day's cover art and it plays. It installs on your phone as an app.</p>
+			<ul class="body-text">
+				<li>Every day as a tile, plus curated releases and playlists like <em>summer fling 2 summerfling</em>, <em>Nerdcore</em> and <em>type beats</em>.</li>
+				<li>A Now Playing screen with shuffle, repeat, queue and volume.</li>
+				<li>Installable as a PWA, with artwork that loads fast on mobile.</li>
+				<li>A small Node API serves the song data and art.</li>
+			</ul>
+			<div class="embed"><iframe src="index.html" title="gppls daily player" loading="lazy"></iframe></div>
+		</div>
+		<div class="section more">
+			<p class="header-text">More Projects</p>
+			<nav class="tiles">
+				<a href="../legendary-picks/index.html">Legendary Picks</a>
+				<a href="../fine-photo-gen/index.html">Fine Photo Gen</a>
+				<a href="../minnesota-lakes/index.html">Minnesota Lakes on Chain</a>
+				<a href="../yapgpt/index.html">YapGPT</a>
+				<a href="../warm-fuzzy-wall/index.html">Warm Fuzzy Birthday Wall</a>
+				<a href="../shana-care/index.html">Shana Care</a>
+				<a href="../stream-of-consciousness/about.html">Stream of Conscious Writer</a>
+				<a href="../gppls-daily/about.html" aria-current="page">Gppls Daily</a>
+				<a href="../spitfire/index.html">Spitfire</a>
+				<a href="../clutch/index.html">Clutch</a>
+				<a href="../ellomix/index.html">Ellomix</a>
+				<a href="../pinterest/index.html">Pinterest</a>
+			</nav>
+		</div>
+	</div>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-NM00FT5H0Y"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-NM00FT5H0Y');
+	</script>
+</body>
+</html>
