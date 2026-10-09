@@ -397,3 +397,57 @@ blockquote {
 		padding-left: 0;
 	}
 }
+
+/* Videos, side-by-side images, post thumbnails */
+figure video {
+	background: #000;
+}
+.video-embed {
+	position: relative;
+	aspect-ratio: 16 / 9;
+	background: #000;
+}
+.video-embed iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+.pair {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+}
+.posts li.has-thumb {
+	display: grid;
+	grid-template-columns: 200px 1fr;
+	gap: 25px;
+	align-items: start;
+}
+.posts .thumb {
+	width: 200px;
+	aspect-ratio: 3 / 2;
+	object-fit: cover;
+	display: block;
+	border: 1px solid #ddd;
+}
+.content code {
+	background: #f2f2f2;
+	padding: 2px 6px;
+}
+@media (max-width: 768px) {
+	.pair {
+		grid-template-columns: 1fr;
+	}
+	.posts li.has-thumb {
+		grid-template-columns: 1fr;
+		gap: 12px;
+	}
+	.posts .thumb {
+		width: 100%;
+	}
+}
+.posts li {
+	overflow-wrap: anywhere;
+}
