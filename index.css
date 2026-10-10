@@ -96,6 +96,10 @@ span {
 	display: inline-block;
 	color: white;
 }
+.social-svg {
+	display: block;
+	padding-bottom: 4px;
+}
 .social-icons {
 	margin: 75px 0 0 0;
 	color: black;
