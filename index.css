@@ -11,6 +11,7 @@ a {
 body {
 	margin: 0;
 	font-family: AkzidenzGrotesk;
+	font-size: 16px;
 }
 p {
 	margin: 0;
@@ -95,6 +96,10 @@ span {
 	display: inline-block;
 	color: white;
 }
+.social-svg {
+	display: block;
+	padding-bottom: 4px;
+}
 .social-icons {
 	margin: 75px 0 0 0;
 	color: black;
@@ -133,4 +138,80 @@ span {
 }
 .no-min-height {
 	min-height: 0;
+}
+
+/* Home page on phones */
+@media (max-width: 768px) {
+	.home .fixed-width {
+		height: auto;
+	}
+	.home .home-icon {
+		top: 25px;
+		left: 20px;
+	}
+	.home .header.section {
+		height: auto;
+		min-height: 0;
+		padding: 90px 20px 0 20px;
+		overflow: hidden;
+	}
+	.home .header-text {
+		float: none;
+		height: auto;
+		font-size: 56px;
+		line-height: 1.05;
+	}
+	.home .title {
+		padding-top: 0;
+	}
+	.home .support {
+		font-size: 18px;
+		padding-top: 12px;
+	}
+	.home .social-icons {
+		float: none;
+		margin: 10px 0 0 0;
+	}
+	.home .micah {
+		position: static;
+		display: block;
+		width: 240px;
+		padding: 0;
+		margin: 30px auto 0 auto;
+	}
+	.home .section {
+		padding: 50px 20px 0 20px;
+		min-height: 0;
+	}
+	.home .projects {
+		padding-bottom: 20px;
+	}
+	.home .section > .header-text {
+		margin-bottom: 30px;
+	}
+	/* Two columns of tiles instead of Masonry's fixed 300px column */
+	.home .grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+		width: auto !important;
+		height: auto !important;
+	}
+	.home .grid .grid-item {
+		position: static !important;
+		left: auto !important;
+		top: auto !important;
+		width: auto;
+		height: auto;
+		aspect-ratio: 1 / 1;
+		margin: 0;
+		overflow: hidden;
+	}
+	.home .grid-item p {
+		font-size: 24px;
+		padding: 0 8px;
+	}
+	.home #mc_embed_signup form {
+		padding: 10px 20px;
+	}
 }
