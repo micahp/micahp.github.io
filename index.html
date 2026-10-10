@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Micah's Website</title>
-	<link rel="icon" type="image/png" href="/Users/maslow/Library/Mobile Documents/WUGMZZ5K46~com~bohemiancoding~sketch/Documents/PeepHolesIconWire.png">
+	<link rel="icon" type="image/png" href="images/PeepHolesIconWire.png">
 	<script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="./index.css">
-	<link href="https://cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="./css/mailchimp-classic.css">
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-NM00FT5H0Y"></script>
 	<style type="text/css">
 		#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
@@ -17,9 +19,9 @@
 			 We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
 	</style>
 </head>
-<body>
+<body class="home">
 	<div class="fixed-width">
-		<a href="./index.html"><img class="home-icon" src="images/PeepHolesIconWire.png"></a>
+		<a href="./index.html"><img class="home-icon" src="images/PeepHolesIconWire.png" alt="Home"></a>
 		<div class="header section">
 			<div class="header-text title">
 				<p>Micah Peoples</p>
@@ -30,7 +32,7 @@
 					<a class="social-icon" href="https://github.com/micahp"><i class="fa fa-github fa-2x" href="#" aria-hidden="true"></i></a>
 					<a class="social-icon" href="https://linkedin.com/in/micahpeoples"><i class="fa fa-linkedin fa-2x" href="#" aria-hidden="true"></i></a>
 				</div>
-			<img class="micah" src="images/CroppedMicah.png">
+			<img class="micah" src="images/CroppedMicah.png" alt="Micah Peoples">
 		</div>
 
 
@@ -146,33 +148,29 @@
 	
 
 
-	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+	<script src="https://unpkg.com/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script>
 	<script>
-		$(".grid-item-child").hide();
-		$('.social-icons > a').hover(function(e) {
-			//$(this).css("border-bottom", "0 solid white").animate({ borderWidth: 3 }, 100);
-			$(this).css("border-bottom", "3px solid white");
-			$(this).css('cursor', 'pointer');
-		}, function() {
-			//$(this).css("border-bottom", "3 solid white").animate({ borderWidth: 0 }, 100);
-			$(this).css("border-bottom", "none");
-			$(this).css('cursor', 'default');
+		// Plain JS so the hover effects keep working even if the Mailchimp
+		// embed's jQuery.noConflict(true) removes $.
+		var child = document.querySelector('.grid-item-child');
+		if (child) child.style.display = 'none';
+		document.querySelectorAll('.social-icons > a').forEach(function(a) {
+			a.addEventListener('mouseenter', function() { a.style.borderBottom = '3px solid white'; a.style.cursor = 'pointer'; });
+			a.addEventListener('mouseleave', function() { a.style.borderBottom = 'none'; a.style.cursor = 'default'; });
 		});
-		$('.grid-item').hover(function(e) {
-			console.log(1);
-			$(this).css('background-color', "#fff");
-			$(this).css('color', "#000");
-			//$(this).css('text-decoration', 'underline');
-			$(this).append($(".grid-item-child"));
-			$(".grid-item-child").show();
-			$(this).css('cursor', 'pointer');
-		}, function(e) {
-			$(this).css('background-color', "#000");
-			$(this).css('color', "#fff");
-			//$(this).css('text-decoration', 'none');
-			$(".grid-item-child").hide();
-
-			$(this).css('cursor', 'default');
+		document.querySelectorAll('.grid-item').forEach(function(el) {
+			el.addEventListener('mouseenter', function() {
+				el.style.backgroundColor = '#fff';
+				el.style.color = '#000';
+				if (child) { el.appendChild(child); child.style.display = 'block'; }
+				el.style.cursor = 'pointer';
+			});
+			el.addEventListener('mouseleave', function() {
+				el.style.backgroundColor = '#000';
+				el.style.color = '#fff';
+				if (child) child.style.display = 'none';
+				el.style.cursor = 'default';
+			});
 		});
 	</script>
 	<script>
