@@ -475,3 +475,71 @@ figure video {
 .posts li {
 	overflow-wrap: anywhere;
 }
+
+/* CSS-only laptop frame for desktop screenshots; mobile-device heroes stay unchanged. */
+.page-header .hero.laptop {
+	flex: 0 1 600px;
+	min-width: 0;
+	box-sizing: border-box;
+	padding: 0 20px 22px;
+}
+.page-header .hero.laptop .laptop-display {
+	position: relative;
+	min-width: 0;
+	border: 10px solid #191b21;
+	border-top-width: 16px;
+	border-bottom-width: 9px;
+	border-radius: 15px 15px 4px 4px;
+	background: #191b21;
+	box-shadow: 0 0 0 1px #555961, 0 16px 40px rgba(0, 0, 0, 0.32);
+}
+.page-header .hero.laptop .laptop-display::before {
+	content: "";
+	position: absolute;
+	top: -11px;
+	left: 50%;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	transform: translateX(-50%);
+	background: #55616d;
+}
+.page-header .hero.laptop .laptop-display img {
+	display: block;
+	width: 100%;
+	height: auto;
+	box-sizing: border-box;
+	border: 0;
+}
+.page-header .hero.laptop .laptop-base {
+	position: relative;
+	width: calc(100% + 40px);
+	height: 19px;
+	margin-left: -20px;
+	border-radius: 2px 2px 13px 13px;
+	background: linear-gradient(to bottom, #d1d4da 0%, #a1a6ae 60%, #626975 100%);
+	box-shadow: 0 9px 16px rgba(0, 0, 0, 0.3);
+}
+.page-header .hero.laptop .laptop-base::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 40%;
+	width: 20%;
+	height: 6px;
+	border-radius: 0 0 7px 7px;
+	background: #777e87;
+}
+@media (max-width: 768px) {
+	.page-header .hero.laptop {
+		flex-basis: auto;
+		width: 100%;
+		max-width: 640px;
+		padding: 0 10px 16px;
+	}
+	.page-header .hero.laptop .laptop-base {
+		width: calc(100% + 18px);
+		margin-left: -9px;
+		height: 13px;
+	}
+}
