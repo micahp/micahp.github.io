@@ -530,6 +530,14 @@ figure video {
 	border-radius: 0 0 7px 7px;
 	background: #777e87;
 }
+@media (max-width: 1100px) {
+	/* The project header switches to a column at this breakpoint. */
+	.page-header .hero.laptop {
+		flex: 0 0 auto;
+		width: 100%;
+		max-width: 640px;
+	}
+}
 @media (max-width: 768px) {
 	.page-header .hero.laptop {
 		flex-basis: auto;
