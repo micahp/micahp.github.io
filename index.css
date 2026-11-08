@@ -33,13 +33,31 @@ span {
 	height: 600px;
 	position: relative;
 }
-/* Substack signup embed on the home page. */
+/* Substack signup: a button reveals the official embed form. */
 #substack-signup {
 	background: #fff;
 	padding: 30px 100px;
 	clear: both;
 }
-#substack-signup iframe {
+.substack-btn {
+	background: #000;
+	color: #fff;
+	border: 0;
+	border-radius: 4px;
+	padding: 12px 22px;
+	font-family: inherit;
+	font-size: 16px;
+	cursor: pointer;
+}
+.substack-btn:hover,
+.substack-btn:focus-visible {
+	background: #333;
+}
+#substack-panel {
+	margin-top: 20px;
+	max-width: 480px;
+}
+#substack-panel iframe {
 	display: block;
 	width: 100%;
 	max-width: 480px;

@@ -41,10 +41,31 @@
 		</div>
 
 
-		<!-- Begin Substack signup form -->
+		<!-- Substack signup: a button reveals the official Substack embed form. -->
 		<div id="substack-signup">
-			<iframe src="https://innovativehype.substack.com/embed" title="Subscribe to Innovative Hype on Substack" frameborder="0" scrolling="no"></iframe>
+			<button id="substack-toggle" class="substack-btn" type="button" aria-expanded="false" aria-controls="substack-panel">Join My Email List</button>
+			<div id="substack-panel" hidden>
+				<iframe src="https://innovativehype.substack.com/embed" title="Subscribe to Innovative Hype on Substack" frameborder="0" scrolling="no"></iframe>
+			</div>
 		</div>
+		<script>
+			(function () {
+				var toggle = document.getElementById('substack-toggle');
+				var panel = document.getElementById('substack-panel');
+				if (!toggle || !panel) return;
+				toggle.addEventListener('click', function () {
+					if (panel.hasAttribute('hidden')) {
+						panel.removeAttribute('hidden');
+						toggle.setAttribute('aria-expanded', 'true');
+						toggle.textContent = 'Hide signup';
+					} else {
+						panel.setAttribute('hidden', '');
+						toggle.setAttribute('aria-expanded', 'false');
+						toggle.textContent = 'Join My Email List';
+					}
+				});
+			})();
+		</script>
 		<!-- End Substack signup form -->
 		<!---->
 
