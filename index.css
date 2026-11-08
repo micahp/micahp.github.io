@@ -223,7 +223,7 @@ span {
 .home .header.section {
 	height: auto;
 	min-height: 518px;
-	padding-bottom: 80px;
+	padding-bottom: 100px;
 }
 .home .home-bio {
 	max-width: 640px;
@@ -246,7 +246,7 @@ span {
 	.home .header.section {
 		height: auto;
 		min-height: 0;
-		padding: 90px 20px 48px 20px;
+		padding: 90px 20px 60px 20px;
 		overflow: hidden;
 	}
 	.home .home-bio {
@@ -258,4 +258,34 @@ span {
 		float: none;
 		margin: 28px 0 0 0;
 	}
+}
+
+/* Social links lift instead of adding a border that shifts the row down. */
+.home .social-icons .social-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
+	line-height: 0;
+	color: #fff;
+	text-decoration: none;
+	transition: transform 180ms ease;
+	will-change: transform;
+}
+.home .social-icons .social-icon .social-svg {
+	display: block;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+}
+.home .social-icons .social-icon:hover,
+.home .social-icons .social-icon:focus-visible {
+	transform: translateY(-6px);
+}
+.home .social-icons .social-icon:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+	.home .social-icons .social-icon { transition: none; }
 }
