@@ -477,13 +477,13 @@ figure video {
 }
 
 /* CSS-only laptop frame for desktop screenshots; mobile-device heroes stay unchanged. */
-.page-header .hero.laptop {
+.header .hero.laptop {
 	flex: 0 1 600px;
 	min-width: 0;
 	box-sizing: border-box;
 	padding: 0 20px 22px;
 }
-.page-header .hero.laptop .laptop-display {
+.header .hero.laptop .laptop-display {
 	position: relative;
 	min-width: 0;
 	border: 10px solid #191b21;
@@ -493,7 +493,7 @@ figure video {
 	background: #191b21;
 	box-shadow: 0 0 0 1px #555961, 0 16px 40px rgba(0, 0, 0, 0.32);
 }
-.page-header .hero.laptop .laptop-display::before {
+.header .hero.laptop .laptop-display::before {
 	content: "";
 	position: absolute;
 	top: -11px;
@@ -504,14 +504,15 @@ figure video {
 	transform: translateX(-50%);
 	background: #55616d;
 }
-.page-header .hero.laptop .laptop-display img {
+.header .hero.laptop .laptop-display img,
+.header .hero.laptop .laptop-display video {
 	display: block;
 	width: 100%;
 	height: auto;
 	box-sizing: border-box;
 	border: 0;
 }
-.page-header .hero.laptop .laptop-base {
+.header .hero.laptop .laptop-base {
 	position: relative;
 	width: calc(100% + 40px);
 	height: 19px;
@@ -520,7 +521,7 @@ figure video {
 	background: linear-gradient(to bottom, #d1d4da 0%, #a1a6ae 60%, #626975 100%);
 	box-shadow: 0 9px 16px rgba(0, 0, 0, 0.3);
 }
-.page-header .hero.laptop .laptop-base::before {
+.header .hero.laptop .laptop-base::before {
 	content: "";
 	position: absolute;
 	top: 0;
@@ -532,20 +533,20 @@ figure video {
 }
 @media (max-width: 1100px) {
 	/* The project header switches to a column at this breakpoint. */
-	.page-header .hero.laptop {
+	.header .hero.laptop {
 		flex: 0 0 auto;
 		width: 100%;
 		max-width: 640px;
 	}
 }
 @media (max-width: 768px) {
-	.page-header .hero.laptop {
+	.header .hero.laptop {
 		flex-basis: auto;
 		width: 100%;
 		max-width: 640px;
 		padding: 0 10px 16px;
 	}
-	.page-header .hero.laptop .laptop-base {
+	.header .hero.laptop .laptop-base {
 		width: calc(100% + 18px);
 		margin-left: -9px;
 		height: 13px;

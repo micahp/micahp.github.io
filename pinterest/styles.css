@@ -18,4 +18,43 @@ video {
     video {
         width: 800px;
     }
-} 
+}
+
+/* Pinterest's legacy header now uses the shared laptop device frame. */
+.pinterest-header .pinterest-hero {
+	float: right;
+	width: min(500px, 46%);
+	max-width: 100%;
+}
+.pinterest-header .pinterest-hero .header-video {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	aspect-ratio: 500 / 305;
+	object-fit: contain;
+	background: #000;
+}
+@media (max-width: 1350px) {
+	.pinterest-header.header.section {
+		height: auto;
+		min-height: 0;
+		padding-bottom: 70px;
+	}
+	.pinterest-header .header-text {
+		float: none;
+		display: block;
+		height: auto;
+	}
+	.pinterest-header .pinterest-hero {
+		float: none;
+		width: 100%;
+		max-width: 640px;
+		margin: 32px 0 0;
+	}
+}
+@media (max-width: 768px) {
+	.pinterest-header .pinterest-hero {
+		width: 100%;
+		max-width: 100%;
+	}
+}
