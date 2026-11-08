@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Warm and Fuzzies Wall | Micah Peoples</title>
+	<meta name="description" content="An archive of 17 birthday messages recovered from the original Warm Fuzzy Birthday Wall demo.">
+	<link rel="canonical" href="https://micahp.github.io/warm-fuzzy-wall/wall.html">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="Micah Peoples">
+	<meta property="og:title" content="Warm and Fuzzies Wall | Micah Peoples">
+	<meta property="og:description" content="An archive of 17 birthday messages recovered from the original Warm Fuzzy Birthday Wall demo.">
+	<meta property="og:url" content="https://micahp.github.io/warm-fuzzy-wall/wall.html">
+	<meta property="og:image" content="https://micahp.github.io/warm-fuzzy-wall/website-demo.png">
+	<meta property="og:image:alt" content="Warm Fuzzy Birthday Wall sticky notes">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Warm and Fuzzies Wall | Micah Peoples">
+	<meta name="twitter:description" content="An archive of 17 birthday messages recovered from the original Warm Fuzzy Birthday Wall demo.">
+	<meta name="twitter:image" content="https://micahp.github.io/warm-fuzzy-wall/website-demo.png">
+<link rel="icon" type="image/png" href="../images/PeepHolesIconWire.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { --ink: #1f2937; --muted: #6b7280; }
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--ink);
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.masthead { max-width: 1100px; margin: 0 auto; padding: 44px 24px 6px; text-align: center; }
+.crumbs { font-size: 13px; color: var(--muted); margin-bottom: 26px; }
+.crumbs a { color: inherit; }
+.crumbs span { padding: 0 6px; }
+h1 { font-size: clamp(34px, 5vw, 52px); line-height: 1.05; margin: 0 0 14px; }
+.lede { max-width: 720px; margin: 0 auto 10px; color: #4b5563; line-height: 1.55; }
+.topic { font-weight: 600; margin: 8px 0 16px; }
+.status {
+  max-width: 720px; margin: 0 auto; padding: 10px 14px;
+  font-size: 14px; line-height: 1.55; color: var(--muted);
+  background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;
+}
+.wall {
+  max-width: 1240px; margin: 44px auto 64px; padding: 0 16px;
+  display: grid; grid-template-columns: 1fr; gap: 26px;
+}
+@media (min-width: 640px)  { .wall { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 980px)  { .wall { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1240px) { .wall { grid-template-columns: repeat(4, 1fr); } }
+.note {
+  position: relative;
+  display: flex; flex-direction: column;
+  min-height: 190px; padding: 18px 18px 14px;
+  background: var(--note-bg, hsl(50 100% 67%));
+  border-radius: 6px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.10);
+  transform: rotate(var(--rot, 0deg));
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  font-family: "Architects Daughter", cursive;
+}
+.note:hover, .note:focus-within {
+  transform: rotate(0deg) scale(1.03);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.16);
+  z-index: 2;
+}
+.to { min-height: 1em; margin-bottom: 8px; text-align: right; font-size: 13px; color: #4b5563; }
+.message { margin: 0; font-size: 18px; line-height: 1.45; overflow-wrap: anywhere; }
+.meta {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 12px; margin-top: auto; padding-top: 16px;
+  font-size: 13px; color: #374151;
+}
+.author { font-style: italic; }
+.date { white-space: nowrap; }
+.fold {
+  position: absolute; right: 0; bottom: 0;
+  width: 0; height: 0;
+  border-style: solid; border-width: 16px 16px 0 0;
+  border-color: transparent rgba(0, 0, 0, 0.10) transparent transparent;
+}
+.foot {
+  max-width: 900px; margin: 0 auto 70px; padding: 0 24px;
+  text-align: center; font-size: 14px; color: var(--muted); line-height: 1.65;
+}
+.foot a { color: #111; }
+@media (prefers-reduced-motion: reduce) {
+  .note { transition: none; }
+  .note:hover, .note:focus-within { transform: rotate(var(--rot, 0deg)); }
+}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="index.html">Warm Fuzzy Birthday Wall</a><span aria-hidden="true">&middot;</span><a href="../index.html">Home</a>
+  </nav>
+  <h1>Warm and Fuzzies</h1>
+  <p class="lede">We had a warm fuzzy wall at our annual Posse Plus Retreat at UT to share positive messages and compliments with our peers. I thought it would be nice to create a digital version.</p>
+  <p class="topic">Today's topic: Micah Turns 30! &#129395;</p>
+  <p class="status"><strong>17 notes recovered.</strong> The original app&rsquo;s database was deleted when the hosting subscription lapsed; every note below was transcribed from the demo video, its thumbnail and saved screenshots. Submissions are closed.</p>
+</header>
+<main class="wall">
+      <article class="note" style="--note-bg:hsl(50 100% 67%); --rot:-5deg">
+        <div class="to">To: Micah</div>
+        <p class="message">I love you</p>
+        <div class="meta">
+          <span class="author">- Geo</span>
+          <time class="date" datetime="2025-05-09">May 9</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(218 100% 72%); --rot:-4deg">
+        <div class="to">To: Geo 🎂🎆🎁🍾</div>
+        <p class="message">Happy Birthday Geo 🥳 You amazing, creative, technologically brilliant, phenomenal soul, you! Keep creating the music ever inspiring Humanity to sing. Wishing you 30 more extraordinary years ahead - and a thousand more greater still. - Hope 🍦 Well</p>
+        <div class="meta">
+          <span class="author">- Hope</span>
+          <time class="date" datetime="2025-05-02">May 2</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(175 65% 45%); --rot:-3deg">
+        <div class="to"></div>
+        <p class="message">Yoooo Mr geo you&#39;re the man! Great to know ya Happy birthday!</p>
+        <div class="meta">
+          <span class="author">- Crystal Gravy</span>
+          <time class="date" datetime="2025-04-25">Apr 25</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(175 65% 45%); --rot:-2deg">
+        <div class="to"></div>
+        <p class="message">Happy birthday to the most creative and inspiring person I have ever met. A person with more drive and intelligence than most. Thank God for the parking meter we met at. May the next 30 years be even better than your last!</p>
+        <div class="meta">
+          <span class="author">- Anonymous</span>
+          <time class="date" datetime="2025-04-24">Apr 24</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(175 65% 45%); --rot:-1deg">
+        <div class="to"></div>
+        <p class="message">You&#39;ve always been so driven, curious, &amp; experimental. Happy Birthday! Hope this new decade is grounded in community, awe, &amp; safe places to land 🕊️</p>
+        <div class="meta">
+          <span class="author">- TB</span>
+          <time class="date" datetime="2025-04-24">Apr 24</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(270 78% 72%); --rot:0deg">
+        <div class="to"></div>
+        <p class="message">I told chatgpt to catch me outside on righting an essay for Micah&#39;s 30th birthday. But I really didn&#39;t have a good joke to follow that up with. Umm. Yeah. What else do I say? This dude right here (metaphorically points at Micah), all grown and stuff in his 30s now. I love him. And don&#39;t you forget that. Happy Birthday!</p>
+        <div class="meta">
+          <span class="author">- JP</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(336 100% 70%); --rot:1deg">
+        <div class="to"></div>
+        <p class="message">Eyyyy! Happy fu*cckkkiiinnng birthday!! It&#39;s been a pleasure to have met you and hoping the best for you man! Good luck on your journey and make those moments count! A</p>
+        <div class="meta">
+          <span class="author">- JD</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(336 100% 70%); --rot:2deg">
+        <div class="to"></div>
+        <p class="message">MICAH!! So grateful to have met u. I literally wouldn&#39;t be where I am if it weren&#39;t for your kind heart. Love u boo!!</p>
+        <div class="meta">
+          <span class="author">- Allie</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(145 52% 71%); --rot:3deg">
+        <div class="to"></div>
+        <p class="message">Micah!! We&#39;ve known each other 16 years now!! Happy 30th 🥳🎂 As this benchmark hits, I hope you continue to bring your childhood curiosities and imaginative creativity to every endeavor you choose. Wishing many more revolutions for ya! Much prosperity, love, and positive energy 🫶🏼✨</p>
+        <div class="meta">
+          <span class="author">- Mani</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(270 78% 72%); --rot:4deg">
+        <div class="to"></div>
+        <p class="message">Micah Happy Birthday 🎂🎁 🥂❤️ Love you GG❤️🥰</p>
+        <div class="meta">
+          <span class="author">- Anonymous</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(36 100% 64%); --rot:-5deg">
+        <div class="to">To: Micah</div>
+        <p class="message">Micah, you are one of the most thoughtful, creative, and inspirational people that I know and may as well be an angel in human form!! We met literally trying to build a safer and better world for everyone 💯 What a blessing and privilege to call you friend and brother. Lord willing, in this lifetime and the next, I got you!!</p>
+        <div class="meta">
+          <span class="author">- Bryan</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(218 100% 72%); --rot:-4deg">
+        <div class="to"></div>
+        <p class="message">Happy 30th Birthday! It feels like just yesterday we were at UT Austin together with Posse, and now here you are-thriving, evolving, and creating amazing things. It&#39;s been such a joy to watch your journey and see all the cool, inspiring ideas you bring to life. I hope this birthday marks the beginning of a year (and decade!) filled with joy, growth, and everything your heart desires. You deserve all the good things coming your way. Keep shining!</p>
+        <div class="meta">
+          <span class="author">- Quana - UTP3</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(175 65% 45%); --rot:-3deg">
+        <div class="to"></div>
+        <p class="message">Happy birthday! Yer cute</p>
+        <div class="meta">
+          <span class="author">- Anonymous</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(336 100% 70%); --rot:-2deg">
+        <div class="to">To: G.Ppls</div>
+        <p class="message">It&#39;s been awesome seeing you go from a cyborg in highschool to an emotional wreck like everyone else! Glad to call you my brother!</p>
+        <div class="meta">
+          <span class="author">- NFT Daddy</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(36 100% 64%); --rot:-1deg">
+        <div class="to">To: Micah</div>
+        <p class="message">Micah, being a posse scholar with you and going through the 4 years at UT, and seeing you approached everything with an &quot;glass is half full&quot; attitude was always inspiring for posse mates like me.</p>
+        <div class="meta">
+          <span class="author">- Anonymous</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(336 100% 70%); --rot:0deg">
+        <div class="to"></div>
+        <p class="message">Happy Birthday to my Oliver Poppins, May your 30s be your blessed and best years yet! Can&#39;t wait to see all the great things I know this next chapter will bring to you and cheers to many more memories together</p>
+        <div class="meta">
+          <span class="author">- Margrit Pez</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+      <article class="note" style="--note-bg:hsl(145 52% 71%); --rot:1deg">
+        <div class="to">To: Micah</div>
+        <p class="message">I met Micah way back in 2015 (10 years ago??) when we were proctors / student research assistants at the good ol TACC Vislab at UT Austin. We collab&#39;d on a bunch of cool projects on multi touch and immersive technologies and generally had good times. Over the summer I remember making a cool promo video for Google Glass research and Micah was the star actor and our buddy RJ made the background piano music. Happy birthday bro! Keep in touch 🚀</p>
+        <div class="meta">
+          <span class="author">- Sarang</span>
+          <time class="date" datetime="2025-04-23">Apr 23</time>
+        </div>
+        <span class="fold" aria-hidden="true"></span>
+      </article>
+</main>
+<footer class="foot">
+  <p>Recovered from <a href="https://youtu.be/_PtelREnQqY">the demo video</a> in October 2026. The wall&rsquo;s code and the <a href="https://github.com/micahp/WarmFuzzyWall/tree/main/recovered">recovery notes</a> are public on GitHub.</p>
+  <p><a href="index.html">Back to the case study</a> &middot; <a href="../index.html">Home</a></p>
+</footer>
+</body>
+</html>
