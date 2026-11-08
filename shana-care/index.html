@@ -20,6 +20,27 @@
 	<link rel="icon" type="image/png" href="../images/PeepHolesIconWire.png">
 	<link rel="stylesheet" href="../index.css">
 	<link rel="stylesheet" href="../css/project.css">
+	<style>
+		/* Shana Care mobile design gallery; scoped to this case study. */
+		.shana-designs {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+			gap: 18px;
+			max-width: 1100px;
+			margin: 28px 0 24px;
+		}
+		.shana-designs figure { margin: 0; min-width: 0; max-width: none; }
+		.shana-designs a { display: block; }
+		.shana-designs img {
+			width: 100%; height: auto; display: block;
+			border: 1px solid #ddd; border-radius: 12px;
+			box-sizing: border-box;
+		}
+		.shana-designs figcaption { font-size: 14px; }
+		@media (max-width: 480px) {
+			.shana-designs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+		}
+	</style>
 </head>
 <body>
 	<div class="fixed-width">
@@ -34,17 +55,43 @@
 		<div class="section content">
 			<dl class="facts">
 				<div><dt>Role</dt><dd>Cofounder, React Native frontend engineering</dd></div>
+				<div><dt>Stack</dt><dd>React Native, iOS and Android</dd></div>
 				<div><dt>Industry</dt><dd>Health tech, home care</dd></div>
 				<div><dt>Market</dt><dd>Greater Houston</dd></div>
-				<div><dt>Apps</dt><dd>iPhone and Android</dd></div>
 			</dl>
 			<div class="links">
 				<a class="btn" href="https://shanacare.com" target="_blank" rel="noopener">Visit shanacare.com</a>
 			</div>
 			<h1>OVERVIEW</h1>
-			<p class="body-text">Shana Care is on-demand home care, a company I cofounded. Families book a licensed Certified Nursing Assistant for exactly the help they need: no eight-hour minimums, no contracts, and a caregiver who arrives within the hour.</p>
-			<h1>MY ROLE</h1>
-			<p class="body-text">I cofounded Shana Care and work on the React Native mobile experience for iPhone and Android. The product challenge is to make booking care feel straightforward and predictable: clear service choices, upfront pricing, information about the caregiver, and visibility into the visit. My focus is translating those needs into a usable app for families.</p>
+			<p class="body-text">Shana Care is an on-demand home-care company I cofounded in Houston. We built it around a simple idea: if someone needs an hour or two of help at home, they shouldn't have to pay for an entire shift.</p>
+			<p class="body-text">The service connects families with Certified Nursing Assistants for assistive and personal care, with flexible bookings instead of eight-hour minimums or long-term contracts. We launched mobile apps for both iPhone and Android.</p>
+			<h1>MY CONTRIBUTION</h1>
+			<p class="body-text">I cofounded the business and work on the <strong>React Native frontend</strong> for our iOS and Android apps. My engineering focus is the experience families use to arrange care: making service choices, costs, caregiver information and visit details understandable on a phone.</p>
+			<p class="body-text">Home care is a high-trust service. Before letting someone into their home, a family needs to understand who is coming, what help they'll provide, what it will cost, and when they'll arrive. Turning those real-world requirements into clear mobile interfaces is a central part of my work on Shana Care.</p>
+			<h1>THE MOBILE EXPERIENCE</h1>
+			<p class="body-text">These selected mobile designs show how we approached the journey from requesting assistance to getting comfortable with a caregiver. They illustrate the product experience, rather than documenting an exact release of every screen.</p>
+			<div class="shana-designs">
+				<figure>
+					<a href="design/request-service.webp" target="_blank" rel="noopener"><img src="design/request-service.webp" alt="Design screen showing the main button to request an in-home care service" loading="lazy" decoding="async" width="375" height="812"></a>
+					<figcaption><strong>Request a visit</strong></figcaption>
+				</figure>
+				<figure>
+					<a href="design/care-services.webp" target="_blank" rel="noopener"><img src="design/care-services.webp" alt="Design screen listing respite care, light housekeeping, companionship and personal-care services" loading="lazy" decoding="async" width="375" height="812"></a>
+					<figcaption><strong>Choose the help</strong></figcaption>
+				</figure>
+				<figure>
+					<a href="design/caregiver-match.webp" target="_blank" rel="noopener"><img src="design/caregiver-match.webp" alt="Design screen introducing a matched caregiver with a photo and profile button" loading="lazy" decoding="async" width="375" height="812"></a>
+					<figcaption><strong>Meet your caregiver</strong></figcaption>
+				</figure>
+				<figure>
+					<a href="design/caregiver-profile.webp" target="_blank" rel="noopener"><img src="design/caregiver-profile.webp" alt="Design screen showing caregiver credentials, ratings, past visits, languages and feedback" loading="lazy" decoding="async" width="375" height="812"></a>
+					<figcaption><strong>Review their profile</strong></figcaption>
+				</figure>
+				<figure>
+					<a href="design/caregiver-arrival.webp" target="_blank" rel="noopener"><img src="design/caregiver-arrival.webp" alt="Design screen displaying a caregiver's location, estimated arrival and contact options" loading="lazy" decoding="async" width="375" height="812"></a>
+					<figcaption><strong>Follow their arrival</strong></figcaption>
+				</figure>
+			</div>
 			<h1>THE PROBLEM</h1>
 			<p class="body-text">Traditional agencies bill by the shift. Two hours of help, twice a week, turns into sixteen billed hours under an eight-hour minimum, which comes to about <strong>$2,425 a month</strong>. With Shana you book two hours and pay for two hours: about <strong>$346 a month</strong>.</p>
 			<blockquote>Independence doesn’t mean doing it all alone. A little help twice a week is often the difference between staying home and leaving it.</blockquote>
@@ -63,6 +110,8 @@
 			<h1>SAFETY</h1>
 			<p class="body-text">Every Shana caregiver is a licensed CNA, verified before their first visit and re-checked every ninety days: state nurse aide registry, abuse and neglect registry, OIG federal exclusion list, criminal background and sex offender registry. Families see the caregiver’s name, photo, certification, rating and visit history before they arrive.</p>
 			<p class="body-text">For caregivers, Shana means setting your own hours, taking the visits you want, and earning $15.50 to $22 an hour.</p>
+			<h1>WHAT WE SHIPPED</h1>
+			<p class="body-text">Shana Care is a live iOS and Android product serving Greater Houston. For me, it's both a startup I've helped build and an ongoing mobile engineering project: bringing a real-world service into an app people can use when they need help.</p>
 		</div>
 		<div class="section more">
 			<p class="header-text">More Projects</p>
