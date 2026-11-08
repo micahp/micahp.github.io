@@ -419,6 +419,12 @@ figure video {
 	grid-template-columns: 1fr 1fr;
 	gap: 10px;
 }
+.trio {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+	max-width: 900px;
+}
 .posts li.has-thumb {
 	display: grid;
 	grid-template-columns: 200px 1fr;
@@ -438,6 +444,9 @@ figure video {
 }
 @media (max-width: 768px) {
 	.pair {
+		grid-template-columns: 1fr;
+	}
+	.trio {
 		grid-template-columns: 1fr;
 	}
 	.posts li.has-thumb {
