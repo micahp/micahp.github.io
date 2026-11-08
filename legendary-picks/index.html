@@ -4,9 +4,9 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Legendary Picks | Micah Peoples</title>
-	<meta name="description" content="Legendary Picks: a data-first sports product for live scores, player props, predictions and esports.">
+	<meta name="description" content="Legendary Picks: sports analytics, predictive modeling and game simulation. Live scores, player props and calibrated forecasts across 11 leagues.">
 	<meta property="og:title" content="Legendary Picks">
-	<meta property="og:description" content="Legendary Picks: a data-first sports product for live scores, player props, predictions and esports.">
+	<meta property="og:description" content="Legendary Picks: sports analytics, predictive modeling and game simulation. Live scores, player props and calibrated forecasts across 11 leagues.">
 	<link rel="icon" type="image/png" href="../images/PeepHolesIconWire.png">
 	<link rel="stylesheet" href="../index.css">
 	<link rel="stylesheet" href="../css/project.css">
@@ -17,47 +17,52 @@
 		<div class="header section page-header">
 			<div class="header-text">
 				<p>Legendary<br>Picks</p>
-				<p class="support">Live prop lines and hit rate history across 11 leagues.</p>
+				<p class="support">Sports analytics, predictive modeling, and game simulation across professional and collegiate sports.</p>
 			</div>
 			<div class="hero"><img src="props.png" alt="Legendary Picks props board: NFL player props with hit rates, projections and edge"></div>
 		</div>
 		<div class="section content">
 			<dl class="facts">
-				<div><dt>Role</dt><dd>Founder, product, full-stack engineering</dd></div>
-				<div><dt>Stack</dt><dd>Next.js, FastAPI, SQLite, Python ingest jobs</dd></div>
+				<div><dt>Role</dt><dd>Founder, product, full-stack engineering, data engineering, predictive modeling</dd></div>
+				<div><dt>Stack</dt><dd>Next.js, FastAPI, Python, SQLite, statistical modeling, Monte Carlo simulation</dd></div>
 				<div><dt>Covers</dt><dd>NFL, college football, NBA, MLB, NHL, MLS, Leagues Cup, ATP and WTA tennis, UFC, plus esports</dd></div>
-				<div><dt>Status</dt><dd>Live, in active development</dd></div>
+				<div><dt>Status</dt><dd>Live platform; modeling and simulation features in active development</dd></div>
 			</dl>
 			<div class="links">
 				<a class="btn" href="https://legendarypicks.xyz" target="_blank" rel="noopener">Visit legendarypicks.xyz</a>
 				<a class="btn ghost" href="#demo">Watch demo video</a>
 			</div>
 			<h1>OVERVIEW</h1>
-			<p class="body-text">Legendary Picks is a sports data and prediction product. Live prop lines and hit rate history across 11 leagues, plus live scores and box scores across 8+ leagues, predictions you can track over a season, league news and esports, all on one fast, clean scoreboard. Free to browse, no signup.</p>
-			<p class="body-text">Its signature feature is props with the aftermath. Every line carries its record: how it landed, its hit rate over the last 5, 10 and 20 settled props and the season, and projections built from the player’s own game logs. A prop is a promise; this is where you see whether it was kept.</p>
+			<p class="body-text">Legendary Picks is a sports intelligence platform built to help fans go beyond the box score. It brings together live scores, historical player data, betting markets, predictive models and game simulations in one place: follow games, research player props, explore statistical trends, and evaluate predictions against what actually happened.</p>
+			<p class="body-text">The bigger goal is to make sports analytics interactive. Rather than simply displaying a predicted outcome, the project is building tools to explore how a game might unfold, how players are used, and how different decisions change the possible results.</p>
 			<figure>
 				<img src="scoreboard.jpg" alt="Legendary Picks scoreboard with NBA, NHL and NCAAF games" loading="lazy">
 				<figcaption>The scoreboard: every league’s slate for the day, from preseason NBA to college football.</figcaption>
 			</figure>
-			<h1>WHAT IT DOES</h1>
-			<ul class="body-text">
-				<li><strong>Scores</strong> across 8+ leagues, with box scores, play-by-play and game pages.</li>
-				<li><strong>Props</strong>: a prop board with Slate, Props, Performance, Matchups and Model views, where each line shows how it landed, its hit rate and a projection.</li>
-				<li><strong>Predictions</strong>: pick winners and track your accuracy over the season.</li>
-				<li><strong>Leagues and news</strong>: standings, team and player pages, and the stories behind the slate.</li>
-				<li><strong>Esports</strong>: live matches and results across the EWC titles, with a tournament center and per-title desks, plus CS2 pick’em and fantasy.</li>
-				<li><strong>NFL tools</strong>: a mock draft room and draft board built from published ADP.</li>
-			</ul>
+			<h1>WHAT I’M BUILDING</h1>
+			<h3>Sports data infrastructure</h3>
+			<p class="body-text">A multi-league data platform that ingests, reconciles and serves schedules, scores, play-by-play, player statistics, injuries, standings and historical records.</p>
+			<h3>Player props and market analytics</h3>
+			<p class="body-text">A research interface combining sportsbook lines, historical hit rates, player projections, opponent matchups and performance trends.</p>
+			<h3>Predictive modeling</h3>
+			<p class="body-text">Statistical models for game outcomes and player performance, evaluated against historical results and market benchmarks with probability calibration, Brier scores, log loss and CRPS. An NBA game-outcome study compares Elo, efficiency and joint score-distribution candidates across ten seasons (2017–2026), with paired date-clustered uncertainty on every comparison.</p>
+			<h3>NFL game simulation</h3>
+			<p class="body-text">A play-by-play simulation track that models offensive play-calling, player workloads and game-state transitions, validated against real NFL play-by-play. The first public experiment is <a href="https://github.com/micahp/gridiron-physics">Mile High Film Room</a>: a 22-player, 120 Hz physics reconstruction of Seahawks @ Broncos (October 2026) that lands the real ending spot within a yard on 122 of 124 checkable plays.</p>
+			<h3>Interactive sports experiences</h3>
+			<p class="body-text">Turning sports data into playable experiences: a pixel-art NFL headquarters, GM-mode concepts and football minigames are prototypes in development.</p>
+			<p class="body-text"><strong>Live today:</strong> prop lines with hit-rate history across 11 leagues, scores and box scores across 8+ leagues, predictions you can track over a season, league news, esports desks, and an NFL draft room with a mock draft board. Free to browse, no signup.</p>
 			<h1>HOW IT’S BUILT</h1>
-			<p class="body-text">The browser never scrapes anything. Ingest jobs are the only things that write data. They pull from each league’s own publisher, resolve players, teams and games by stable source IDs rather than display names, and publish snapshots to one canonical SQLite store. A FastAPI service reads that store and the Next.js app reads the API. If data is missing or unverified, the site says so instead of making something up.</p>
+			<p class="body-text">The platform separates data collection, storage, modeling and presentation. Scheduled Python jobs collect and reconcile league data into a canonical SQLite database; FastAPI exposes that information to a Next.js frontend. Separate research pipelines train, backtest and grade predictive models and simulations, with immutable forecast locks and append-only grade records, so a prediction can’t be quietly rewritten after the fact.</p>
 			<div class="pipeline">
 				<div><span class="step">STEP 01</span><b>Ingest</b>League sources and data releases pulled by scheduled jobs.</div>
 				<div><span class="step">STEP 02</span><b>Store</b>One canonical SQLite store, written only by ingest.</div>
 				<div><span class="step">STEP 03</span><b>Serve</b>FastAPI routers for games, players, props, news and esports.</div>
 				<div><span class="step">STEP 04</span><b>Show</b>Next.js pages for scores, leagues, players, props and drafts.</div>
 			</div>
+			<p class="body-text">The engineering focus is consistent data identities, reproducible experiments, realistic statistical behavior, and a clear separation between observed results and model-generated predictions.</p>
 			<h1>WHERE IT STARTED</h1>
-			<p class="body-text">Legendary Picks began as a fantasy layer on NBA Top Shot: connect a Flow wallet, browse your moments, draft with them. When Top Shot moved into that space itself, I pivoted to an independent, data-first product that doesn’t depend on anyone else’s platform. Along the way it was also a picks show, with prediction videos for UFC cards.</p>
+			<p class="body-text">Legendary Picks began as a fantasy sports experiment built around NBA Top Shot and Flow collectibles. It later expanded into sports predictions and UFC content before evolving into an independent, data-first platform.</p>
+			<p class="body-text">Today it’s moving beyond scores and predictions toward sports intelligence, simulation and interactive entertainment, with the research kept honest: benchmarks, validation criteria and model cards ship with the code rather than as endnotes.</p>
 			<figure>
 				<div class="pair">
 					<img src="top-shot-era.jpg" alt="Legendary Picks during its NBA Top Shot era" loading="lazy">
