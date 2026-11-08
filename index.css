@@ -33,8 +33,18 @@ span {
 	height: 600px;
 	position: relative;
 }
-.email-input {
-	max-width: 400px !important;
+/* Substack signup embed on the home page. */
+#substack-signup {
+	background: #fff;
+	padding: 30px 100px;
+	clear: both;
+}
+#substack-signup iframe {
+	display: block;
+	width: 100%;
+	max-width: 480px;
+	height: 320px;
+	border: 0;
 }
 .grid {
 	clear: both;
@@ -211,8 +221,8 @@ span {
 		font-size: 24px;
 		padding: 0 8px;
 	}
-	.home #mc_embed_signup form {
-		padding: 10px 20px;
+	#substack-signup {
+		padding: 20px;
 	}
 }
 
