@@ -41,6 +41,17 @@
 .page-header .hero.square {
 	flex-basis: 380px;
 }
+.page-header .hero.phone {
+	flex: 0 0 auto;
+	max-width: 300px;
+}
+.page-header .hero.phone img {
+	width: auto;
+	max-width: 100%;
+	max-height: 560px;
+	margin: 0 auto;
+	border: 0;
+}
 .page-header .hero-mark {
 	flex: 0 0 auto;
 	font-size: 220px;
@@ -295,6 +306,10 @@ blockquote {
 		flex-basis: auto;
 		width: 100%;
 		max-width: 640px;
+	}
+	.page-header .hero.phone {
+		max-width: 300px;
+		margin: 0 auto;
 	}
 	.page-header .hero-mark {
 		font-size: 150px;
