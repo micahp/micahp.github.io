@@ -1,6 +1,6 @@
 @font-face {
 	font-family: AkzidenzGrotesk;
-	src: url("fonts/Berthold Akzidenz Grotesk BE Regular.otf");`
+	src: url("fonts/Berthold Akzidenz Grotesk BE Regular.otf");
 }
 a {
 	color: black;
@@ -107,7 +107,7 @@ span {
 	clear: both;
 }
 .support {
-	font-family: "Helvetica Neueue", sans-serif;
+	font-family: "Helvetica Neue", sans-serif;
 	font-size: 25px;
 	font-weight: 300;
 	clear: both;
@@ -215,3 +215,8 @@ span {
 		padding: 10px 20px;
 	}
 }
+
+/* Short bio, separate from the existing project and writing grids. */
+.home .fixed-width { height: auto; }
+.home-bio { max-width: 1050px; padding: 40px 100px 20px; box-sizing: border-box; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 22px; line-height: 1.55; }
+@media (max-width: 768px) { .home-bio { padding: 24px 20px 0; font-size: 17px; } }
