@@ -30,7 +30,7 @@
 			</dl>
 			<div class="links">
 				<a class="btn" href="https://minnesotalakesonchain.com" target="_blank" rel="noopener">Explore the lakes</a>
-				<a class="btn ghost" href="https://github.com/micahp/minnesota-lakes-explorer" target="_blank" rel="noopener">Source on GitHub</a>
+				<a class="btn ghost" href="#demo">Watch video</a>
 			</div>
 			<h1>OVERVIEW</h1>
 			<p class="body-text">Minnesota is the land of 10,000 lakes, and I wanted to see all of them at once. Minnesota Lakes on Chain is an interactive map of every lake in the state, with the Department of Natural Resources’ own data on each one: area, max depth, shoreline length, and which fish are actually in it.</p>
@@ -48,15 +48,15 @@
 				<li>One-tap directions in Google Maps or Bing Maps.</li>
 				<li>Works on desktop and phone.</li>
 			</ul>
-			<figure>
-				<video controls playsinline preload="none" poster="demo-poster.jpg"><source src="demo.mp4" type="video/mp4"></video>
-				<figcaption>Walkthrough of the explorer and the vision for verified catches (May 2025).</figcaption>
-			</figure>
 			<h1>THE DATA</h1>
 			<p class="body-text">The DNR publishes its lake data as a pile of spreadsheets and geopackages: 2024 lake metadata, a statewide catch file, fish length surveys, sentinel and border-water lists, and county borders. I wrote Python preprocessing scripts that join them on lake ID, remove duplicate fish records and output one consolidated dataset the browser loads directly, with no backend.</p>
 			<figure>
 				<img src="early-version.jpg" alt="Early version of the Minnesota Lakes Explorer" loading="lazy">
 				<figcaption>January 2025: the first version, a 10,000-lake visualization.</figcaption>
+			</figure>
+			<figure id="demo">
+				<video controls playsinline preload="none" poster="demo-poster.jpg"><source src="demo.mp4" type="video/mp4"></video>
+				<figcaption>Walkthrough of the explorer and the vision for verified catches (May 2025).</figcaption>
 			</figure>
 		</div>
 		<div class="section more">
