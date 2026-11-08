@@ -216,7 +216,46 @@ span {
 	}
 }
 
-/* Short bio, separate from the existing project and writing grids. */
+/* Page wrapper on the home page grows with content. */
 .home .fixed-width { height: auto; }
-.home-bio { max-width: 1050px; padding: 40px 100px 20px; box-sizing: border-box; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 22px; line-height: 1.55; }
-@media (max-width: 768px) { .home-bio { padding: 24px 20px 0; font-size: 17px; } }
+
+/* Home header: bio sits inside the black block, social icons below it. */
+.home .header.section {
+	height: auto;
+	min-height: 518px;
+	padding-bottom: 60px;
+}
+.home .home-bio {
+	max-width: 640px;
+	padding: 18px 0 0;
+	clear: both;
+	font-family: "Helvetica Neue", Arial, sans-serif;
+	font-size: 20px;
+	line-height: 1.55;
+	color: #ffffff;
+}
+.home .social-icons {
+	margin-top: 20px;
+}
+@media (max-width: 1200px) {
+	.home .home-bio {
+		max-width: 55%;
+	}
+}
+@media (max-width: 768px) {
+	.home .header.section {
+		height: auto;
+		min-height: 0;
+		padding: 90px 20px 40px 20px;
+		overflow: hidden;
+	}
+	.home .home-bio {
+		max-width: 100%;
+		padding: 16px 0 0;
+		font-size: 17px;
+	}
+	.home .social-icons {
+		float: none;
+		margin: 10px 0 0 0;
+	}
+}
